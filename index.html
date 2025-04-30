@@ -902,7 +902,7 @@ font-size: 1rem;
     <div class="img-wrapper" style="background-image: url('https://mhhar.com/uploads/vendor/products/thumb/16162.jpg');"></div>
     <span class="btn-label">لوازم المشاريع</span>
   </a>
-<a class="product-button" id="shopNow" href="#care-products" class="product-button">
+<a class="product-button" id="shopNow" href="javascript:void(0)">
     <div class="img-wrapper" style="background-image: url('https://cdn.salla.sa/dogdz/48u2clVoA05TEJ4Lg7KI2L36Ctp9hKk7UDn6y6o3.jpg');"></div>
     <span class="btn-label">منتجات العناية</span>
   </a>
@@ -1016,6 +1016,10 @@ font-size: 1rem;
   
   <!-- JavaScript Logic -->
   <script>
+
+const currentLanguage = 'ar';           // نعيد تعريف اللغة الافتراضية
+  const sectionTranslations = {};
+
     // نقوم بتعريف كائن لتخزين روابط الأقسام الديناميكية من Firebase
     let firebaseCategoryMap = {};
     
@@ -1184,7 +1188,7 @@ window.onload = function() {
       function createLayeredButton(section) {
         const btn = document.createElement("div");
         btn.className = "section-button";
-        let displayText = currentLanguage === "en" && sectionTranslations[section.name] ? sectionTranslations[section.name] : section.name;
+const displayText = section.name;   // نستخدم اسم القسم مباشرة
         const imageUrl = generateSectionImage(displayText);
         const bgImage = document.createElement("div");
         bgImage.className = "bg-image";
@@ -1373,7 +1377,8 @@ window.onload = function() {
         }
       });
       
-      document.getElementById("shopNow").addEventListener("click", function () {
+      document.getElementById("shopNow").addEventListener("click", function (event) {
+  event.preventDefault();  // يمنع الانتقال الافتراضي للـ<a>
         document.getElementById("landingSection").style.display = "none";
         document.getElementById("sectionsSection").style.display = "block";
         // إنشاء أزرار الأقسام الأصلية
