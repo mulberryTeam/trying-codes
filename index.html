@@ -298,12 +298,7 @@
     }
     #headerContent button:hover { transform: scale(1.05); }
     
-    /* Language Toggle */
-    .language-toggle {
-      background: linear-gradient(45deg, var(--accent-language-1), var(--accent-language-2));
-      font-size: 14px;
-      font-weight: 600;
-    }
+   
     
     /* Order Products Button - تم تغيير النص داخل الزر إلى "اطلب استشارة" */
     #orderProductsBtn {
@@ -880,7 +875,7 @@ font-size: 1rem;
         </div>
         <!-- Header Right: Translation and Join Team Buttons -->
         <div class="cell header-right" style="display: flex; justify-content: flex-end;">
-          <button class="language-toggle" onclick="toggleLanguage()">EN</button>
+          
           <button id="joinTeamBtn" onclick="window.open('https://forms.gle/5tXHFwsgF6kycYG7A','_blank')">انضم إلى Mulberry Team</button>
         </div>
       </div>
@@ -1044,7 +1039,7 @@ font-size: 1rem;
       loader.style.opacity = 0;
       setTimeout(() => { loader.style.display = "none"; }, 500);
       
-      let currentLanguage = "ar";
+      
       
       const darkModeBtn = document.getElementById("darkModeBtn");
       const backgroundVideo = document.getElementById("backgroundVideo");
@@ -1076,80 +1071,7 @@ window.onload = function() {
         }
       });
       
-      const sectionTranslations = {
-        "العناية بالجسم": "Body Care",
-        "مرطب للجسم": "Body Moisturizer",
-        "البشرة والوجه": "Skin & Face",
-        "مرطبات وكريمات للوجه": "Face Creams & Moisturizers",
-        "معطر للجسم": "Body Fragrances",
-        "عطر للجسم": "Body Perfume",
-        "مقشرات وملمعات الجسم": "Body Scrubs & Exfoliators",
-        "مستلزمات العناية الشخصية": "Personal Care Essentials",
-        "معالجات وسيروم للوجه": "Facial Treatments & Serums",
-        "العناية باليدين": "Hand Care",
-        "صابون استحمام": "Bath Soap",
-        "منتجات العناية للرجال": "Men's Care Products",
-        "النظافة الشخصية للنساء": "Women's Personal Hygiene",
-        "العناية بالقدم": "Foot Care",
-        "مزيلات عرق للرجال": "Men's Deodorants",
-        "عطور": "Perfumes",
-        "عطور للرجال": "Perfumes for Men",
-        "عطور للنساء": "Women's Perfumes",
-        "تفتيح": "Skin Brightening",
-        "منتجات تفتيح الجسم": "Body Brightening",
-        "مزيلات عرق للنساء": "Women's Deodorants",
-        "العناية بالحامل والمرضعة": "Maternity & Nursing Care",
-        "صابون اليدين": "Hand Soap",
-        "إزالة الشعر": "Hair Removal",
-        "العناية بالفم": "Oral Care",
-        "العناية بالأسنان": "Dental Care",
-        "الوقاية من الشمس والتسمير": "Sun Protection & Tanning",
-        "الوجه": "Face",
-        "أقنعة الوجه": "Face Masks",
-        "منظفات البشرة": "Skin Cleansers",
-        "تقشير البشرة": "Skin Exfoliation",
-        "العناية بالشفاه": "Lip Care",
-        "الشفاه": "Lips",
-        "العناية بالعين": "Eye Care",
-        "تونرات": "Toners",
-        "الرموش": "Lashes",
-        "المكياج": "Makeup",
-        "فيتامينات": "Vitamins",
-        "العناية بالشعر": "Hair Care",
-        "معالجات الشعر": "Hair Treatments",
-        "شامبو": "Shampoo",
-        "منعم الشعر": "Hair Conditioner",
-        "مثبت مكياج": "Makeup Fixer",
-        "سيروم وزيوت للشعر": "Hair Serums & Oils",
-        "عطور للجسم والشعر": "Fragrances for Body & Hair",
-        "شفرات حلاقة الوجه للنساء": "Women's Facial Razor",
-        "غسولات": "Cleansers",
-        "مزيلات مكياج": "Makeup Removers",
-        "مناديل التنظيف": "Wipes",
-        "منتجات الحلاقة للرجال": "Men's Shaving Products",
-        "تصفيف الشعر": "Hair Styling",
-        "المكياج العين": "Eye Makeup",
-        "أدوات مكياج": "Makeup Tools",
-        "الأظافر": "Nails",
-        "أحمر خدود": "Blush",
-        "اكسسوارات الشعر": "Hair Accessories",
-        "البكجات والعروض": "Bundles & Offers",
-        "عناية بالطفل": "Baby Care",
-        "باليت المكياج والآي شادو": "Makeup & Eyeshadow Palette",
-        "مكياج الحواجب": "Eyebrow Makeup",
-        "كتب": "Books",
-        "صبغات الشعر": "Hair Dyes",
-        "🌙تُحف رمضانية": "Ramadan Collectibles",
-        "المنزل": "Home",
-        "مستلزمات المطبخ": "Kitchen Essentials",
-        "مستلزمات المنزل": "Home Essentials",
-        "مستلزمات الأطفال": "Children's Essentials",
-        "إكسسوارات الحمام": "Bathroom Accessories",
-        "عطور منزلية": "Home Fragrances",
-        "اكسسوارات منزلية": "Home Accessories",
-        "أدوات كهربائية": "Electrical Appliances",
-        "مستلزمات التنظيف": "Cleaning Supplies"
-      };
+      
       
       // البيانات المحلية للأقسام الثابتة
       const mensSections = [
@@ -1471,50 +1393,7 @@ window.onload = function() {
         }
       };
       
-      window.toggleLanguage = function () {
-        if (currentLanguage === "ar") {
-          currentLanguage = "en";
-          document.documentElement.lang = "en";
-          document.querySelector("#landing h1").innerText = "Mulberry Store";
-          document.querySelectorAll(".phrase")[0].innerText = '"Where exquisite taste meets modern shopping experience."';
-          document.querySelectorAll(".phrase")[1].innerText = '"Discover our complete and distinctive collection."';
-          document.getElementById("storeDescription").innerHTML =
-            "<p>Welcome to Mulberry Store – your premier destination for premium skincare, personal care, exclusive gift packages, and luxurious perfumes. Our mission is to deliver an unparalleled shopping experience that blends quality, comfort, and innovation.</p><p>Our online system makes shopping effortless: browse our diverse categories, add your favorites to the cart, and complete secure and fast transactions. We are committed to rapid delivery and exceptional customer service.</p><p>At Mulberry Store, we build lasting relationships through excellence and innovation. Learn more about our story and dedicated team below.</p>";
-          document.getElementById("shopNow").innerText = "Show Products";
-          document.querySelectorAll("#tabs .tab")[0].innerText = "General";
-          document.querySelectorAll("#tabs .tab")[1].innerText = "Men";
-          document.querySelectorAll("#tabs .tab")[2].innerText = "Women";
-          document.querySelectorAll("#tabs .tab")[3].innerText = "Other";
-          document.querySelector("#extendedInfo p").innerText = "About Mulberry Store & Team";
-          document.getElementById("joinTeamBtn").innerText = "Join the Mulberry Team";
-          document.getElementById("orderProductsBtn").innerText = "Request Consultation";
-        } else {
-          currentLanguage = "ar";
-          document.documentElement.lang = "ar";
-          document.querySelector("#landing h1").innerText = "Mulberry Store";
-          document.querySelectorAll(".phrase")[0].innerText = '"حيث يلتقي الذوق الرفيع مع تجربة التسوق العصرية."';
-          document.querySelectorAll(".phrase")[1].innerText = '"اكتشف تشكيلتنا الكاملة والمميزة."';
-          document.getElementById("storeDescription").innerHTML =
-            "<p>مرحبًا بكم في Mulberry Store – المتجر الرائد الذي يقدم أفضل منتجات العناية بالبشرة، العناية الشخصية، باقات الهدايا والعطور الفاخرة. مهمتنا هي تقديم تجربة تسوق لا مثيل لها تجمع بين الجودة والراحة والابتكار في كل تفصيل.</p><p>يعمل نظامنا الإلكتروني على تسهيل عملية الشراء: تصفح الأقسام المتنوعة، أضف منتجاتك المفضلة إلى سلة التسوق، وأكمل عملية الدفع عبر بوابات آمنة وسريعة. نحن ملتزمون بتقديم خدمة توصيل سريعة ودعم عملاء احترافي لضمان رضاكم التام.</p><p>يهدف Mulberry Store إلى بناء علاقات دائمة مع عملائه من خلال توفير بيئة تسوق متميزة تجمع بين الأناقة والتكنولوجيا. تعرف على قصتنا وفريق العمل المبدع الذي يقف خلف كل منتج ونصيحة نقدمها لك.</p>";
-          document.getElementById("shopNow").innerText = "عرض المنتجات";
-          document.querySelectorAll("#tabs .tab")[0].innerText = "عامة";
-          document.querySelectorAll("#tabs .tab")[1].innerText = "للرجال";
-          document.querySelectorAll("#tabs .tab")[2].innerText = "للنساء";
-          document.querySelectorAll("#tabs .tab")[3].innerText = "اخرى";
-          document.querySelector("#extendedInfo p").innerText = "حول Mulberry Store وفريق العمل";
-          document.getElementById("joinTeamBtn").innerText = "انضم إلى Mulberry Team";
-          document.getElementById("orderProductsBtn").innerText = "اطلب استشارة";
-        }
-        document.querySelector(".language-toggle").innerText = currentLanguage === "en" ? "AR" : "EN";
-        document.getElementById("smartSearch").value = "";
-        document.getElementById("searchResults").innerHTML = "";
-        if (document.getElementById("sectionsSection").style.display === "block") {
-          createSectionButtons("generalSections", generalSectionsArray);
-          createSectionButtons("menSections", mensSections);
-          createSectionButtons("womenSections", womensSections);
-          createSectionButtons("otherSections", othersSections);
-        }
-      };
+      
 
       // دوال لعجلة الحظ (Lucky Wheel Modal)
       window.openLuckyWheelModal = function() {
