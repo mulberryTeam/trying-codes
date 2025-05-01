@@ -848,13 +848,242 @@ font-size: 1rem;
 
 
 
+window.onload = function() {
+  
 
 document.getElementById("popularPerfumesBtn").addEventListener("click", function(e) {
   e.preventDefault();
-  // هنا ضع الكود اللازم لعرض أقسام "أشهر العطور"
-  shopNow.click(); // مثلاً يعيد استخدام عرض الأقسام الأساسية
-  // أو أي فلترة خاصة بالـ category
+  // إخفاء الـ Landing Section وإظهار الـ Sections Section
+  document.getElementById("landingSection").style.display = "none";
+  document.getElementById("sectionsSection").style.display = "block";
+
+  // تنظيف شريط التبويبات ومحتوى الأقسام
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  const sectionContent = document.getElementById("sectionContent");
+  sectionContent.innerHTML = "";
+
+  // جلب الأقسام من Firebase ومفلترة على "عطور"
+  firebase.database().ref('categories').once('value', function(snapshot) {
+    const categoriesData = snapshot.val() || {};
+    const filteredNames = [];
+    for (let key in categoriesData) {
+      const name = categoriesData[key].name;
+      if (name.includes("عطور")) {
+        filteredNames.push(name);
+      }
+    }
+
+    // إنشاء زر تبويب وقسم لكل فئة مفلترة
+    filteredNames.forEach((name, idx) => {
+      const dataTarget = 'perfumes_' + idx;
+      // زر التبويب
+      const btn = document.createElement('button');
+      btn.className = 'tab';
+      btn.setAttribute('data-target', dataTarget);
+      btn.innerText = name;
+      tabs.appendChild(btn);
+      // مجموعة القسم
+      const group = document.createElement('div');
+      group.id = dataTarget;
+      group.className = 'section-group';
+      group.innerHTML = '<div class="section-buttons"></div>';
+      sectionContent.appendChild(group);
+
+      // حدث الضغط على التبويب
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('#tabs .tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('#sectionContent .section-group').forEach(g => g.classList.remove('active'));
+        group.classList.add('active');
+      });
+    });
+
+    // تفعيل أول تبويب تلقائياً إذا وُجدت فئات
+    if (filteredNames.length > 0) {
+      tabs.querySelector('.tab').classList.add('active');
+      sectionContent.querySelector('.section-group').classList.add('active');
+    }
+
+    // عرض المنتجات المناسبة داخل كل قسم
+    (window.allProducts || [])
+      .filter(p => p.category && filteredNames.includes(p.category))
+      .forEach(prod => {
+        const idx = filteredNames.indexOf(prod.category);
+        const container = document.querySelector(`#perfumes_${idx} .section-buttons`);
+        if (container) container.appendChild(createProductCard(prod));
+      });
+
+    // إعادة تهيئة سلوك التبويبات
+    setupTabs();
+  });
 });
+
+
+  // ----------------------------
+  // عرض “أشهر العطور” مشابه لمنتجات العناية
+  const popularBtn = document.getElementById("popularPerfumesBtn");
+  popularBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    console.log("popularPerfumesBtn clicked"); // لتتأكد إنه يسمع الضغط
+
+    // إخفاء landing وإظهار sections
+    document.getElementById("landingSection").style.display = "none";
+    document.getElementById("sectionsSection").style.display = "block";
+
+    // إظهار شريط التبويبات (لو كان مخفي)
+    document.getElementById("tabs-wrapper").style.display = "block";
+
+    // تنظيف التبويبات والمحتوى
+    const tabs = document.getElementById("tabs");
+    const sectionContent = document.getElementById("sectionContent");
+    tabs.innerHTML = "";
+    sectionContent.innerHTML = "";
+
+    // جلب الأقسام من Firebase وفّلترتها
+    firebase.database().ref('categories').once('value', snapshot => {
+      const data = snapshot.val() || {};
+      const names = Object.values(data)
+        .map(c => c.name)
+        .filter(name => name.includes("عطور"));
+
+      // أنشئ تبويب وقسم لكل اسم
+      names.forEach((name, idx) => {
+        const target = `perfumes_${idx}`;
+
+        // زر التبويب
+        const btn = document.createElement('button');
+        btn.className = 'tab';
+        btn.setAttribute('data-target', target);
+        btn.innerText = name;
+        tabs.appendChild(btn);
+
+        // قسم المحتوى
+        const grp = document.createElement('div');
+        grp.id = target;
+        grp.className = 'section-group';
+        grp.innerHTML = '<div class="section-buttons"></div>';
+        sectionContent.appendChild(grp);
+
+        // حدث النقر
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#tabs .tab').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          document.querySelectorAll('#sectionContent .section-group').forEach(g => g.classList.remove('active'));
+          grp.classList.add('active');
+        });
+      });
+
+      // فعل أول تبويب تلقائياً
+      if (names.length) {
+        tabs.querySelector('.tab').classList.add('active');
+        sectionContent.querySelector('.section-group').classList.add('active');
+      }
+
+      // عرض المنتجات المفلترة
+      (window.allProducts || [])
+        .filter(p => p.category && names.includes(p.category))
+        .forEach(prod => {
+          const idx = names.indexOf(prod.category);
+          const container = document.querySelector(`#perfumes_${idx} .section-buttons`);
+          if (container) container.appendChild(createProductCard(prod));
+        });
+
+      // إعادة تشغيل setupTabs لضمان عمل التمرير والنشاط
+      setupTabs();
+    });
+  });
+  // ----------------------------
+}; 
+
+
+
+
+
+
+
+// ----------------------------
+// Listener جديد لزر "أشهر العطور" يعتمد على DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+  const popularBtn = document.getElementById('popularPerfumesBtn');
+  if (!popularBtn) {
+    console.error('popularPerfumesBtn غير موجود في DOM');
+    return;
+  }
+  popularBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    console.log('تم الضغط على أشهر العطور'); // تأكد من ظهور هذه الرسالة في console
+
+    // 1) إخفاء الهبوط وإظهار قسم الأقسام
+    document.getElementById('landingSection').style.display = 'none';
+    document.getElementById('sectionsSection').style.display = 'block';
+
+    // 2) إظهار شريط التبويبات لو كان مخفيًّا
+    document.getElementById('tabs-wrapper').style.display = 'block';
+
+    // 3) تنظيف التبويبات ومحتوى الأقسام القديم
+    const tabs = document.getElementById('tabs');
+    const sectionContent = document.getElementById('sectionContent');
+    tabs.innerHTML = '';
+    sectionContent.innerHTML = '';
+
+    // 4) جلب الفئات من Firebase وفلترة أسمائها على "عطور"
+    firebase.database().ref('categories').once('value').then(snapshot => {
+      const data = snapshot.val() || {};
+      // مصفوفة أسماء الفئات التي تحوي "عطور"
+      const filteredNames = Object.values(data)
+        .map(cat => cat.name)
+        .filter(name => name.includes('عطور'));
+
+      // 5) بناء التبويبات ومجموعات المحتوى
+      filteredNames.forEach((name, idx) => {
+        const target = `perfumes_${idx}`;
+
+        // زر التبويب
+        const btn = document.createElement('button');
+        btn.className = 'tab';
+        btn.setAttribute('data-target', target);
+        btn.innerText = name;
+        tabs.appendChild(btn);
+
+        // مجموعة المحتوى
+        const grp = document.createElement('div');
+        grp.id = target;
+        grp.className = 'section-group';
+        grp.innerHTML = '<div class="section-buttons"></div>';
+        sectionContent.appendChild(grp);
+
+        // حدث النقر على التبويب
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#tabs .tab').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          document.querySelectorAll('#sectionContent .section-group').forEach(g => g.classList.remove('active'));
+          grp.classList.add('active');
+        });
+      });
+
+      // 6) تفعيل أول تبويب تلقائيًا إن وُجد
+      if (filteredNames.length) {
+        tabs.querySelector('.tab').classList.add('active');
+        sectionContent.querySelector('.section-group').classList.add('active');
+      }
+
+      // 7) عرض المنتجات في القسم المناسب بناءً على الحقل category
+      (window.allProducts || [])
+        .filter(prod => prod.category && filteredNames.includes(prod.category))
+        .forEach(prod => {
+          const idx = filteredNames.indexOf(prod.category);
+          const container = document.querySelector(`#perfumes_${idx} .section-buttons`);
+          if (container) container.appendChild(createProductCard(prod));
+        });
+
+      // 8) إعادة تهيئة التمرير والنشاط للتبويبات
+      setupTabs();
+    }).catch(err => console.error('خطأ عند جلب categories:', err));
+  });
+});
+// ----------------------------
+
 
 
 
@@ -1386,7 +1615,7 @@ const displayText = section.name;   // نستخدم اسم القسم مباشر
       }
       
       // استدعاء تحميل الأقسام والمنتجات من Firebase
-      loadFirebaseCategories();
+      /*loadFirebaseCategories();*/
       loadProducts();
 
 
