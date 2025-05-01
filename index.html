@@ -717,6 +717,12 @@ margin-top: 0;
       align-items: center;
       gap: 5px;
     }
+
+
+
+
+
+
     
     /* تكبير أيقونة زر عجلة الحظ على الجوال بنسبة *4 */
     @media (max-width: 767px) {
@@ -769,23 +775,30 @@ font-size: 1rem;
 
 
 
-/* عرض الأزرار أفقيًا على الشاشات الصغيرة */
 @media (max-width: 768px) {
   .product-buttons-container {
     display: flex;
-    justify-content: space-between; /* يوزّع الأزرار بشكل متساوٍ */
-    gap: 8px;                       /* مسافة صغيرة بين الأزرار */
-    padding: 0 8px;                 /* حشوة خفيفة من الجانبين */
-    overflow: visible;              /* نتأكد أنه لا يوجد قص */
+    width: 100%;                   /* عرض الحاوية كامل الشاشة */
+    padding: 0;                    /* إزالة أي حشوة جانبية */
+    justify-content: space-between;/* يوزّع الأزرار من طرف لطرف */
+    gap: 4px;                      /* مسافة صغيرة ثابتة بين الأزرر */
+    box-sizing: border-box;        /* لتضمين الهامش والحشوة ضمن الـ 100% */
   }
 
   .product-button {
-    flex: 1 1 0;      /* كل زر يمتد ليأخذ جزء متساوٍ */
-    min-width: 0;     /* يسمح بالانكماش لتناسب المساحة */
-    aspect-ratio: 1;  /* يحافظ على الزر مربّع */
-    margin: 0;        /* نلغي أي هوامش سلبية أو إضافية */
+    flex: 1.2;                     /* كل زر يكبر بنسبة 1.2 فليكسيبل */
+    margin: 0;                     /* لا هامش إضافي */
+    aspect-ratio: 0.50;               /* يحافظ على المربع */
+    max-width: none;               /* يلغي أية حدود عرض سابقة */
+  }
+.product-button span {
+    font-size: 12px !important; /* يمكنك التعديل مثلاً 11px أو 10px حسب ما يناسبك */
   }
 }
+
+
+
+
 
 
 
@@ -831,6 +844,24 @@ font-size: 1rem;
         console.log(data);
       });
     }
+
+
+
+
+
+document.getElementById("popularPerfumesBtn").addEventListener("click", function(e) {
+  e.preventDefault();
+  // هنا ضع الكود اللازم لعرض أقسام "أشهر العطور"
+  shopNow.click(); // مثلاً يعيد استخدام عرض الأقسام الأساسية
+  // أو أي فلترة خاصة بالـ category
+});
+
+
+
+
+
+
+
   </script>
 </head>
 <body>
@@ -898,10 +929,11 @@ font-size: 1rem;
         
   <div class="product-buttons-container">
   
-  <a href="#project-supplies" class="product-button">
-    <div class="img-wrapper" style="background-image: url('https://mhhar.com/uploads/vendor/products/thumb/16162.jpg');"></div>
-    <span class="btn-label">لوازم المشاريع</span>
-  </a>
+<!-- زر لوازم المشاريع كبروكود -->
+<a id="projectSuppliesBtn" href="javascript:void(0)" class="product-button">
+  <div class="img-wrapper" style="background-image: url('https://mhhar.com/uploads/vendor/products/thumb/16162.jpg');"></div>
+  <span class="btn-label">لوازم المشاريع</span>
+</a>
 <a class="product-button" id="shopNow" href="javascript:void(0)">
     <div class="img-wrapper" style="background-image: url('https://cdn.salla.sa/dogdz/48u2clVoA05TEJ4Lg7KI2L36Ctp9hKk7UDn6y6o3.jpg');"></div>
     <span class="btn-label">منتجات العناية</span>
@@ -910,6 +942,17 @@ font-size: 1rem;
     <div class="img-wrapper" style="background-image: url('https://i.pinimg.com/originals/d3/8c/56/d38c567bbcd46b56d3b0c4a75c29ac24.jpg');"></div>
     <span class="btn-label">الإعلان وجلسات التصوير</span>
   </a>
+
+
+<!-- زر أشهر العطور -->
+<a id="popularPerfumesBtn" href="javascript:void(0)" class="product-button">
+  <div class="img-wrapper" style="background-image: url('https://cdn-1.hosting.anfa.media/upload/q_50/https://waheteter.com/wp-content/uploads/2023/08/Jean-Paul-Gaultier-Le-Male-Elixir2.jpg');"></div>
+  <span class="btn-label">أشهر العطور</span>
+</a>
+
+
+
+
 </div>
  
 
@@ -1345,6 +1388,20 @@ const displayText = section.name;   // نستخدم اسم القسم مباشر
       // استدعاء تحميل الأقسام والمنتجات من Firebase
       loadFirebaseCategories();
       loadProducts();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       
       // تعديل دالة البحث لتشمل الأقسام والمنتجات من قاعدة البيانات
       document.getElementById("smartSearch").addEventListener("input", function () {
@@ -1437,6 +1494,63 @@ const displayText = section.name;   // نستخدم اسم القسم مباشر
         document.getElementById("productModal").style.display = "none";
       };
     };
+
+
+
+
+
+
+// عند النقر على زر لوازم المشاريع: نستخدم نفس واجهة sectionsSection
+document.getElementById("projectSuppliesBtn").addEventListener("click", function(event) {
+  event.preventDefault();
+
+  // 1) إخفاء landing
+  document.getElementById("landingSection").style.display = "none";
+  // 2) إظهار sectionsSection
+  document.getElementById("sectionsSection").style.display = "block";
+
+  // 3) إخفاء شريط التبويبات (tabs) لأننا نعرض فئة واحدة فقط
+  document.getElementById("tabs-wrapper").style.display = "none";
+
+  // 4) تفريغ حاويات المنتجات الثابتة (القسم العام)
+  const generalContainer = document.getElementById("generalSections");
+  generalContainer.innerHTML = "";
+
+  // 5) فلترة منتجات "لوازم المشاريع" من allProducts
+  const filtered = (window.allProducts || []).filter(p =>
+    p.category && p.category.includes("لوازم المشروع")
+  );
+
+  // 6) إذا لا توجد منتجات
+  if (filtered.length === 0) {
+    generalContainer.innerHTML = "<p>لا توجد منتجات في هذه الفئة.</p>";
+  } else {
+    // 7) عرض كل منتج باستخدام createProductCard (نفس تصميم بطاقات العناية)
+    filtered.forEach(prod => {
+      const card = createProductCard(prod);
+      generalContainer.appendChild(card);
+    });
+  }
+});
+
+
+
+
+
+
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
