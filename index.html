@@ -1264,79 +1264,143 @@ let currentView = 'landing';  // القيم المحتملة: 'landing', 'shop',
       
       // البيانات المحلية للأقسام الثابتة
       const mensSections = [
-        { name: "عطور للرجال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=59" },
-        { name: "عطور", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=5" },
-        { name: "مزيلات عرق للرجال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=74" },
-        { name: "منتجات العناية للرجال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=115" },
-        { name: "منتجات الحلاقة للرجال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=69" },
-        { name: "البشرة والوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=14" },
-        { name: "مرطبات وكريمات للوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=50" },
-        { name: "معالجات وسيروم للوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=54" },
-        { name: "العناية بالفم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=114" },
-        { name: "العناية بالأسنان", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=129" },
-        { name: "الوقاية من الشمس والتسمير", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=17" },
-        { name: "العناية بالشعر", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=4" },
-        { name: "شامبو", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=61" },
-        { name: "سيروم وزيوت للشعر", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=63" },
-        { name: "غسولات", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=158" },
-        { name: "تصفيف الشعر", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=64" }
+        { name: "عطور للرجال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=59",imageUrl: "https://heavenscents.shop/wp-content/uploads/2023/10/%D8%B9%D8%B7%D8%B1-%D9%85%D9%8A-%D8%AC%D9%88%D9%8A-2.jpg" },
+
+        { name: "عطور", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=5",imageUrl: "https://ounass-ae.atgcdn.ae/contentful/b3xlytuyfm3e/1rC4W4kyrbdmcuANUUDhbl/ea7f9500638107d39d7333a47f9cb489/Fragrance_DSK_PLP_Banner.jpg?q=70" },
+
+        { name: "مزيلات عرق للرجال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=74",imageUrl: "https://s7ore.com/uploads/2022_08_1660629685.webp" },
+
+        { name: "منتجات العناية للرجال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=115",imageUrl: "https://m.media-amazon.com/images/I/61Qbbf0S+DL._AC_UF1000,1000_QL80_.jpg" },
+
+        { name: "منتجات الحلاقة للرجال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=69",imageUrl: "https://m.media-amazon.com/images/I/71GqayG0GOL._AC_UF1000,1000_QL80_.jpg" },
+
+        { name: "البشرة والوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=14",imageUrl: "https://www.cosmesurge.com/wp-content/uploads/2021/02/facial.jpeg" },
+
+        { name: "مرطبات وكريمات للوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=50",imageUrl: "https://m.media-amazon.com/images/I/51Z-pqzJmjL._AC_UF1000,1000_QL80_.jpg" },
+
+        { name: "معالجات وسيروم للوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=54",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQCaC2yB9m_is9m-qQXgZlEk-bSuSGBQSEGg&s" },
+
+        { name: "العناية بالفم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=114",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTix9LdHWcrxKPATbX6FZ2sANOzvmpwhzxL6A&s" },
+
+        { name: "العناية بالأسنان", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=129",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJpmtTVyb2qQgZUcMfL3HOtds6GLZHGbietA&s" },
+
+        { name: "الوقاية من الشمس والتسمير", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=17",imageUrl: "https://m.media-amazon.com/images/I/81HBavrZhxL._AC_UF1000,1000_QL80_.jpg" },
+
+        { name: "العناية بالشعر", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=4",imageUrl: "https://egf8xpxjy4g.exactdn.com/wp-content/uploads/2022/09/%D8%A7%D9%84%D8%B9%D9%86%D8%A7%D9%8A%D8%A9-%D8%A8%D8%A7%D9%84%D8%B4%D8%B9%D8%B1-%D9%84%D9%84%D8%B1%D8%AC%D8%A7%D9%84.jpeg?lossy=1&ssl=1" },
+
+        { name: "شامبو", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=61",imageUrl: "https://www.justformen.com/sites/g/files/sgirzt191/files/styles/webp/public/2024-02/3_CGXshampoo_product_application_mobile.jpg.webp?itok=5kfmGlJv" },
+
+        { name: "سيروم وزيوت للشعر", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=63",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLcghnevivFVlbRHeVBJMlAiyMLBksQk5B_w&s" },
+
+        { name: "غسولات", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=158",imageUrl: "https://cdn.shopify.com/s/files/1/0306/5004/0458/files/NOVACLEAR_WHITENING_FACIAL_FOAM_PICTURE_b43e5475-28cb-4174-bb47-a4419888ad75_480x480.jpg?v=1684576427" },
+
+        { name: "تصفيف الشعر", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=64",imageUrl: "https://www.tyoemcosmetic.com/wp-content/uploads/hair-styling-products-manufacturer-1-1-768x576.jpg" }
       ];
       
       const womensSections = [
-        { name: "العناية بالجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=3" },
-        { name: "مرطب للجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=56" },
-        { name: "البشرة والوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=14" },
-        { name: "مرطبات وكريمات للوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=50" },
-        { name: "معطر للجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=150" },
-        { name: "مقشرات وملمعات الجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=68" },
-        { name: "مستلزمات العناية الشخصية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=113" },
-        { name: "معالجات وسيروم للوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=54" },
-        { name: "العناية باليدين", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=55" },
-        { name: "صابون استحمام", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=66" },
-        { name: "النظافة الشخصية للنساء", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=72" },
-        { name: "العناية بالقدم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=67" },
-        { name: "عطور", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=5" },
-        { name: "عطور للنساء", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=58" },
-        { name: "تفتيح", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=48" },
-        { name: "منتجات تفتيح الجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=135" },
-        { name: "مزيلات عرق للنساء", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=73" },
-        { name: "العناية بالحامل والمرضعة", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=16" },
-        { name: "إزالة الشعر", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=80" },
-        { name: "العناية بالفم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=114" },
-        { name: "العناية بالأسنان", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=129" },
-        { name: "الوقاية من الشمس والتسمير", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=17" },
-        { name: "الوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=25" },
-        { name: "أقنعة الوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=40" },
-        { name: "منظفات البشرة", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=65" },
-        { name: "تقشير البشرة", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=42" },
-        { name: "العناية بالشفاه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=41" },
-        { name: "الشفاه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=51" },
-        { name: "العناية بالعين", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=71" },
-        { name: "تونرات", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=70" },
-        { name: "الرموش", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=34" },
-        { name: "المكياج", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=12" },
-        { name: "فيتامينات", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=116" }
+        { name: "العناية بالجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=3",imageUrl: "https://img.youm7.com/ArticleImgs/2023/4/18/360707-%D8%A7%D9%84%D8%B9%D9%86%D8%A7%D9%8A%D8%A9-%D8%A8%D8%A7%D9%84%D8%AC%D8%B3%D9%85.jpg" },
+
+        { name: "مرطب للجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=56",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNExhXGW_1GNnIZvJ-PuHWspsxnAVlcETqZw&s" },
+
+        { name: "البشرة والوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=14",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqe_iyRbjMRZIWasDheCVoibyZGIkt4TmDRg&s" },
+
+        { name: "مرطبات وكريمات للوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=50",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeaIMXwKxJJT09KJKtuTuJwgliIn1vllbpag&s" },
+
+        { name: "معطر للجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=150",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHdXbb8X76rGVl14aELIlkyLiOyvD9t2TfGg&s" },
+
+        { name: "مقشرات وملمعات الجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=68",imageUrl: "https://www.tadawi.me/wp-content/uploads/2023/02/Chemical-Peel.jpg" },
+
+        { name: "مستلزمات العناية الشخصية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=113",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNi3OihmJLd2FGdudy2WEhjTbAxtP93fypBQ&s" },
+
+        { name: "معالجات وسيروم للوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=54",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCqa-P_SITEXV8_qOZqm3bpUWJO9JbbyqO5w&s" },
+
+        { name: "العناية باليدين", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=55",imageUrl: "https://www.vetogate.com/Upload/libfiles/478/6/7.jpg" },
+
+        { name: "صابون استحمام", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=66",imageUrl: "https://joykuw.com/wp-content/uploads/2024/10/%D8%B5%D8%A7%D8%A8%D9%88%D9%86-1.jpg" },
+
+        { name: "النظافة الشخصية للنساء", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=72",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQij07Op8BRoFdyS73WMfI3gzH1TIvwUmkHgQ&s" },
+
+        { name: "العناية بالقدم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=67",imageUrl: "https://img.youm7.com/large/20190201014407447.jpg" },
+
+        { name: "عطور", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=5",imageUrl: "https://res.cloudinary.com/dkbnpozos/image/upload/v1727205158/faces/Site/2024/niche-week/landing-page/hero-banner/Mobile.jpg" },
+
+        { name: "عطور للنساء", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=58",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLqXpgo3mPcwa8XUFBR11XFHOFMberd4rdUA&s" },
+
+        { name: "تفتيح", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=48",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfYMxhZjH0xALNxCGazVCtPRQQjmDahynhqA&s" },
+
+        { name: "منتجات تفتيح الجسم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=135",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6rY9KlbWArIMzus1acWTj87TSEQsC5PWRNA&s" },
+
+        { name: "مزيلات عرق للنساء", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=73",imageUrl: "https://static.aljamila.com/styles/1100x732_scale/public/2020/06/24/3518581-246800735.png" },
+
+        { name: "العناية بالحامل والمرضعة", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=16",imageUrl: "https://www.uaewomen.net/wp-content/uploads/2021/01/%D8%A7%D9%84%D8%AD%D9%85%D9%84-%D8%A3%D8%AB%D9%86%D8%A7%D8%A1-%D8%A7%D9%84%D8%B9%D9%85%D9%84.jpg" },
+
+        { name: "إزالة الشعر", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=80",imageUrl: "https://images.ctfassets.net/orjawye31wvi/3Qehd6fVxWQh5D1sMauz9n/6ffd3a9d81937b25798560d3d8d98368/Venus-preset4.jpg?fm=webp&q=85&w=1600" },
+
+        { name: "العناية بالفم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=114",imageUrl: "https://www.kin.es/wp-content/uploads/2025/03/Blog_1-400x250.jpg" },
+
+        { name: "العناية بالأسنان", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=129",imageUrl: "https://www.turkeydentalclinic.com/wp-content/uploads/2023/06/agiz-hijyeni.png" },
+
+        { name: "الوقاية من الشمس والتسمير", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=17",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlS5NUIz85YQuw25cmV7z00naBdXbAFnLoEw&s" },
+
+        { name: "الوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=25",imageUrl: "https://cdn.salla.sa/mQQdQj/b34c06be-8ffa-48eb-9d5f-982328a53691-1000x562.5-xMjQzmlkEvSmkHwV755J6SysOQYoYcBP0bWqO1Si.jpg" },
+
+        { name: "أقنعة الوجه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=40",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSaMQGLLNJH2b1_F5uPw6VyF7Fjpx8-LktYg&s" },
+
+        { name: "منظفات البشرة", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=65",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmr2CztvOesGmUUpLGsVhI2y2yXJvM45L8g&s" },
+
+        { name: "تقشير البشرة", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=42",imageUrl: "https://alawla.tv/uploads/posts/2023-11/66633.webp" },
+
+        { name: "العناية بالشفاه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=41",imageUrl: "https://izilbeauty.com/on/demandware.static/-/Sites-izil-Library/default/dw017f6183/izil-images/blogs/Perfect%20Pout/lips_blogposts-01.webp" },
+
+        { name: "الشفاه", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=51",imageUrl: "https://kw.charlottetilbury.com/sites/g/files/bndsjb2576/files/2023-08/lipstick-01.jpeg" },
+
+        { name: "العناية بالعين", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=71",imageUrl: "https://beautikasecret.com/cdn/shop/collections/image_2023-11-15_145808490.png?v=1700053341" },
+
+        { name: "تونرات", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=70",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSdbmlooLh4g-YfqvrbkjZF-67UwOhsyN34A&s" },
+
+        { name: "الرموش", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=34",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmjFq-impwz1qHoTI3IPMSfMN6m1qARzs-j19lfrwNkLkUWpGBLo4sm26lre4Xmu9kemE&usqp=CAU" },
+
+        { name: "المكياج", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=12",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOYKp0cUzSw7N_1tP5Rt8yldZstKMF7_SUDg&s" },
+
+        { name: "فيتامينات", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=116",imageUrl: "https://articles.cura.healthcare/wp-content/uploads/2023/01/%D9%81%D9%88%D8%A7%D8%A6%D8%AF_%D9%81%D9%8A%D8%AA%D8%A7%D9%85%D9%8A%D9%86_%D8%AF.png" }
       ];
       
       const othersSections = [
-        { name: "صابون اليدين", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=81" },
-        { name: "العناية بالفم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=114" },
-        { name: "العناية بالأسنان", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=129" },
-        { name: "المنزل", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=75" },
-        { name: "مستلزمات المطبخ", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=76" },
-        { name: "مستلزمات المنزل", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=122" },
-        { name: "مستلزمات الأطفال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=53" },
-        { name: "إكسسوارات الحمام", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=147" },
-        { name: "عطور منزلية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=127" },
-        { name: "اكسسوارات منزلية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=123" },
-        { name: "أدوات كهربائية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=148" },
-        { name: "مستلزمات التنظيف", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=78" },
-        { name: "فيتامينات", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=116" },
-        { name: "مناديل التنظيف", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=49" },
-        { name: "البكجات والعروض", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=79" },
-        { name: "عناية بالطفل", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=154" },
-        { name: "كتب", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=166" },
-        { name: "🌙تُحف رمضانية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=128" }
+        { name: "صابون اليدين", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=81",imageUrl: "https://media.gemini.media/img/Medium/2020/12/25/2020_12_25_1_19_43_721.jpg" },
+
+        { name: "العناية بالفم", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=114",imageUrl: "https://www.hospitadent.com/wp-content/uploads/2022/09/blog_icerik_4998189524.jpg" },
+
+        { name: "العناية بالأسنان", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=129",imageUrl: "https://assets.nn.najah.edu/CACHE/images/uploads/weblog/2017/05/09/c45f7b4908f09cc7e3ecbe8901cf154539675516/6ce18dd361c2e69cf31fb71e21724d17.jpg" },
+
+        { name: "المنزل", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=75",imageUrl: "https://www.ikea.com/global/assets/range-categorisation/images/smart-air-purifiers-56472.jpeg?imwidth=500" },
+
+        { name: "مستلزمات المطبخ", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=76",imageUrl: "https://mybayutcdn.bayut.com/mybayut/wp-content/uploads/Equipping-Kitchen-Body1-ar18092024.png" },
+
+        { name: "مستلزمات المنزل", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=122",imageUrl: "https://media.zid.store/cdn-cgi/image/w=235,q=100,f=auto/https://media.zid.store/53026c6a-a974-43d2-a601-92e21c10eee0/25dde308-384b-440b-9347-0df5bdae8752-260x260.jpg" },
+
+        { name: "مستلزمات الأطفال", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=53",imageUrl: "https://arabiaparenting.firstcry.com/wp-content/uploads/2019/09/Newborn-Baby-Shopping-418461847-.jpg" },
+
+        { name: "إكسسوارات الحمام", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=147",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdlXWDu4VKyY0jXnRrbrWxE55XnnZHFXVAjA&s" },
+
+        { name: "عطور منزلية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=127",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcxHtZLSD9G4FNaMgYlob5LZAVwIwM2ggXNQ&s" },
+
+        { name: "اكسسوارات منزلية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=123",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtmIoDVmpRP7hO3tS1pk8wfoAjeEh3NGtlXA&s" },
+
+        { name: "أدوات كهربائية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=148",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNaOuaD4MlIy-sMkrY30EGGmrFhak7aCFXJw&s" },
+
+        { name: "مستلزمات التنظيف", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=78",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfSZcskprAssctkAPu249676Dub3t2j-kIDA&s" },
+
+        { name: "فيتامينات", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=116",imageUrl: "https://articles.cura.healthcare/wp-content/uploads/2023/01/%D9%81%D9%88%D8%A7%D8%A6%D8%AF_%D9%81%D9%8A%D8%AA%D8%A7%D9%85%D9%8A%D9%86_%D8%AF.png" },
+
+        { name: "مناديل التنظيف", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=49",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsbrH3wwkXuCK7-RPsPDGYDRpwnyCet5XhIQ&s" },
+
+        { name: "البكجات والعروض", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=79",imageUrl: "https://img.freepik.com/premium-vector/offers-arabic-text-logo_568120-2243.jpg" },
+
+        { name: "عناية بالطفل", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=154",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROSsaUoH5hCVXs36RvLeON5i5OHFauceTIQw&s" },
+
+        { name: "كتب", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=166",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJt_m5eiTX6kk3JEtVeOfCQdWxh6qYBlxZwg&s" },
+
+        { name: "🌙تُحف رمضانية", link: "https://d3cfvw9kavtabe.cloudfront.net/shops/nada/explorer?categoryId=128",imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdeXYQAmXDpfDBut3yhR-6VFX2e0WdYd_cOA&s" }
       ];
       
       const generalSectionsArray = [...mensSections, ...womensSections, ...othersSections];
@@ -1370,25 +1434,37 @@ let currentView = 'landing';  // القيم المحتملة: 'landing', 'shop',
         return canvas.toDataURL();
       }
       
-      function createLayeredButton(section) {
-        const btn = document.createElement("div");
-        btn.className = "section-button";
-const displayText = section.name;   // نستخدم اسم القسم مباشرة
-        const imageUrl = generateSectionImage(displayText);
-        const bgImage = document.createElement("div");
-        bgImage.className = "bg-image";
-        bgImage.style.backgroundImage = "url('" + imageUrl + "')";
-        const overlay = document.createElement("div");
-        overlay.className = "overlay";
-        const text = document.createElement("div");
-        text.className = "text";
-        text.innerText = displayText;
-        btn.appendChild(bgImage);
-        btn.appendChild(overlay);
-        btn.appendChild(text);
-        btn.addEventListener("click", function () { openModal(section.link); });
-        return btn;
-      }
+    function createLayeredButton(section) {
+  const btn = document.createElement("div");
+  btn.className = "section-button";
+
+  // 1) نحصل على رابط الصورة من الخاصية imageUrl في كائن section
+  const bgImage = document.createElement("div");
+  bgImage.className = "bg-image";
+  bgImage.style.backgroundImage = `url('${section.imageUrl}')`;
+
+  // 2) طبقة التعتيم كما هي
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+
+  // 3) نص القسم كما هو
+  const text = document.createElement("div");
+  text.className = "text";
+  text.innerText = section.name;
+
+  // تجميع العناصر
+  btn.appendChild(bgImage);
+  btn.appendChild(overlay);
+  btn.appendChild(text);
+
+  // ربط الحدث بفتح المودال
+  btn.addEventListener("click", function () {
+    openModal(section.link);
+  });
+
+  return btn;
+}
+
       
       function createSectionButtons(containerId, sections) {
         const container = document.getElementById(containerId);
