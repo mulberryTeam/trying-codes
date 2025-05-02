@@ -775,6 +775,26 @@ font-size: 1rem;
 
 
 
+
+.advertisingView {
+  margin: 60px 0 0 0;            /* 60px فراغ عُلوي على سطح المكتب */
+  width: 100vw;
+  height: calc(100vh - 60px);    /* ارتفاع ناقص الفراغ العلوي */
+  overflow-y: auto;             /* سمّح بالتمرير العمودي */
+  background-size: contain;      /* اعرض الصورة بالكامل بدون قص */
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-attachment: scroll; /* ضروري ليتحرك مع التمرير */
+  position: relative;            /* حافظ على التدفق الطبيعي للوثيقة */
+  z-index: 1000;
+}
+
+
+
+
+
+
+
 @media (max-width: 768px) {
   .product-buttons-container {
     display: flex;
@@ -794,6 +814,10 @@ font-size: 1rem;
 .product-button span {
     font-size: 12px !important; /* يمكنك التعديل مثلاً 11px أو 10px حسب ما يناسبك */
   }
+  .advertisingView {
+    margin-top: 120px;                       /* 120px على الموبايل */
+    height: calc(100vh - 120px);             /* ارتفاع مخصوم منه الفراغ */
+  }
 }
 
 
@@ -801,6 +825,70 @@ font-size: 1rem;
 
 
 
+
+/* زر الرجوع الخاص بواجهة الإعلان */
+#sectionsSection.advertising-view-active .back-container {
+  position: fixed;      /* ثبّته بالنسبة للنافذة */
+  bottom: 20px;         /* 20px من الأسفل */
+  left: 20px;           /* 20px من اليسار */
+  z-index: 2001;        /* فوق باقي العناصر */
+  pointer-events: auto; /* تأكد أنه يتلقى الأحداث */
+}
+#sectionsSection.advertising-view-active .back-container button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+/* زر الرجوع داخل sectionsSection */
+#sectionsSection .back-container {
+  position: absolute;  /* ثبّته بالنسبة لحاوية sectionsSection */
+  top: 20px;           /* 20px من الأعلى */
+  left: 20px;          /* 20px من اليسار */
+  z-index: 1001;       /* فوق محتوى الإعلان */
+}
+#sectionsSection .back-container button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+/* جعل لون السهم في زر الرجوع أحمر */
+#sectionsSection .back-container svg path {
+  fill: red;
+}
+
+
+
+
+
+
+
+/* زر الرجوع داخل advertisingSection */
+#advertisingSection .back-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+}
+#advertisingSection .back-container button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+
+/* خلفية بيضاء لقسم الإعلان وجلسات التصوير */
+#advertisingSection {
+  background-color: #fff;
+  width: 100vw;
+  height: calc(100vh - var(--header-height, 60px)); /* إذا لديك متغير لارتفاع الهيدر؛ وإلا استخدم قيمة ثابتة */
+  overflow-y: auto;
+  position: relative;
+}
 
 
 
@@ -941,10 +1029,13 @@ font-size: 1rem;
     <div class="img-wrapper" style="background-image: url('https://cdn.salla.sa/dogdz/48u2clVoA05TEJ4Lg7KI2L36Ctp9hKk7UDn6y6o3.jpg');"></div>
     <span class="btn-label">.منتجات. .العناية.</span>
   </a>
-  <a href="#advertising" class="product-button">
-    <div class="img-wrapper" style="background-image: url('https://i.pinimg.com/originals/d3/8c/56/d38c567bbcd46b56d3b0c4a75c29ac24.jpg');"></div>
-    <span class="btn-label">الإعلان وجلسات التصوير</span>
-  </a>
+<a id="advertisingBtn" href="javascript:void(0)" class="product-button">
+  <div class="img-wrapper"
+       style="background-image: url('https://v-mediapro.com/wp-content/uploads/2024/03/%D8%A7%D9%84%D8%A7%D8%B9%D9%84%D8%A7%D9%86-1024x682.png');">
+  </div>
+  <span class="btn-label">الإعلان وجلسات التصوير</span>
+</a>
+
 
 
 <!-- زر أشهر العطور -->
@@ -1047,6 +1138,26 @@ font-size: 1rem;
         </div>
       </div>
     </section>
+
+
+
+<!-- قسم خاص بالإعلان وجلسات التصوير -->
+<section id="advertisingSection" class="gpd-section" style="display: none; position: relative; padding: 0; margin: 0;">
+  <div class="back-container">
+    <button id="closeAdvertisingBtn">
+      <svg viewBox="0 0 24 24" width="30" height="30">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="red"/>
+      </svg>
+    </button>
+  </div>
+  <img src="https://i.ibb.co/LzCxC3Mk/image.png" alt="إعلان وجلسة تصوير"
+       style="display:block; width:100%; height:auto;"/>
+</section>
+
+
+
+
+
   </main>
   
   <!-- Modal for Product Sections -->
@@ -1517,7 +1628,34 @@ document.getElementById("tabs-wrapper").style.display = "block";
   }
 };
 
-      
+   
+
+
+
+
+
+
+function closeAdvertisingView() {
+  const sec = document.getElementById("sectionsSection");
+
+  // 1) أخفّيه فقط، دون مسح المحتوى أو إعادة الأنماط:
+  sec.style.display = "none";
+
+  // 2) أظهر landingSection والعناصر الأخرى كما كانت:
+  document.getElementById("landingSection").style.display   = "block";
+  document.getElementById("tabs-wrapper").style.display    = "block";
+  document.getElementById("searchContainer").style.display = "block";
+
+  // 3) أعد currentView إلى القيمة الافتراضية:
+  currentView = 'landing';
+}
+window.closeAdvertisingView = closeAdvertisingView;
+
+
+
+
+
+   
       
 
       // دوال لعجلة الحظ (Lucky Wheel Modal)
@@ -1642,6 +1780,51 @@ document.getElementById("popularPerfumesSection").style.display = "block";
     });
   }
 });
+// ----------------------------
+
+
+
+
+
+
+
+// ----------------------------
+// واجهة “الإعلان وجلسات التصوير” باستخدام القسم المستقل
+document.getElementById("advertisingBtn").addEventListener("click", function(event) {
+  event.preventDefault();
+  currentView = 'advertising';
+
+  // إخفاء landing و tabs و search و sectionsSection
+  document.getElementById("landingSection").style.display   = "none";
+  document.getElementById("tabs-wrapper").style.display    = "none";
+  document.getElementById("searchContainer").style.display = "none";
+  document.getElementById("sectionsSection").style.display = "none";
+
+  // أظهر القسم الجديد advertisingSection
+  document.getElementById("advertisingSection").style.display = "block";
+});
+
+// **أضف هذا المستمع مباشرة بعد الكود أعلاه**
+// ربط زر الإغلاق الخاص بالإعلان
+document.getElementById("closeAdvertisingBtn").addEventListener("click", function() {
+  // أخفِ advertisingSection
+  document.getElementById("advertisingSection").style.display = "none";
+
+  // أعد إظهار landing و tabs و search
+  document.getElementById("landingSection").style.display   = "block";
+  document.getElementById("tabs-wrapper").style.display    = "block";
+  document.getElementById("searchContainer").style.display = "block";
+
+  // ارجع currentView إذا احتاج الأمر
+  currentView = 'landing';
+});
+
+
+
+
+
+
+
 // ----------------------------
 
 
