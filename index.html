@@ -1,156 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TikTok Video Scroller</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>عرض فيديوهات بتجربة تيك توك (REST API)</title>
   <style>
-    /* إعادة ضبط عامة */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #000;
-    }
-
+    /* Reset & Box Sizing */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
+      background: #000; font-family: Arial, sans-serif;
+      overflow: hidden; touch-action: pan-y;
     }
-
-    main {
-      height: 100vh;
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
+    #videoContainer {
+      height: 100vh; width: 100vw;
+      overflow-y: scroll; scroll-snap-type: y mandatory;
       -webkit-overflow-scrolling: touch;
-scroll-behavior: smooth;
-
     }
+    .video-slide {
+      position: relative; height: 100vh; width: 100vw;
+      scroll-snap-align: start; overflow: hidden; background: #000;
+ transition: transform 0.5s ease-in-out;
+    }
+ body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(229,9,20,0.1) 0%, rgba(0,0,0,1) 60%);
+    z-index: -1;
+    animation: pulse 10s infinite;
+  }
 
-    .video-frame {
-  width: 100vw;
-  height: 100vh;
-  scroll-snap-align: start;
-  position: relative;
-  background-color: #000;
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+    .video-player {
+      width: 100%; height: 100%; object-fit: cover;
+      background: #000; transform: translateZ(0);
+    }
+    .loader {
+      position: absolute; top: 50%; left: 50%;
+      width: 40px; height: 40px; margin: -20px 0 0 -20px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top: 4px solid #e50914; border-radius: 50%;
+      animation: spin 1s linear infinite; pointer-events: none;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .controls {
+      position: absolute; bottom: 20px; width: 100%;
+      display: flex; justify-content: center; pointer-events: none;
+    }
+   /* 🎯 بهذا الكود الجديد */
+.download-btn {
+  pointer-events: auto;
+  background: rgba(0,0,0,0.5);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  padding: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 1s ease-in-out;
-  transition: transform 0.3s ease-in-out;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
-
-  iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(255,255,255,0.05);
-  transition: transform 0.3s ease;
+.download-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: #fff;
 }
-
-
-    /* تحسين شكل التمرير لمستخدمي الهواتف */
-    main::-webkit-scrollbar {
-      display: none; /* إخفاء شريط التمرير على الهاتف */
-    }
-
-    @media (max-width: 768px) {
-      iframe {
-        height: 100vh;
-        width: 100vw;
-      }
-    }
-
-
-
-
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
   </style>
 </head>
 <body>
-  <main>
-    <div class="video-frame">
-      <iframe src="https://www.tiktok.com/embed/7503282962423631112"
-              allowfullscreen allow="autoplay; encrypted-media"></iframe>
-    </div>
+  <div id="videoContainer"></div>
 
-    <div class="video-frame">
-      <iframe src="https://www.tiktok.com/embed/7504355005894298887"
-              allowfullscreen allow="autoplay; encrypted-media"></iframe>
-    </div>
-
-    <div class="video-frame">
-      <iframe src="https://www.tiktok.com/embed/7506541236916849921"
-              allowfullscreen allow="autoplay; encrypted-media"></iframe>
-    </div>
-
-    <div class="video-frame">
-      <iframe src="https://www.tiktok.com/embed/7504767087739440385"
-              allowfullscreen allow="autoplay; encrypted-media"></iframe>
-    </div>
-
-    <div class="video-frame">
-      <iframe src="https://www.tiktok.com/embed/7474622530834140424"
-              allowfullscreen allow="autoplay; encrypted-media"></iframe>
-    </div>
-
-    <div class="video-frame">
-      <iframe src="https://www.tiktok.com/embed/7502781829657742599"
-              allowfullscreen allow="autoplay; encrypted-media"></iframe>
-    </div>
-  </main>
-<script>
-  const frames = document.querySelectorAll('iframe');
-
-  let activeIndex = 0;
-
-  function isElementInViewport(el) {
-    const rect = el.getBoundingClientRect();
-    return rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+  <script>
+    const DB_URL = 'https://team-analysis-3c196-default-rtdb.firebaseio.com/videos.json';
+    let videos = [], loaded = [], currentIndex = 0;
+// أضف تحته مباشرة:
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
+}
+    const container = document.getElementById('videoContainer');
+ // 🎯 ابدأ إضافة كود التأثير 7 هنا
+  let startY = 0;
+  container.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].clientY;
+  }, { passive: true });
 
-  function checkVisibleFrames() {
-    frames.forEach((frame, index) => {
-      if (isElementInViewport(frame)) {
-        if (index !== activeIndex) {
-          // Reload current video to start from beginning
-          frame.src = frame.src;
-          // Pause the old video (by reloading it)
-          frames[activeIndex].src = frames[activeIndex].src;
-          activeIndex = index;
-        }
+  container.addEventListener('touchmove', (e) => {
+    if (container.scrollTop === 0 && e.touches[0].clientY - startY > 100) {
+      fetchVideos();
+    }
+  }, { passive: true });
+  // 🎯 نهاية إضافة كود التأثير 7
+
+    // جلب البيانات عبر REST
+    async function fetchVideos() {
+      try {
+        const res = await fetch(DB_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        console.log('Firebase REST data:', data);
+
+        // استخراج URL الصحيح من data[key].url أو data[key].url.Value
+       const rawVideos = Object.values(data).map(item => {
+  if (typeof item.url === 'string') return item.url;
+  if (item.url?.Value) return item.url.Value; // استخدام Optional Chaining
+  return '';
+}).filter(url => url); // تصفية الروابط الفارغة
+
+videos = shuffleArray([...rawVideos]); // نسخ المصفوفة وخلطها
+        console.log('روابط الفيديو:', videos);
+        loaded = videos.map(() => false);
+
+        renderSlides();
+        loadVideo(0);
+      } catch (err) {
+        console.error('فشل جلب الفيديوهات:', err);
       }
-    });
+    }
+
+
+
+
+
+
+
+
+// 🎯 أضف هذا الكود في الأعلى مع الدوال الأخرى
+async function downloadVideo(index) {
+  const videoUrl = videos[index];
+  try {
+    const response = await fetch(videoUrl);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `فيديو_${Date.now()}.mp4`;
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+    
+  } catch (error) {
+    console.error('فشل التنزيل:', error);
+    alert('تعذر تنزيل الفيديو!');
   }
+}
 
-  window.addEventListener('scroll', () => {
-    clearTimeout(window._tiktokScrollTimer);
-    window._tiktokScrollTimer = setTimeout(() => {
-      checkVisibleFrames();
-    }, 150);
-  });
-</script>
 
+
+
+
+
+    // إنشاء العناصر دون تحميل src
+    function renderSlides() {
+      container.innerHTML = '';
+      videos.forEach((url, idx) => {
+        const slide = document.createElement('div');
+        slide.className = 'video-slide'; slide.dataset.index = idx;
+
+        const v = document.createElement('video');
+        v.className = 'video-player';
+        v.setAttribute('data-src', url);
+        v.preload = 'metadata';
+        v.muted = true; v.loop = true; v.playsInline = true;
+
+        const loader = document.createElement('div');
+        loader.className = 'loader';
+
+        const controls = document.createElement('div');
+        controls.className = 'controls';
+        const btn = document.createElement('button');
+btn.className = 'download-btn';
+btn.innerHTML = `
+  <svg viewBox="0 0 24 24">
+    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+  </svg>
+`;
+btn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  downloadVideo(idx);
+});
+        controls.appendChild(btn);
+
+        slide.append(v, loader, controls);
+        container.appendChild(slide);
+
+        v.addEventListener('loadeddata', () => loader.style.display = 'none');
+      });
+
+      container.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    // تحميل الفيديو عند الطلب
+    function loadVideo(i) {
+      if (!loaded[i]) {
+        const v = container.children[i].querySelector('video');
+        v.src = v.dataset.src;
+        v.load();
+        v.play().catch(() => {});
+        loaded[i] = true;
+      }
+      playCurrent();
+    }
+
+    // تشغيل الفيديو الظاهر فقط
+    function playCurrent() {
+      Array.from(container.querySelectorAll('video'))
+        .forEach((v, i) => i === currentIndex ? v.play().catch(()=>{}) : v.pause());
+    }
+
+    // التعامل مع التمرير
+    let scrolling = false;
+    function onScroll() {
+      if (!scrolling) {
+        requestAnimationFrame(() => {
+          const idx = Math.round(container.scrollTop / window.innerHeight);
+          if (idx !== currentIndex) {
+            currentIndex = idx;
+            loadVideo(idx);
+            if (idx + 1 < videos.length) loadVideo(idx + 1);
+          }
+          scrolling = false;
+        });
+        scrolling = true;
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      container.scrollTo({ top: currentIndex * window.innerHeight });
+    });
+
+    document.addEventListener('DOMContentLoaded', fetchVideos);
+  </script>
 </body>
 </html>
