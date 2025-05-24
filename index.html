@@ -33,21 +33,30 @@ scroll-behavior: smooth;
     }
 
     .video-frame {
-      width: 100vw;
-      height: 100vh;
-      scroll-snap-align: start;
-      position: relative;
-      background-color: #000;
-    }
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 1s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
 
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+
+  iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+  transition: transform 0.3s ease;
+}
+
 
     /* تحسين شكل التمرير لمستخدمي الهواتف */
     main::-webkit-scrollbar {
@@ -60,6 +69,23 @@ scroll-behavior: smooth;
         width: 100vw;
       }
     }
+
+
+
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
   </style>
 </head>
 <body>
@@ -94,5 +120,37 @@ scroll-behavior: smooth;
               allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
   </main>
+<script>
+  const frames = document.querySelectorAll('iframe');
+
+  let activeIndex = 0;
+
+  function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+  }
+
+  function checkVisibleFrames() {
+    frames.forEach((frame, index) => {
+      if (isElementInViewport(frame)) {
+        if (index !== activeIndex) {
+          // Reload current video to start from beginning
+          frame.src = frame.src;
+          // Pause the old video (by reloading it)
+          frames[activeIndex].src = frames[activeIndex].src;
+          activeIndex = index;
+        }
+      }
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    clearTimeout(window._tiktokScrollTimer);
+    window._tiktokScrollTimer = setTimeout(() => {
+      checkVisibleFrames();
+    }, 150);
+  });
+</script>
+
 </body>
 </html>
