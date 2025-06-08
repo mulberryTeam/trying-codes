@@ -923,6 +923,81 @@ font-size: 1rem;
 
 
 
+
+
+ /* التعديل 1: خلفية شفافة للواجهات */
+        .gpd-section {
+            background: rgba(255, 165, 0, 0.7) !important; /* أبيض بشفافية 70% */
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 1200px;
+            display: none;
+            position: relative;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+       #bagsSection .gpd-container,
+#accessoriesSection .gpd-container,
+#specialKaaKidsSection .gpd-container {
+    background: rgba(255, 165, 0, 0.8);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+        
+        /* التعديل 2: تحسين شكل زر الإغلاق */
+        .back-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .back-container button {
+            background: linear-gradient(135deg, #6a1b9a, #4a148c);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(106, 27, 154, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .back-container button:hover {
+            background: linear-gradient(135deg, #4a148c, #38006b);
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 6px 16px rgba(106, 27, 154, 0.6);
+        }
+        
+        .back-container button i {
+            transition: var(--transition);
+        }
+        
+        .back-container button:hover i {
+            transform: translateX(-3px);
+        }
+
+
+
+
+
+
+
+
+
+
+
   </style>
   
   <!-- Firebase SDK -->
