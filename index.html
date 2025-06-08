@@ -1004,6 +1004,29 @@ font-size: 1rem;
 
 
 
+/* افتراضيًا: نعرض أيقونة الكمبيوتر ونخفي الجوال */
+.icon-desktop {
+  display: inline;
+}
+.icon-mobile {
+  display: none;
+}
+
+/* على الشاشات الصغيرة (جوال) نبدّل */
+@media (max-width: 768px) {
+  .icon-desktop {
+    display: none;
+  }
+  .icon-mobile {
+    display: inline;
+  }
+}
+
+
+
+
+
+
 
   </style>
   
@@ -1302,10 +1325,19 @@ font-size: 1rem;
 <section id="bagsSection" class="gpd-section" style="display: none;">
   <div class="gpd-container">
     <div class="back-container">
-      <button onclick="closeBagsView()">
-        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-      </button>
-    </div>
+  <button onclick="closeBagsView()">
+    <!-- أيقونة SVG للكمبيوتر -->
+    <svg class="icon-desktop" viewBox="0 0 24 24">
+      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+    </svg>
+    
+    <!-- SVG مختلف للجوال (سهم أقصر مثلاً) -->
+    <svg class="icon-mobile" viewBox="0 0 24 24">
+      <path d="M14 7l-5 5 5 5V7z"/>
+    </svg>
+  </button>
+</div>
+
     <div id="bagsButtons" class="section-buttons">
       <!-- أزرار شناتي الفرعية -->
       <a id="bagsWomenBtn" class="product-button" href="javascript:void(0)">
@@ -1327,10 +1359,19 @@ font-size: 1rem;
 <section id="accessoriesSection" class="gpd-section" style="display: none;">
   <div class="gpd-container">
     <div class="back-container">
-      <button onclick="closeAccessoriesView()">
-        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-      </button>
-    </div>
+  <button onclick="closeBagsView()">
+    <!-- أيقونة SVG للكمبيوتر -->
+    <svg class="icon-desktop" viewBox="0 0 24 24">
+      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+    </svg>
+    
+    <!-- SVG مختلف للجوال (سهم أقصر مثلاً) -->
+    <svg class="icon-mobile" viewBox="0 0 24 24">
+      <path d="M14 7l-5 5 5 5V7z"/>
+    </svg>
+  </button>
+</div>
+
     <div id="accessoriesButtons" class="section-buttons">
       <!-- أزرار اكسسوارات الفرعية -->
       <a id="accWomenBtn" class="product-button" href="javascript:void(0)">
@@ -1351,11 +1392,20 @@ font-size: 1rem;
 <!-- قسم كعاكيش مميزة -->
 <section id="specialKaaKidsSection" class="gpd-section" style="display: none;">
   <div class="gpd-container">
-    <div class="back-container">
-      <button onclick="closeKaaKidsView()">
-        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-      </button>
-    </div>
+   <div class="back-container">
+  <button onclick="closeBagsView()">
+    <!-- أيقونة SVG للكمبيوتر -->
+    <svg class="icon-desktop" viewBox="0 0 24 24">
+      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+    </svg>
+    
+    <!-- SVG مختلف للجوال (سهم أقصر مثلاً) -->
+    <svg class="icon-mobile" viewBox="0 0 24 24">
+      <path d="M14 7l-5 5 5 5V7z"/>
+    </svg>
+  </button>
+</div>
+
     <!-- iframe مباشر لعرض الموقع -->
     <div style="margin-top: 20px;">
       <iframe id="kaaKidsFrame" src="" style="width: 100%; height: 90vh; border: none; border-radius: 8px;"></iframe>
