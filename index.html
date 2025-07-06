@@ -2096,6 +2096,25 @@ font-size: 1rem;
 
 
 
+/* تمييز بطاقة المنتج المفتوح عبر الرابط */
+.product-card.highlighted {
+  border: 2px solid #ff4d4f;              /* إطار أحمر لافت */
+  box-shadow: 0 0 10px rgba(255, 77, 79, 0.5);
+  transform: scale(1.05);                 /* تكبير طفيف */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   </style>
@@ -2500,6 +2519,8 @@ font-size: 1rem;
 
     
    
+const urlParams = new URLSearchParams(window.location.search);
+const highlightedProductId = urlParams.get('product');
 
 
  
@@ -2920,6 +2941,69 @@ if (product) {
     });
 }
 
+
+
+
+
+
+
+
+
+// ===== [الدوال المطلوبة لنسخ الرابط وعرض الإشعار] =====
+
+/**
+ * ينسخ رابط المنتج إلى الحافظة مع إظهار إشعار.
+ * @param {string} productId - المعرف الخاص بالمنتج.
+ * @param {string} productName - اسم المنتج للعرض في الإشعار.
+ */
+function copyProductLink(productId, productName) {
+  // بناء الرابط الحالي مع باراميتر المنتج
+  const link = `${window.location.origin}${window.location.pathname}?product=${encodeURIComponent(productId)}`;
+  navigator.clipboard.writeText(link)
+    .then(() => {
+      showNotification(`تم نسخ رابط "${productName}" إلى الحافظة`);
+    })
+    .catch(() => {
+      showNotification('فشل في نسخ الرابط', 'error');
+    });
+}
+
+/**
+ * يعرض رسالة إشعار في أعلى الشاشة، تُختفي بعد 3 ثواني.
+ * @param {string} message - نص الرسالة.
+ * @param {'success'|'error'} [type='success'] - نوع الإشعار (يؤثر على اللون).
+ */
+function showNotification(message, type = 'success') {
+  const notification = document.createElement('div');
+  notification.className = `notification${type === 'error' ? ' error' : ''}`;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  // بعد 3 ثواني يبدأ التلاشي
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    // ثم يُزال من الـ DOM
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ... (بقية الدوال الجديدة التي سبق ذكرها)
 
 
@@ -3123,8 +3207,31 @@ function createProductCard(product, productId) {
       };
     });
   }
+
+
+
+//هووون1
+if (product.id === highlightedProductId) {
+  productCard.classList.add('highlighted');
+}
+productsGrid.appendChild(productCard);
+//لهووون1
+
+
+
+
   
   productsGrid.appendChild(productCard);
+
+
+
+
+
+
+
+
+
+
 }
 
 
