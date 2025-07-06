@@ -1434,159 +1434,7 @@ font-size: 1rem;
 
 
 
-/* استبدل كود الشخصية القديم بهذا الكود الجديد */
-.character-3d {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 120px;
-  height: 250px;
-  z-index: 9998;
-  pointer-events: none;
-  transform-style: preserve-3d;
-  animation: float3d 8s ease-in-out infinite;
-}
 
-.character-body {
-  position: absolute;
-  bottom: 0;
-  width: 80px;
-  height: 120px;
-  background: #ff9eb5; /* لون الجسم */
-  border-radius: 40% 40% 30% 30%;
-  transform: translateZ(10px);
-  animation: bodySway 6s ease-in-out infinite;
-}
-
-.face {
-  position: absolute;
-  top: 25px;
-  left: 50%;
-  transform: translateX(-50%) translateZ(15px);
-  width: 50px;
-  height: 40px;
-}
-
-.eye {
-  position: absolute;
-  top: 10px;
-  width: 8px;
-  height: 8px;
-  background: #333;
-  border-radius: 50%;
-  animation: blink 5s infinite;
-}
-
-.eye.left { left: 10px; }
-.eye.right { right: 10px; }
-
-.mouth {
-  position: absolute;
-  top: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 6px;
-  background: #e75480;
-  border-radius: 0 0 10px 10px;
-  animation: talk 3s infinite;
-}
-
-.hair {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%) translateZ(5px);
-  width: 70px;
-  height: 40px;
-  background: #8b4513; /* لون الشعر */
-  border-radius: 50% 50% 40% 40%;
-  box-shadow: -5px -5px 10px rgba(0,0,0,0.1);
-}
-
-.dress {
-  position: absolute;
-  bottom: 0;
-  width: 90px;
-  height: 80px;
-  background: #ff6b8b; /* لون الفستان */
-  border-radius: 40% 40% 0 0;
-  transform: translateZ(8px);
-}
-
-.arm, .leg {
-  position: absolute;
-  background: #ff9eb5;
-  transform-origin: top center;
-}
-
-.arm {
-  width: 12px;
-  height: 50px;
-  top: 60px;
-  animation: armSwing 4s ease-in-out infinite;
-}
-
-.arm.left {
-  left: -5px;
-  transform: rotate(-15deg) translateZ(5px);
-}
-
-.arm.right {
-  right: -5px;
-  transform: rotate(15deg) translateZ(5px);
-}
-
-.leg {
-  width: 15px;
-  height: 60px;
-  bottom: -50px;
-  animation: legMove 5s ease-in-out infinite;
-}
-
-.leg.left {
-  left: 20px;
-  transform: rotate(5deg) translateZ(7px);
-}
-
-.leg.right {
-  right: 20px;
-  transform: rotate(-5deg) translateZ(7px);
-}
-
-/* أنيميشن ثلاثي الأبعاد */
-@keyframes float3d {
-  0%, 100% { transform: translateY(0) rotateY(0deg); }
-  25% { transform: translateY(-20px) rotateY(15deg); }
-  50% { transform: translateY(-10px) rotateY(0deg); }
-  75% { transform: translateY(-15px) rotateY(-15deg); }
-}
-
-@keyframes bodySway {
-  0%, 100% { transform: translateZ(10px) rotateZ(0deg); }
-  25% { transform: translateZ(15px) rotateZ(3deg); }
-  75% { transform: translateZ(15px) rotateZ(-3deg); }
-}
-
-@keyframes armSwing {
-  0%, 100% { transform: rotate(-15deg) translateZ(5px); }
-  50% { transform: rotate(10deg) translateZ(5px); }
-}
-
-@keyframes legMove {
-  0%, 100% { transform: rotate(5deg) translateZ(7px); }
-  50% { transform: rotate(-5deg) translateZ(7px); }
-}
-
-@keyframes blink {
-  0%, 45%, 55%, 100% { height: 8px; }
-  48%, 52% { height: 2px; }
-}
-
-@keyframes talk {
-  0%, 40%, 60%, 100% { height: 6px; }
-  50% { height: 3px; }
-}
 
 
 
@@ -2103,6 +1951,51 @@ font-size: 1rem;
   transform: scale(1.05);                 /* تكبير طفيف */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. تعيين وضع ثابت وتمكين التمرير العمودي */
+.product-modal {
+  position: fixed;      /* تثبيت النافذة بالنسبة للشاشة */
+  top: 0;               /* من أعلى الشاشة */
+  left: 0;              /* من يسار الشاشة */
+  right: 0;             /* إلى يمين الشاشة */
+  bottom: 0;            /* إلى أسفل الشاشة */
+  overflow-y: auto;     /* تفعيل التمرير العمودي */
+  -webkit-overflow-scrolling: touch; /* سلاسة التمرير على iOS */
+  background: #fff;     /* خلفية بيضاء (أو حسب ثيمك) */
+  z-index: 10000;       /* فوق باقي العناصر */
+}
+
+/* 2. منع تمرير الخلفية أثناء فتح الواجهة */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* 3. (اختياري) ضبط المحتوى الداخلي لبطاقات المنتجات */
+.product-modal .products-container {
+  display: flex;
+  flex-direction: column; /* أو row + flex-wrap: wrap; حسب تصميمك */
+  padding: 1rem;          /* قليل من الحشو لراحة اللمس */
+}
+
+/* 4. تأكد من أن كل بطاقة منتج لها حجم ثابت أو نسبة مئوية */
+.product-modal .product-card {
+  flex: 0 0 auto;        /* لا تنكمش أو تتمدد */
+  margin-bottom: 1rem;    /* مسافة أسفل كل بطاقة */
+}
+
 
 
 
@@ -3026,54 +2919,7 @@ function showNotification(message, type = 'success') {
 
 
 
-  </script>
-
-
-
-
-
-
-
-<!-- الشخصية الكرتونية -->
-<<!-- احذف الكود القديم للشخصية -->
-<!-- وأضف هذا الكود الجديد -->
-<div class="character-3d">
-  <div class="character-body">
-    <div class="face">
-      <div class="eye left"></div>
-      <div class="eye right"></div>
-      <div class="mouth"></div>
-    </div>
-    <div class="hair"></div>
-    <div class="dress"></div>
-    <div class="arm left"></div>
-    <div class="arm right"></div>
-    <div class="leg left"></div>
-    <div class="leg right"></div>
-  </div>
-</div>
-
-<!-- النقاط الثلجية -->
-<div class="snowfall">
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-  <div class="snowflake"></div>
-</div>
-
-
-
-
-
-
-
-<script>
+ 
   // متغير لتخزين الفئة الحالية
 let currentCategory = '';
 
