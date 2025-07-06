@@ -3031,15 +3031,19 @@ if (!categoryName) {
         return;
       }
       
-      const products = [];
-      snapshot.forEach(childSnapshot => {
-        products.push(childSnapshot.val());
-      });
-      
-      // عرض المنتجات بترتيب عشوائي لمظهر أفضل
-      products.sort(() => Math.random() - 0.5).forEach(product => {
-        createProductCard(product, childSnapshot.key);
-      });
+     const products = [];
+snapshot.forEach(childSnapshot => {
+  const data = childSnapshot.val();
+  data.id = childSnapshot.key;        // حفظ المفتاح
+  products.push(data);
+});
+
+products
+  .sort(() => Math.random() - 0.5)
+  .forEach(product => {
+    createProductCard(product, product.id);  // هنا تستدعي البطاقة بالمعرّف الصحيح
+  });
+
     })
     .catch(error => {
       console.error('Error loading products:', error);
@@ -3048,7 +3052,6 @@ if (!categoryName) {
 }
 
 // إنشاء بطاقة منتج
-// استبدل دالة createProductCard الحالية بهذا الكود
 function createProductCard(product, productId) {
   const productsGrid = document.getElementById('productsGrid');
   
@@ -3128,31 +3131,35 @@ function createProductCard(product, productId) {
 
 
 
-// إنشاء زر نسخ الرابط
-const copyLinkBtn = document.createElement('button');
-copyLinkBtn.className = 'copy-link-btn';
-copyLinkBtn.innerHTML = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-    <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-  </svg>
-  نسخ رابط المنتج
-`;
-
-// إضافة حدث النقر على زر النسخ
-copyLinkBtn.addEventListener('click', function(e) {
-  e.stopPropagation(); // منع انتشار الحدث
-  copyProductLink(product.id, product.name);
-});
-
-// إضافة الزر إلى بطاقة المنتج
-productCard.querySelector('.product-details').appendChild(copyLinkBtn);
 
 
 
 
-  
-  productsGrid.appendChild(productCard);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
