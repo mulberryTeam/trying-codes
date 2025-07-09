@@ -2284,6 +2284,264 @@ margin-top: -40px;
 
 
 
+/* ====== بداية التعديلات لتقليل طول البانر على الجوال ====== */
+@media (max-width: 768px) {
+  .banner-carousel {
+    height: 120px !important; /* تقليل الارتفاع بشكل كبير */
+    max-height: 120px !important;
+    aspect-ratio: 16/4 !important; /* نسبة أفقية عالية جداً */
+  }
+  
+  .banner-carousel .slides img {
+    height: 120px !important;
+    max-height: 120px !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+  
+  .banner-carousel .slides {
+    height: 120px !important;
+  }
+  
+  .banner-carousel .dots {
+    bottom: 5px !important;
+  }
+  
+  .banner-carousel .dot {
+    width: 8px !important;
+    height: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-carousel {
+    height: 100px !important; /* أكثر انخفاضاً */
+    aspect-ratio: 16/3.5 !important;
+  }
+  
+  .banner-carousel .slides img {
+    height: 100px !important;
+  }
+  
+  .banner-carousel .slides {
+    height: 100px !important;
+  }
+}
+/* ====== نهاية التعديلات ====== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======== أنماط قسم المنتجات العشوائية ======== */
+#randomProducts {
+  background: transparent;
+  padding: 40px 0;
+}
+
+.random-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  justify-content: center;
+}
+
+.random-category-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 139, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.category-header h3 {
+  color: #fff;
+  font-size: 1.4rem;
+  margin: 0;
+  flex-grow: 1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.see-all-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.see-all-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.random-products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.random-product-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.4s;
+  transform-style: preserve-3d;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.random-product-card:hover {
+  transform: translateY(-8px) rotateY(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.product-image-container {
+  height: 160px;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.random-product-card:hover .product-image-container img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.product-name {
+  color: #fff;
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+.product-price {
+  color: #ffdd00;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.product-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  height: 40px;
+  overflow: hidden;
+}
+
+/* التجاوبية */
+@media (max-width: 1200px) {
+  .random-products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .random-products-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .random-category-section {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .random-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .product-image-container {
+    height: 120px;
+  }
+  
+  .product-name {
+    font-size: 1rem;
+  }
+  
+  .product-price {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .random-products {
+    grid-template-columns: 1fr;
+  }
+  
+  .random-product-card {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .product-image-container {
+    height: 140px;
+  }
+}
+
+/* أنميشن الدخول */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.random-category-section {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.random-category-section:nth-child(1) { animation-delay: 0.1s; }
+.random-category-section:nth-child(2) { animation-delay: 0.2s; }
+.random-category-section:nth-child(3) { animation-delay: 0.3s; }
+.random-category-section:nth-child(4) { animation-delay: 0.4s; }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2527,6 +2785,28 @@ function initBannerCarousel(urls) {
       </div>
     </div>
   </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   <!-- Circular Dark Mode Button -->
   <button id="darkModeBtn">
@@ -2547,11 +2827,12 @@ function initBannerCarousel(urls) {
 
 <!-- بداية Banner Carousel -->
 <div id="bannerCarousel" class="banner-carousel">
-  <div class="slides"></div>
-  <div class="dots"></div>
+<div class="slides-container" style="width:100%;height:100%;position:relative;">
+<div class="slides"></div>
+</div>
+<div class="dots"></div>
 </div>
 <!-- نهاية Banner Carousel -->
-
 
 
 
@@ -2594,6 +2875,28 @@ function initBannerCarousel(urls) {
 
 
 </div>
+
+
+
+
+
+
+<!-- قسم المنتجات العشوائية -->
+<section id="randomProducts" class="gpd-section">
+  <div class="gpd-container">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.7);">اكتشف منتجاتنا المميزة</h2>
+    
+    <div id="randomProductsContainer" class="random-products-grid">
+      <!-- سيتم ملؤها ديناميكياً بالمنتجات العشوائية -->
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
  
 
         <div class="description" id="storeDescription">
@@ -2612,6 +2915,24 @@ function initBannerCarousel(urls) {
         </div>
       </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     <!-- Extended Sections (Products Display) -->
     <section id="sectionsSection" class="gpd-section" data-anim-type="fadeIn">
@@ -2681,6 +3002,17 @@ function initBannerCarousel(urls) {
         </div>
       </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3469,7 +3801,94 @@ productsGrid.appendChild(productCard);
 
 
 
+// ====== دالة لجلب وعرض المنتجات العشوائية ======
+function loadRandomProducts() {
+  const container = document.getElementById('randomProductsContainer');
+  container.innerHTML = '<div class="loading">جارٍ تحميل المنتجات المميزة...</div>';
+  
+  // جلب التصنيفات والمنتجات
+  const categoriesRef = database.ref('categories');
+  const productsRef = database.ref('products');
+  
+  Promise.all([categoriesRef.once('value'), productsRef.once('value')])
+    .then(([categoriesSnapshot, productsSnapshot]) => {
+      const categories = categoriesSnapshot.val();
+      const allProducts = productsSnapshot.val();
+      
+      if (!categories || !allProducts) {
+        container.innerHTML = '<div class="error">لا توجد منتجات متاحة حالياً</div>';
+        return;
+      }
+      
+      container.innerHTML = '';
+      
+      // إنشاء قسم لكل تصنيف
+      Object.keys(categories).forEach(categoryId => {
+        const category = categories[categoryId];
+        
+        // تصفية المنتجات لهذا التصنيف
+        const categoryProducts = [];
+        Object.keys(allProducts).forEach(productId => {
+          const product = allProducts[productId];
+          if (product.category === category.name) {
+            categoryProducts.push({ ...product, id: productId });
+          }
+        });
+        
+        // إذا كان هناك منتجات في هذا التصنيف
+        if (categoryProducts.length > 0) {
+          // اختيار 3 منتجات عشوائية
+          const randomProducts = [];
+          const shuffled = [...categoryProducts].sort(() => 0.5 - Math.random());
+          randomProducts.push(...shuffled.slice(0, 3));
+          
+          // إنشاء عناصر HTML
+          const categorySection = document.createElement('div');
+          categorySection.className = 'random-category-section';
+          
+          categorySection.innerHTML = `
+            <div class="category-header">
+              <h3>${category.name}</h3>
+              <button class="see-all-btn" onclick="openProductsModal('${category.name}')">عرض الكل</button>
+            </div>
+            <div class="random-products">
+              ${randomProducts.map(product => `
+                <div class="random-product-card">
+                  <div class="product-image-container">
+                    <img src="${product.image}" alt="${product.name}">
+                  </div>
+                  <div class="product-info">
+                    <h4 class="product-name">${product.name}</h4>
+                    <div class="product-price">${product.price} ₪</div>
+                    
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+          
+          container.appendChild(categorySection);
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error loading random products:', error);
+      container.innerHTML = '<div class="error">حدث خطأ أثناء تحميل المنتجات</div>';
+    });
+}
 
+// استدعاء الدالة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+  // ... الكود الحالي ...
+  
+  // تحميل المنتجات العشوائية
+  loadRandomProducts();
+});
+
+// تحديث المنتجات عند النقر على زر تحديث الصفحة (اختياري)
+document.getElementById('refreshPage').addEventListener('click', function() {
+  location.reload();
+});
 
 
 
