@@ -2792,86 +2792,46 @@ margin-top: -40px;
 
 
 
-/* أنماط مربع البحث */
-.search-bar-container {
-  max-width: 1200px;
-  margin: 0 auto 30px;
-  padding: 0 20px;
+
+/* ← ألصق هذا الأسفل مباشرة في قسم <style> */
+
+.header-search,
+.section-search {
+  width: 80%;
+  max-width: 500px;
+  margin: 0 auto 20px;
   position: relative;
-  z-index: 10;
 }
 
-.search-input-container {
-  display: flex;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  border-radius: 50px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.search-input-container:focus-within {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-#globalSearchInput {
-  flex: 1;
-  padding: 18px 25px;
-  border: none;
-  font-size: 1.1rem;
+.header-search input,
+.section-search input {
+  width: 100%;
+  height: 40px;
+  padding: 0 45px 0 15px;
+  border: 2px solid var(--primary-color);
+  border-radius: 25px;
+  font-size: 1rem;
   outline: none;
-  background: transparent;
-  color: #fff;
 }
 
-#globalSearchInput::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+.search-spinner {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 20px;
+  height: 20px;
+  transform: translateY(-50%);
+  background-image: url('/assets/spinner.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
-#globalSearchButton {
-  background: var(--primary-color);
-  border: none;
-  padding: 0 30px;
-  cursor: pointer;
-  transition: background 0.3s;
-  color: white;
-  font-size: 1.2rem;
+.search-spinner.active {
+  animation: spin 1s linear infinite;
 }
 
-#globalSearchButton:hover {
-  background: var(--secondary-color);
-}
-
-/* التجاوبية */
-@media (max-width: 768px) {
-  .search-input-container {
-    border-radius: 30px;
-  }
-  
-  #globalSearchInput {
-    padding: 14px 20px;
-    font-size: 1rem;
-  }
-  
-  #globalSearchButton {
-    padding: 0 25px;
-  }
-}
-
-@media (max-width: 480px) {
-  .search-bar-container {
-    padding: 0 10px;
-  }
-  
-  #globalSearchInput {
-    padding: 12px 15px;
-  }
-  
-  #globalSearchButton {
-    padding: 0 20px;
-  }
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
 }
 
 
@@ -3108,13 +3068,18 @@ function initBannerCarousel(urls) {
             <img src="https://png.pngtree.com/png-vector/20221210/ourmid/pngtree-lucky-wheel-png-image_6518840.png" alt="Lucky Wheel Icon" style="width: 100%; height: 100%; object-fit: contain; transform-origin: center;"/>
           </button>
         </div>
+
+
+
+
         <!-- Header Right: Translation and Join Team Buttons -->
         <div class="cell header-right" style="display: flex; justify-content: flex-end;">
-          
           <button id="joinTeamBtn" onclick="window.open('https://forms.gle/5tXHFwsgF6kycYG7A','_blank')">انضم إلى Mulberry Team</button>
         </div>
       </div>
     </div>
+
+
   </section>
 
 
@@ -3152,25 +3117,16 @@ function initBannerCarousel(urls) {
         
 
 
-
-
-
-
-
-<!-- Search Bar -->
-<div class="search-bar-container">
-  <div class="search-input-container">
-    <input type="text" id="globalSearchInput" placeholder="ابحث عن منتج..." />
-    <button id="globalSearchButton">
-      <i class="fas fa-search"></i>
-    </button>
-  </div>
+<!-- ← ألصق هذا الأسفل مباشرة -->
+<div id="searchContainer" class="header-search">
+  <input
+    type="text"
+    id="globalSearchInput"
+    placeholder="ابحث باسم المنتج أو وصفه..."
+    aria-label="Search products"
+  />
+  <span id="globalSearchSpinner" class="search-spinner" hidden></span>
 </div>
-
-
-
-
-
 
 
 
@@ -3183,10 +3139,6 @@ function initBannerCarousel(urls) {
 <div class="dots"></div>
 </div>
 <!-- نهاية Banner Carousel -->
-
-
-
-
 
 
 
@@ -3327,6 +3279,20 @@ function initBannerCarousel(urls) {
               <button class="tab" data-target="other">اخرى</button>
             </div>
           </div>
+
+<!-- ← ألصق هذا الأسفل مباشرة -->
+<div class="section-search">
+  <input
+    type="text"
+    class="sectionSearchInput"
+    data-category-id="{{categoryId}}"
+    placeholder="ابحث داخل {{categoryName}}..."
+    aria-label="Search in section"
+  />
+  <span class="sectionSearchSpinner search-spinner" hidden></span>
+</div>
+
+
           <div id="sectionContent">
             <!-- الأقسام الثابتة -->
             <div id="general" class="section-group active">
@@ -4258,81 +4224,68 @@ document.getElementById('refreshPage').addEventListener('click', function() {
 
 
 
-// أضف هذا الكود في نهاية وسم <script>
-// البحث العالمي عن المنتجات
-document.addEventListener('DOMContentLoaded', function() {
-  const searchInput = document.getElementById('globalSearchInput');
-  const searchButton = document.getElementById('globalSearchButton');
-  
-  // عند النقر على زر البحث أو الضغط على Enter
-  function performSearch() {
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    if (!searchTerm) return;
-    
-    // فتح واجهة المنتجات مع نتائج البحث
-    openSearchResultsModal(searchTerm);
+
+
+
+
+
+
+
+
+  // دالة تأخير الإرسال (debounce)
+  function debounce(fn, delay) {
+    let timer;
+    return function(...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), delay);
+    };
   }
-  
-  searchButton.addEventListener('click', performSearch);
-  searchInput.addEventListener('keyup', function(e) {
-    if (e.key === 'Enter') performSearch();
+
+  // استخراج المنتجات من السيرفر
+  async function fetchProducts(query, categoryId = '') {
+    const url = new URL('/api/products', window.location.origin);
+    url.searchParams.set('query', query);
+    if (categoryId) url.searchParams.set('category', categoryId);
+    const res = await fetch(url);
+    return res.json();
+  }
+
+  // عرض النتائج في شبكة المنتجات
+  function renderProducts(products, container) {
+    container.innerHTML = products.length
+      ? products.map(p => `
+        <div class="product-item">
+          <img src="${p.imageUrl}" alt="${p.name}" />
+          <h3>${p.name}</h3>
+          <p>${p.description}</p>
+        </div>`).join('')
+      : '<p class="no-results">لا توجد منتجات مطابقة.</p>';
+  }
+
+  // ربط صندوق البحث العام
+  const globalInput = document.getElementById('globalSearchInput');
+  const globalSpinner = document.getElementById('globalSearchSpinner');
+  const globalGrid = document.getElementById('globalProductsGrid');
+  globalInput.addEventListener('input', debounce(async function() {
+    const q = this.value.trim();
+    globalSpinner.hidden = false;
+    const data = await fetchProducts(q);
+    renderProducts(data, globalGrid);
+    globalSpinner.hidden = true;
+  }, 300));
+
+  // ربط صناديق البحث في الأقسام
+  document.querySelectorAll('.sectionSearchInput').forEach(input => {
+    const spinner = input.nextElementSibling;
+    const grid = document.querySelector('.products-grid[data-category-id="' + input.dataset.categoryId + '"]');
+    input.addEventListener('input', debounce(async function() {
+      const q = this.value.trim();
+      spinner.hidden = false;
+      const data = await fetchProducts(q, this.dataset.categoryId);
+      renderProducts(data, grid);
+      spinner.hidden = true;
+    }, 300));
   });
-});
-
-// فتح واجهة نتائج البحث
-function openSearchResultsModal(searchTerm) {
-  const modal = document.getElementById('productsModal');
-  const modalTitle = document.getElementById('modalTitle');
-  
-  modalTitle.textContent = `نتائج البحث عن: "${searchTerm}"`;
-  modal.style.display = 'block';
-  
-  // جلب وعرض نتائج البحث
-  loadSearchResults(searchTerm);
-}
-
-// جلب نتائج البحث من قاعدة البيانات
-function loadSearchResults(searchTerm) {
-  const productsGrid = document.getElementById('productsGrid');
-  productsGrid.innerHTML = '<div class="loading">جارٍ البحث...</div>';
-  
-  const productsRef = database.ref('products');
-  productsRef.once('value').then(snapshot => {
-    productsGrid.innerHTML = '';
-    
-    if (!snapshot.exists()) {
-      productsGrid.innerHTML = '<div class="no-products">لا توجد نتائج</div>';
-      return;
-    }
-    
-    let found = false;
-    snapshot.forEach(childSnapshot => {
-      const product = childSnapshot.val();
-      const productId = childSnapshot.key;
-      
-      // البحث في اسم المنتج ووصفه
-      if (
-        (product.name && product.name.toLowerCase().includes(searchTerm)) ||
-        (product.description && product.description.toLowerCase().includes(searchTerm))
-      ) {
-        found = true;
-        createProductCard(product, productId);
-      }
-    });
-    
-    if (!found) {
-      productsGrid.innerHTML = '<div class="no-products">لا توجد نتائج</div>';
-    }
-  }).catch(error => {
-    console.error('Error searching products:', error);
-    productsGrid.innerHTML = '<div class="error">حدث خطأ أثناء البحث</div>';
-  });
-}
-
-
-
-
-
 
 
 
