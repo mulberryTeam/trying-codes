@@ -1,794 +1,2880 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-  <title>لوحة الموظف - نظام إدارة الأعمال</title>
-  <!-- رابط خطوط Google -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
-  <!-- أيقونات Font Awesome -->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
-  <!-- إضافة مكتبة Firestore -->
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mulberry Store</title>
+  <!-- Google Fonts for general text -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <!-- Orbitron for the store name and interface (Orbitron Black: weight 900) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet"/>
+  <!-- Tristan Font for the store name (not used for store name now) -->
+  
+  <!-- FontAwesome for potential extra icons -->
+ 
+  
   <style>
 
 
-:root {
-  --secondary-color: #3498db; /* أو أي لون تريده لإطار البطاقة */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.product-buttons-container {
+  display: flex;
+  gap: 20px;               /* مسافة بين الأزرار */
+  justify-content: center; /* محاذاة الأزرار في الوسط */
+  flex-wrap: wrap;         /* لفّ الأزرار على عدة أسطر إذا ضاقت المساحة */
+}
+
+.product-button {
+  position: relative;
+  width: 160px;            /* عرض الزر */
+  height: 160px;           /* ارتفاع الزر */
+  border-radius: 20px;     /* زوايا منحنية */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ظل خفيف حول الزر */
+
+  overflow: hidden;
+  text-decoration: none;   /* إزالة التسطير الافتراضي للروابط */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-button .img-wrapper {
+  flex: 1;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.product-button .img-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.3); /* طبقة بيضاء شفافة 30% */
+}
+
+.product-button .btn-label {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #fff;             /* اختر اللون الذي يناسب تصميمك */
 }
 
 
 
-    /* خلفية الفيديو */
-    #bgVideo {
+
+
+
+
+
+
+
+    :root {
+      --primary-color: #0000cd; /* Blue */
+      --secondary-color: #800080; /* Purple */
+      --accent-order: #8b0000; /* Dark red */
+      --accent-language-1: #3aa56f;
+      --accent-language-2: #48c987;
+      --accent-join-1: #ff85c5;
+      --accent-join-2: #ff3bae;
+      --text-color: #333;
+      --heading-color: #222;
+      --background-gradient: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      --button-bg: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      --header-bg: transparent;
+      --body-font: 'Poppins', sans-serif;
+      --extra-font: 'Montserrat', sans-serif;
+      
+      /* Light Mode Colors */
+      --body-bg-color: var(--background-gradient);
+      --page-text-color: #333;
+      
+      /* Dark Mode Colors */
+      --dark-body-bg: #1a1a1a;
+      --dark-heading-bg: #2b2b2b;
+      --dark-text-color: #eee;
+      --dark-button-bg: linear-gradient(45deg, #2e2e8b, #40007a);
+    }
+    
+    html.dark-mode {
+     
+      --page-text-color: var(--dark-text-color) !important;
+      --header-bg: var(--dark-heading-bg) !important;
+      --button-bg: var(--dark-button-bg) !important;
+    }
+    
+  
+    
+    /* Loader Overlay for initial page load */
+    #loader {
       position: fixed;
-      right: 0;
-      bottom: 0;
-      min-width: 100%;
-      min-height: 100%;
-      z-index: -1;
-      object-fit: cover;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  transition: opacity 0.5s ease;
+  backdrop-filter: blur(5px);
     }
-    /* قواعد عامة */
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: transparent;
-      margin: 0;
-      padding: 20px;
-      transition: background 0.3s ease;
+    .spinner {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid var(--secondary-color);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
     }
-    .header {
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Global button styles */
+    button {
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+                  box-shadow 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    button:active { animation: bounce 0.2s; }
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Body */
+    /* استبدل أنماط body الحالية بهذا */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--body-font);
+  direction: rtl;
+  text-align: center;
+  color: var(--page-text-color);
+  transition: background 0.4s, color 0.4s;
+  min-height: 100vh;
+}
+   
+    .gpd-section {
+      padding: 20px 0;
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .gpd-container {
+      width: 90%;
+      margin: 0 auto;
+      max-width: 1200px;
+      position: relative;
+    }
+    .gdp-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 -15px;
+    }
+    .cell {
+      padding: 0 15px;
+      box-sizing: border-box;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    
+    /* Header (elements directly on the background, fixed at top) */
+    #headerSection {
+      display: flex;
+      background: none;
+      padding: 10px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+    }
+
+
+
+
+
+
+
+
+
+    #headerContent {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
+      width: 100%;
     }
-    .header-left {
+    #headerContent .header-left,
+    #headerContent .header-center,
+    #headerContent .header-right {
       display: flex;
       align-items: center;
     }
-    .header-logo {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-left: 10px;
-    }
-    .logout-btn {
-      padding: 8px 16px;
-      background: #e74c3c;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-    .logout-btn:hover { 
-      background: #c0392b;
-      transform: scale(1.05);
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: rgba(255,255,255,0.95);
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    /* قائمة الألسنة */
-    .tab-nav {
+    #headerContent .header-left { justify-content: flex-start; }
+    .social-icons {
       display: flex;
-      border-bottom: 2px solid #ddd;
-      margin-bottom: 20px;
-      overflow-x: auto;
+      gap: 10px;
+      margin-left: 10px;
+      align-items: center;
     }
-    .tab-nav button {
-      flex: 1;
-      padding: 12px;
-      background: none;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s ease, color 0.3s ease;
+    .social-btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: transform 0.3s;
     }
-    .tab-nav button:hover { background: #f0f0f0; }
-    .tab-nav button.active {
-      border-bottom: 3px solid #3498db;
-      font-weight: bold;
+    .social-btn:hover { transform: scale(1.1); }
+    .social-btn.instagram {
+      background: linear-gradient(45deg, #833ab4, #c13584);
+      border: 1px solid #833ab4;
+    }
+    .social-btn.facebook {
+      background: #1877f2;
+      border: 1px solid #1877f2;
+    }
+    .social-btn.tiktok {
+      background: #fff;
+      border: 1px solid var(--secondary-color);
+      color: var(--secondary-color);
+    }
+    .social-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
     
-    /* واجهة التحليلات - فلتر المبيعات */
-    .filter-section {
-      margin-bottom: 20px;
-      padding: 20px;
-      background: #f0f4f8;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: box-shadow 0.3s ease;
-    }
-    .filter-section:hover {
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-    }
-    .filter-section label {
-      margin-right: 10px;
-      font-weight: 500;
-    }
-    .filter-section input {
-      margin-right: 10px;
-      padding: 6px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      transition: border 0.3s ease;
-    }
-    .filter-section input:focus {
-      border-color: #3498db;
-      outline: none;
-    }
-    .filter-section button {
-      padding: 8px 16px;
-      background: #3498db;
+    .contact-info {
+      font-size: 13px;
       color: #fff;
+      margin: 0 10px;
+      line-height: 1.2;
+      text-align: left;
+    }
+    
+    /* Store logo replaces the store name in the center */
+    #storeLogo {
+      max-height: 50px;
+    }
+    
+    #headerContent .header-right {
+      justify-content: flex-end;
+      gap: 8px;
+      margin-right: 10px;
+    }
+    #headerContent button {
+      background: var(--button-bg);
       border: none;
+      color: #fff;
+      padding: 6px 12px;
       border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
+      font-size: 13px;
+      transition: transform 0.3s, background 0.4s;
+      font-family: var(--extra-font);
     }
-    .filter-section button:hover { 
-      background: #2980b9;
-      transform: scale(1.03);
+    #headerContent button:hover { transform: scale(1.05); }
+    
+   
+    
+    /* Order Products Button - تم تغيير النص داخل الزر إلى "اطلب استشارة" */
+    #orderProductsBtn {
+      background: red !important;
+      background-color: red !important;
+      background-image: none !important;
+      border: 2px solid red !important;
+      border-radius: 16px;
+      color: #fff;
+      padding: 6px 12px;
+      font-size: 13px;
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      font-family: var(--extra-font);
     }
-    /* بطاقة المبيعات */
-    .sales-card {
-      background: #f7f9fc;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      overflow-x: auto;
-      transition: box-shadow 0.3s ease;
+    #orderProductsBtn:hover { transform: scale(1.08); }
+    
+    /* Dark Mode Button with round white background at 50% transparency */
+    #darkModeBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.5);
+      border: none;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s;
+      z-index: 9999;
     }
-    .sales-card:hover {
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-    }
-    .sales-card table {
+    #darkModeImg {
       width: 100%;
-      border-collapse: collapse;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
-    .sales-card th, .sales-card td {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
+    
+    /* Main content below header */
+    main { padding-top: 100px; }
+    
+    /* Landing Section */
+    #landingSection {
+      margin-bottom: 20px;
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    #landing {
+      position: relative;
+      z-index: 2;
+      padding: 60px;
       text-align: center;
     }
-    .sales-card th { 
-      background: #3498db; 
+    #landing h1 {
+      font-size: 3.5em;
+      margin-bottom: 25px;
       color: #fff;
-      font-weight: bold;
+      font-weight: 900;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
     }
-    .sales-summary {
-      margin-top: 15px;
-      font-size: 16px;
-      font-weight: bold;
+    .phrase {
+      font-family: var(--body-font);
+      font-style: italic;
+      margin: 10px 0;
+margin-top: 0;
+ margin-bottom: 15px;
+      color: #fff;
+      font-size: 1;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
     }
-    /* واجهة الإعدادات */
-    .account-settings {
-      padding: 20px;
-      background: #f8f9fa;
-      border-radius: 8px;
+    .description {
+      text-align: justify;
+      line-height: 1.8;
+      margin-top: 30px;
+      color: #fff;
+      font-size: 1.2em;
+      letter-spacing: 0.7px;
+      font-weight: 600;
+      font-family: var(--extra-font);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    }
+    
+    #shopNow:hover { transform: scale(1.05); }
+    
+    /* Extended Sections (Products Display) */
+    #sectionsSection {
+      display: none;
+      background: #fff;
+      border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: box-shadow 0.3s ease;
+      margin-bottom: 40px;
+      transition: background 0.4s, color 0.4s;
     }
-    .account-settings:hover {
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    #sections { padding: 20px; }
+    #sections .back-container {
+      text-align: left;
+      margin-bottom: 10px;
     }
-    .account-settings h3 { margin-top: 0; }
-    .account-settings label { display: block; margin-top: 10px; font-weight: 500; }
-    .account-settings input[type="text"],
-    .account-settings input[type="password"],
-    .account-settings input[type="file"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      transition: border 0.3s ease;
-    }
-    .account-settings input:focus {
-      border-color: #3498db;
-      outline: none;
-    }
-    .account-settings button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #3498db;
-      color: #fff;
+    #sections .back-container button {
+      background: none;
       border: none;
-      border-radius: 6px;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
     }
-    .account-settings button:hover { 
-      background: #2980b9;
+    #sections .back-container button svg {
+      width: 30px;
+      height: 30px;
+      fill: var(--primary-color);
+    }
+    #searchContainer {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    /* شريط التبويبات للأقسام الثابتة والديناميكية مع شريط تمرير أعلى */
+    #tabs-wrapper {
+      overflow-x: auto;
+      margin-bottom: 20px;
+      transform: rotateX(180deg);
+    }
+    #tabs {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      transform: rotateX(180deg);
+    }
+    
+    #tabs .tab {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: background 0.3s, color 0.3s;
+      font-family: var(--body-font);
+      flex: 0 0 auto;
+    }
+    #tabs .tab.active,
+    #tabs .tab:hover {
+      background: var(--secondary-color);
+      color: #fff;
+    }
+    #sectionContent .section-group { display: none; }
+    #sectionContent .section-group.active {
+      display: block;
+      animation: fadeInNav 0.5s ease;
+    }
+    @keyframes fadeInNav {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* يتم هنا عرض المنتجات داخل الحاويات */
+    .section-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    /* تصميم زر القسم الأصلي (في حال كان عرض الأقسام) */
+    .section-button {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .section-button:hover { transform: translateY(-3px); }
+    .section-button .bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+    .section-button .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,139,0.5);
+    }
+    .section-button .text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+      text-align: center;
+      padding: 5px;
+      font-size: 24px;
+      letter-spacing: 2px;
+      font-family: var(--extra-font);
+    }
+    
+    /* تصميم بطاقة المنتج */
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 10px;
+      margin: 10px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+      background-color: #fff;
+      width: 200px;
+    }
+    .product-card img {
+      width: 100%;
+      height: auto;
+      max-height: 150px;
+      object-fit: contain;
+    }
+    .product-card h3 {
+      font-size: 16px;
+      margin: 10px 0 5px;
+      font-family: var(--extra-font);
+    }
+    .product-card p {
+      font-size: 14px;
+      color: #333;
+      margin: 5px 0;
+    }
+    .product-card:hover {
       transform: scale(1.03);
     }
-    /* استجابة لجميع الأجهزة */
-    @media (max-width: 768px) {
-      .container { padding: 20px; }
-      .header { flex-direction: column; align-items: flex-start; }
-      .logout-btn { width: 100%; text-align: center; }
-      .tab-nav button { font-size: 14px; }
+    
+    #extendedInfo {
+      margin-top: 40px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: background 0.4s, color 0.4s;
+    }
+    #extendedInfo p {
+      margin: 10px 0;
+      font-size: 1em;
+      line-height: 1.8;
+      font-weight: bold;
+      color: var(--text-color);
+      font-family: var(--body-font);
+    }
+    
+    #smartSearch {
+      width: 80%;
+      max-width: 500px;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 2px solid var(--primary-color);
+      border-radius: 25px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    #smartSearch:focus { border-color: var(--secondary-color); }
+    #searchResults {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,139,0.8);
+    }
+    /* قواعد عامة للمودال */
+    .modal-content {
+      background-color: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s;
+      color: var(--text-color);
+      font-family: var(--body-font);
+      transition: background 0.4s, color 0.4s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-content iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 8px;
+    }
+    .close {
+      color: #aaa;
+      cursor: pointer;
+      font-size: 24px;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      transition: color 0.3s;
+    }
+    .close:hover { color: #000; }
+    .close-btn {
+      margin-top: 10px;
+      padding: 8px 20px;
+      background: var(--button-bg);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      transition: transform 0.3s;
+      font-family: var(--extra-font);
+    }
+    .close-btn:hover { transform: scale(1.05); }
+    
+    /* Modal Loader for popup iframe */
+    #modalLoader {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    #modalLoader .spinner {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid var(--secondary-color);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+    
+    /* تعديل خاص بنموذج عجلة الحظ */
+    /* نجعل مودال عجلة الحظ يظهر في وسط الشاشة باستخدام Flexbox */
+    #luckyWheelModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,139,0.8);
+      align-items: center;
+      justify-content: center;
+      z-index: 2100;
+    }
+    /* إزالة الهامش الافتراضي للمحتوى داخل مودال عجلة الحظ */
+    #luckyWheelModal .modal-content {
+      margin: 0;
+    }
+    /* على جميع الأجهزة، يتم عرض شاشة عجلة الحظ بحجم ثابت 781×667 */
+    @media (min-width: 768px) {
+      #luckyWheelModal .modal-content {
+        width: 781px;
+        height: 667px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #luckyWheelModal .modal-content iframe {
+        width: 100%;
+        height: calc(100% - 50px); /* تخصيص مساحة للزر */
+      }
+    }
+    @media (max-width: 767px) {
+      #luckyWheelModal .modal-content {
+        width: 781px;
+        height: 667px;
+        max-width: 100%;
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #luckyWheelModal .modal-content iframe {
+        width: 100%;
+        height: calc(100% - 50px);
+      }
+    }
+    /* زر الإغلاق الخاص بعجلة الحظ */
+    #luckyWheelModal .close-lucky-btn {
+      background-color: #8b0000;
+      border: none;
+      color: #fff;
+      padding: 8px 12px;
+      margin-top: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
-.workplan-instructions p {
-  font-weight: bold;
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  margin-bottom: 15px;
+
+
+
+
+
+    
+    /* تكبير أيقونة زر عجلة الحظ على الجوال بنسبة *4 */
+    @media (max-width: 767px) {
+      #luckyWheelBtn img {
+        transform: scale(4) !important;
+      }
+    }
+    
+    /* DARK MODE Overrides */
+    html.dark-mode #sectionsSection {
+      background: #000;
+      color: #fff;
+    }
+    html.dark-mode #smartSearch {
+      background: #000;
+      color: #fff;
+    }
+    html.dark-mode #smartSearch::placeholder {
+      color: #fff;
+    }
+    
+    /* تعديلات خاصة بأجهزة الحاسوب والشاشات الكبيرة */
+    @media (min-width: 1024px) {
+      /* زيادة حجم زر عجلة الحظ على الشاشات الكبيرة */
+      #luckyWheelBtn {
+        width: 60px !important;
+        height: 60px !important;
+      }
+      /* ضبط حجم شاشة عجلة الحظ لتظهر بشكل متناسق وواضح على الحاسوب (اصغر حجماً) */
+      #luckyWheelModal .modal-content {
+        width: 700px;
+        height: 600px;
+      }
+    }
+
+
+
+/* رفع العنوان والنصوص فوق الأزرار */
+.section-title {
+  margin-top: 10px;    /* قلّلت المساحة العلوية للرفع */
+  margin-bottom: 5px;  /* قلّلت المساحة السفلية */
+font-size: 1rem;
 }
 
 
-/* إزالة نقاط القائمة وحذف المسافات الافتراضية */
-#productList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+  .product-buttons-container {
+    display: flex;
+    width: 100%;                   /* عرض الحاوية كامل الشاشة */
+    padding: 0;                    /* إزالة أي حشوة جانبية */
+    justify-content: space-between;/* يوزّع الأزرار من طرف لطرف */
+    gap: 4px;                      /* مسافة صغيرة ثابتة بين الأزرر */
+    box-sizing: border-box;        /* لتضمين الهامش والحشوة ضمن الـ 100% */
+  }
+
+  .product-button {
+    flex: 1.2;                     /* كل زر يكبر بنسبة 1.2 فليكسيبل */
+    margin: 0;                     /* لا هامش إضافي */
+    aspect-ratio: 0.50;               /* يحافظ على المربع */
+    max-width: none;               /* يلغي أية حدود عرض سابقة */
+  }
+.product-button span {
+    font-size: 8.2px !important; /* يمكنك التعديل مثلاً 11px أو 10px حسب ما يناسبك */
+ padding-top: 5px;
+  padding-bottom: 10px;
+  }
+ 
 }
 
-/* صندوق الفئة اليومية */
-#productList li {
-  display: inline-block;
-  padding: 10px 20px;
-  margin-top: 10px;
-  border: 2px solid #8e44ad;       /* إطار بنفسجي */
-  border-radius: 8px;
-  background-color: #f8e5fa;        /* خلفية فاتحة بنفسجية خفيفة */
-  font-weight: bold;
-  font-size: 18px;
-  color: #8e44ad;                   /* نص بنفسجي */
+
+
+
+
+
+
+/* زر الرجوع الخاص بواجهة الإعلان */
+
+
+
+
+/* زر الرجوع داخل sectionsSection */
+#sectionsSection .back-container {
+  position: absolute;  /* ثبّته بالنسبة لحاوية sectionsSection */
+  top: 20px;           /* 20px من الأعلى */
+  left: 20px;          /* 20px من اليسار */
+  z-index: 1001;       /* فوق محتوى الإعلان */
+}
+#sectionsSection .back-container button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+/* جعل لون السهم في زر الرجوع أحمر */
+#sectionsSection .back-container svg path {
+  fill: red;
 }
 
 
-/* 1. نخلي المربع ثابت أسفل الشاشة */
-.motivational-container {
-  background-color: #f8e5fa;
-  border: 2px solid #8e44ad;
-  border-radius: 8px;
-  padding: 15px;
-  margin-top: 0px;        /* مسافة بينه وبين اسم الفئة */
-  margin-bottom: 0px;     /* مسافة من أسفل البطاقة */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /* التعديل 1: خلفية شفافة للواجهات */
+       .gpd-section {
+    background: transparent !important; /* شفافية كاملة */
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    padding: 30px;
+    margin: 40px auto;
+    max-width: 1200px;
+    position: relative;
+    z-index: 100;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+        
+  #landingSection.gpd-section {
+  display: block !important;
 }
 
+        
+        /* التعديل 2: تحسين شكل زر الإغلاق */
+        .back-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .back-container button {
+            background: linear-gradient(135deg, #6a1b9a, #4a148c);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(106, 27, 154, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .back-container button:hover {
+            background: linear-gradient(135deg, #4a148c, #38006b);
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 6px 16px rgba(106, 27, 154, 0.6);
+        }
+        
+        .back-container button i {
+            transition: var(--transition);
+        }
+        
+        .back-container button:hover i {
+            transform: translateX(-3px);
+        }
 
 
 
 
-/* 3. شكل النص داخل المربع */
-.motivational-header {
+
+
+
+
+
+
+
+
+
+
+/* Carousel Styles */
+.carousel-container {
+  margin: 30px auto;
+  max-width: 1200px;
+  position: relative;
+  overflow: hidden;
+  padding: 0 70px;
+}
+
+.carousel-wrapper {
   display: flex;
   align-items: center;
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.motivational-header .emoji {
-  margin-left: 8px;
-}
-
-.motivational-text p {
-  font-weight: bold;
-  margin: 5px 0;
-}
-
-
-
-
-
-/* 3) زيادة المسافة بين اسم الفئة والمربع */
-#productList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 100px; /* ⬅️ المسافة بين الفئة والمربع التحفيزي */
-}
-
-
-/* تنسيقات قسم نصائح انستجرامية */
-.instagram-tips-section {
-  padding: 20px;
-  background: #fafafa;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-}
-.instagram-tips-section h3 {
-  margin-top: 0;
-  color: #C13584; /* لون يشبه شعار انستجرام */
-}
-.instagram-tips-section ul {
-  list-style: disc inside;
-  padding-left: 0;
-}
-
-
-
-
-
-/* بطاقات الطلبيات */
-.order-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-.order-card {
-  background: #fff;
-  border: 2px solid var(--secondary-color);
-  border-radius: 8px;
-  padding: 15px;
-  width: 280px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   position: relative;
 }
-.order-card h3 {
-  margin: 0 0 10px;
-  font-size: 18px;
+
+.carousel {
+  display: flex;
+  padding: 30px 0;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  justify-content: center;
 }
-.order-card p {
-  margin: 6px 0;
+
+.carousel::-webkit-scrollbar {
+  display: none;
 }
-.order-card .status {
+
+.category-btn {
+  flex: 0 0 auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  margin: 0 -40px;
+  transform: scale(0.8);
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.category-btn.active {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 3;
+  margin: 0 10px;
+}
+
+.category-btn.prev,
+.category-btn.next {
+  transform: scale(0.9);
+  opacity: 0.85;
+  z-index: 2;
+}
+
+.category-btn .bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.8);
+}
+
+.category-btn .btn-label {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 5px;
+  text-align: center;
   font-weight: bold;
+  font-size: 0.85rem;
+  transition: all 0.3s;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-.order-card .status .emoji {
-  margin-left: 6px;
+
+.carousel-arrow:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.left-arrow {
+  left: 15px;
+}
+
+.right-arrow {
+  right: 15px;
+}
+
+/* تخصيصات الجوال */
+@media (max-width: 768px) {
+  .carousel-container {
+    padding: 0 40px;
+  }
+  
+  .category-btn {
+    width: 130px;
+    height: 130px;
+    margin: 0 -50px;
+  }
+  
+  .category-btn.active {
+    margin: 0 5px;
+  }
+  
+  .carousel-arrow {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+  }
+  
+  .left-arrow {
+    left: 5px;
+  }
+  
+  .right-arrow {
+    right: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-container {
+    padding: 0 30px;
+  }
+  
+  .category-btn {
+    width: 110px;
+    height: 110px;
+    margin: 0 -60px;
+  }
+  
+  .carousel-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
+  
+  .btn-label {
+    font-size: 0.75rem;
+    padding: 6px 3px;
+  }
 }
 
 
 
 
 
-.loading-overlay {
+
+/* أنماط الـ Carousel */
+.carousel-container {
+  /* ... الأنماط السابقة ... */
+  perspective: 1200px;
+}
+
+.category-btn {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 139, 0.3);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+
+.category-btn.active {
+  transform: scale(1.05) translateZ(20px);
+  box-shadow: 0 12px 40px rgba(128, 0, 128, 0.4),
+              0 0 0 2px rgba(255, 255, 255, 0.3);
+  z-index: 10;
+  animation: float 3s ease-in-out infinite;
+}
+
+.category-btn.prev,
+.category-btn.next {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  filter: brightness(0.8);
+}
+
+.category-btn .bg-image {
+  mix-blend-mode: overlay;
+}
+
+@keyframes float {
+  0%, 100% { transform: scale(1.05) translateZ(20px) translateY(0); }
+  50% { transform: scale(1.05) translateZ(20px) translateY(-8px); }
+}
+
+/* تأثيرات اللمس */
+.category-btn:active {
+  animation: pulse 0.4s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+
+
+
+
+
+
+
+/* أنماط الـ Carousel */
+.carousel {
+  scroll-behavior: smooth;
+  transition: scroll-left 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.category-btn {
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center bottom;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+.category-btn.active {
+  transform: scale(1) rotate(0deg);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 139, 0.4);
+  z-index: 5;
+}
+
+.category-btn.prev {
+  transform: scale(0.9) rotate(-5deg);
+  opacity: 0.9;
+}
+
+.category-btn.next {
+  transform: scale(0.9) rotate(5deg);
+  opacity: 0.9;
+}
+
+/* تأثير المغناطيس عند التمرير */
+.category-btn {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* تأثير الظل عند التركيز */
+.category-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 10%;
+  width: 80%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, 
+             rgba(0,0,0,0.4) 0%, 
+             rgba(0,0,0,0) 80%);
+  z-index: -1;
+  animation: shadowPulse 2s infinite;
+}
+
+@keyframes shadowPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+
+
+
+
+
+
+
+/* تنسيقات مركزة للقائمة */
+.carousel {
+  display: flex;
+  padding: 30px 0;
+  scroll-behavior: smooth;
+  overflow-x: auto;
+  scrollbar-width: none;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  justify-content: center;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 50% 0; /* نقطة المركز */
+}
+
+.category-btn {
+  flex: 0 0 auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  margin: 0 -40px;
+  transform: scale(0.8);
+  opacity: 0.7;
+  z-index: 1;
+  scroll-snap-align: center; /* محاذاة المركز */
+}
+
+/* تحسينات الجوال */
+@media (max-width: 768px) {
+  .carousel {
+    scroll-padding: 40% 0; /* نقطة المركز للجوال */
+  }
+  
+  .category-btn {
+    width: 130px;
+    height: 130px;
+    margin: 0 -50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel {
+    scroll-padding: 35% 0; /* نقطة المركز للشاشات الصغيرة */
+  }
+  
+  .category-btn {
+    width: 110px;
+    height: 110px;
+    margin: 0 -60px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.category-btn {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.category-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
+
+
+
+
+
+/* استبدل أنيمشن float بهذا */
+@keyframes float {
+    0%, 100% { 
+        transform: scale(1.05) translateZ(20px) translateY(0);
+        box-shadow: 0 12px 40px rgba(128, 0, 128, 0.3),
+                    0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+    50% { 
+        transform: scale(1.05) translateZ(20px) translateY(-8px);
+        box-shadow: 0 15px 50px rgba(128, 0, 128, 0.4),
+                    0 0 0 2px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* أضف هذا التأثير للأسهم */
+.carousel-arrow {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+.carousel-arrow:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.15);
+}
+
+
+
+
+
+
+
+
+
+/* تحسين النصوص للشفافية */
+#landing h1,
+.phrase,
+.description {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* تحسين الظلال للبطاقات */
+.category-btn {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.category-btn.active {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+}
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .gpd-section {
+        padding: 20px;
+        margin: 20px auto;
+        backdrop-filter: blur(8px);
+    }
+    
+    .category-btn {
+        backdrop-filter: blur(8px);
+    }
+    
+    .carousel-container {
+        padding: 0 30px;
+    }
+}
+
+
+
+
+
+
+
+
+#backgroundVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -100;
+  object-fit: cover;
+}
+
+
+
+
+
+/* أضف هذا بدلاً من أنماط الفيديو الحالية */
+#videoContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -100;
+}
+
+#videoPlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -99;
+  transition: opacity 1s ease;
+}
+
+#backgroundVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: -98;
+}
+
+#backgroundVideo.playing {
+  opacity: 1;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(75, 0, 130, 0.4);
+  z-index: -97;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* النقاط الثلجية */
+.snowfall {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.9);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  pointer-events: none;
+  z-index: 9997;
+  overflow: hidden;
 }
 
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
+.snowflake {
+  position: absolute;
+  top: -50px;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  background: white;
+  animation: fall linear infinite;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* أنيميشن الثلج */
+@keyframes fall {
+  to { transform: translateY(100vh); }
+}
+
+/* أحجام وتأخيرات مختلفة للثلج */
+.snowflake:nth-child(1) { width: 6px; height: 6px; left: 5%; animation-duration: 10s; }
+.snowflake:nth-child(2) { width: 5px; height: 5px; left: 15%; animation-duration: 12s; }
+.snowflake:nth-child(3) { width: 4px; height: 4px; left: 25%; animation-duration: 14s; animation-delay: 1s; }
+.snowflake:nth-child(4) { width: 7px; height: 7px; left: 35%; animation-duration: 11s; animation-delay: 2s; }
+.snowflake:nth-child(5) { width: 5px; height: 5px; left: 45%; animation-duration: 13s; animation-delay: 3s; }
+.snowflake:nth-child(6) { width: 6px; height: 6px; left: 55%; animation-duration: 9s; }
+.snowflake:nth-child(7) { width: 4px; height: 4px; left: 65%; animation-duration: 15s; animation-delay: 1s; }
+.snowflake:nth-child(8) { width: 5px; height: 5px; left: 75%; animation-duration: 12s; animation-delay: 2s; }
+.snowflake:nth-child(9) { width: 6px; height: 6px; left: 85%; animation-duration: 10s; animation-delay: 3s; }
+.snowflake:nth-child(10) { width: 4px; height: 4px; left: 95%; animation-duration: 14s; }
+
+
+
+
+
+
+
+
+/* تلميحات بصرية للشخصية */
+.cartoon-character:hover .character-body {
+  animation: happyJump 1s ease;
+}
+
+@keyframes happyJump {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-30px); }
+}
+
+/* تكييف الألوان مع سمة المتجر */
+.character-body {
+  background: var(--secondary-color);
+  box-shadow: 0 5px 15px rgba(128, 0, 128, 0.3);
+}
+
+.snowflake {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 
 
 
 
-.gender-prompt {
-  text-align: center;
-  padding: 30px;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  margin: 20px 0;
+
+
+
+/* إضافة الظلال والتفاصيل */
+.character-body, .dress, .hair {
+  box-shadow: 
+    inset 0 -5px 10px rgba(0,0,0,0.1),
+    0 5px 15px rgba(0,0,0,0.2);
 }
 
-.gender-buttons {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 25px;
+/* إضافة تفاصيل للفستان */
+.dress::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 30px;
+  background: #ff8da1;
+  border-radius: 50%;
 }
 
-.gender-btn {
-  padding: 20px 40px;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+/* تفاصيل الشعر */
+.hair::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 10px;
+  width: 30px;
+  height: 40px;
+  background: #8b4513;
+  border-radius: 50% 50% 0 0;
+  transform: rotate(-30deg);
+}
+
+.hair::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  right: 10px;
+  width: 30px;
+  height: 40px;
+  background: #8b4513;
+  border-radius: 50% 50% 0 0;
+  transform: rotate(30deg);
+}
+
+/* تأثيرات ثلاثية الأبعاد إضافية */
+.character-3d:hover {
+  animation: dance 2s ease infinite;
+}
+
+@keyframes dance {
+  0%, 100% { transform: translateY(0) rotateY(0deg); }
+  25% { transform: translateY(-20px) rotateY(30deg); }
+  50% { transform: translateY(0) rotateY(0deg) scale(1.1); }
+  75% { transform: translateY(-20px) rotateY(-30deg); }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* أضف هذه الأنماط بعد أنماط الـ carousel */
+/* Products Modal */
+#productsModal .modal-content {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 25px;
+  animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
 }
 
-.gender-btn.male {
-  background: #3498db;
+.back-btn {
+  display: flex;
+  align-items: center;
+  background: var(--primary-color);
   color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
 }
 
-.gender-btn.female {
-  background: #e91e63;
-  color: white;
+.back-btn svg {
+  margin-left: 5px;
+  transition: transform 0.3s;
 }
 
-.gender-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+.back-btn:hover {
+  background: var(--secondary-color);
 }
 
-.gender-btn i {
-  font-size: 24px;
+.back-btn:hover svg {
+  transform: translateX(-5px);
 }
 
+#modalTitle {
+  margin: 0 auto;
+  color: var(--primary-color);
+  font-size: 1.8rem;
+}
 
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 10px;
+}
 
-
-
-.category-card {
-  background: #fff;
+.product-item {
+  background: white;
   border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.4s, box-shadow 0.4s;
+  position: relative;
+}
+
+.product-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.product-details {
+  padding: 15px;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+  color: #333;
+  font-weight: 600;
+}
+
+.product-price {
+  font-size: 1.3rem;
+  color: var(--accent-order);
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.product-description {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Responsive grid */
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .product-image {
+    height: 160px;
+  }
+}
+
+
+
+
+
+
+
+
+
+/* أضف هذه الأنماط في قسم الـ <style> */
+.loading, .no-products, .error {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.loading::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+
+
+
+
+
+
+
+/* أضف هذه الأنماط */
+.product-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تأخير متدرج للبطاقات */
+.product-item:nth-child(1) { animation-delay: 0.1s; }
+.product-item:nth-child(2) { animation-delay: 0.2s; }
+.product-item:nth-child(3) { animation-delay: 0.3s; }
+.product-item:nth-child(4) { animation-delay: 0.4s; }
+.product-item:nth-child(5) { animation-delay: 0.5s; }
+
+
+
+
+
+
+
+
+
+
+/* تأكد من وجود هذه الأنماط */
+.loading, .no-products, .error {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.loading::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+
+
+
+
+
+
+
+
+/* أضف هذه الأنماط بعد أنماط بطاقات المنتج */
+.product-description {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 10px;
+}
+
+.full-description {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 10px 0;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 3px solid var(--primary-color);
+}
+
+.show-more-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin: 5px 0 0;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.show-more-btn::after {
+  content: '›';
+  margin-right: 5px;
+  font-size: 1.2rem;
+  transition: transform 0.3s;
+}
+
+.show-more-btn.show-less::after {
+  transform: rotate(90deg);
+}
+
+.show-more-btn:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
+@media (max-width: 480px) {
+  .product-description, 
+  .full-description {
+    font-size: 0.8rem;
+  }
+  
+  .show-more-btn {
+    font-size: 0.8rem;
+  }
+}
+
+
+
+
+
+
+
+/* أضف هذه الأنماط بعد أنماط بطاقات المنتج */
+.copy-link-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  padding: 8px 15px;
+  font-size: 0.85rem;
+  color: #555;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.copy-link-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.copy-link-btn svg {
+  transition: transform 0.3s;
+}
+
+.copy-link-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #4CAF50;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 10000;
+  transition: opacity 0.3s;
+}
+
+.notification.error {
+  background: #f44336;
+}
+
+.product-item.highlighted {
+  animation: highlightPulse 2s ease;
+  box-shadow: 0 0 0 3px var(--primary-color);
+}
+
+@keyframes highlightPulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 0, 255, 0.7); }
+  50% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(0, 0, 255, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 0, 255, 0); }
+}
+
+
+
+
+
+
+
+
+
+
+/* تمييز بطاقة المنتج المفتوح عبر الرابط */
+.product-card.highlighted {
+  border: 2px solid #ff4d4f;              /* إطار أحمر لافت */
+  box-shadow: 0 0 10px rgba(255, 77, 79, 0.5);
+  transform: scale(1.05);                 /* تكبير طفيف */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. تعيين وضع ثابت وتمكين التمرير العمودي */
+.product-modal {
+  position: fixed;      /* تثبيت النافذة بالنسبة للشاشة */
+  top: 0;               /* من أعلى الشاشة */
+  left: 0;              /* من يسار الشاشة */
+  right: 0;             /* إلى يمين الشاشة */
+  bottom: 0;            /* إلى أسفل الشاشة */
+  overflow-y: auto;     /* تفعيل التمرير العمودي */
+  -webkit-overflow-scrolling: touch; /* سلاسة التمرير على iOS */
+  background: #fff;     /* خلفية بيضاء (أو حسب ثيمك) */
+  z-index: 10000;       /* فوق باقي العناصر */
+}
+
+/* 2. منع تمرير الخلفية أثناء فتح الواجهة */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* 3. (اختياري) ضبط المحتوى الداخلي لبطاقات المنتجات */
+.product-modal .products-container {
+  display: flex;
+  flex-direction: column; /* أو row + flex-wrap: wrap; حسب تصميمك */
+  padding: 1rem;          /* قليل من الحشو لراحة اللمس */
+}
+
+/* 4. تأكد من أن كل بطاقة منتج لها حجم ثابت أو نسبة مئوية */
+.product-modal .product-card {
+  flex: 0 0 auto;        /* لا تنكمش أو تتمدد */
+  margin-bottom: 1rem;    /* مسافة أسفل كل بطاقة */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Carousel Styles */
+.banner-carousel {
+position: relative;
+width: 100%;
+max-width: 1200px;
+margin: 0 auto 30px;
+overflow: hidden;
+border-radius: 15px;
+}
+.banner-carousel .slides img {
+width: 100%;
+display: none;
+}
+.banner-carousel .slides img.active {
+display: block;
+}
+.banner-carousel .dots {
+position: absolute;
+bottom: 10px;
+left: 50%;
+transform: translateX(-50%);
+display: flex;
+gap: 8px;
+}
+.banner-carousel .dot {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+background: rgba(255,255,255,0.5);
+cursor: pointer;
+transition: background 0.3s;
+}
+.banner-carousel .dot.active {
+background: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ─── تعديل حجم وموضع الـ Carousel ─── */
+.banner-carousel {
+/* يملأ العرض دائماً */
+width: 100%;
+/* أقصى ارتفاع على الحاسوب */
+max-height: 400px;
+/* ينقلها للأعلى لتمتزج مع الواجهة الشبه شفافة */
+margin-top: -60px;
+/* حواف منحنية */
+border-radius: 15px;
+overflow: hidden;
+position: relative;
+}
+
+/* الصور تملأ العرض والأبعاد تُقص بالحفظ على النسبة */
+.banner-carousel .slides img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+/* ─── تعديل خاص بالهاتف المحمول ─── */
+@media (max-width: 768px) {
+  /* تكبير حجم قائمة الأقسام على الجوال */
+  #tabs .tab {
+    font-size: 20px;      /* حجم الخط */
+    padding: 12px 24px;   /* المسافة الداخلية */
+  }
+
+.banner-carousel {
+/* يزيد الارتفاع قليلاً على الموبايل */
+max-height: 300px;
+/* على الموبايل لا نحتاج إزاحة كبيرة للأعلى */
+margin-top: -40px;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ========== تعديلات البانر المتحرك ========== */
+.banner-carousel {
+  position: relative;
+  transition: all 0.5s ease;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin: 20px auto;
+  max-width: 1200px;
+}
+
+/* على الشاشات الكبيرة (الحاسوب) */
+@media (min-width: 992px) {
+  .banner-carousel {
+    height: 280px !important; /* تصغير الارتفاع */
+    max-width: 90% !important;
+    transform: scale(0.95);
+    margin-top: -20px;
+  }
+  
+  .banner-carousel .slides img {
+    object-fit: cover;
+    height: 100%;
+  }
+}
+
+/* على الشاشات الصغيرة (الهاتف) */
+@media (max-width: 991px) {
+  .banner-carousel {
+    height: 200px !important; /* زيادة الارتفاع */
+    border-radius: 15px;
+    margin: 15px auto 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  }
+  
+  .banner-carousel .slides img {
+    object-fit: cover;
+    height: 100%;
+  }
+}
+
+/* تحسين النقاط (الدوائر الصغيرة) */
+.banner-carousel .dots {
+  bottom: 20px;
+  z-index: 10;
+}
+
+.banner-carousel .dot {
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.banner-carousel .dot.active {
+  background: #ffffff;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* تأثيرات التبديل بين الصور */
+@keyframes slideFade {
+  0% { opacity: 0; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.banner-carousel .slides img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+  animation: slideFade 1.2s ease-out forwards;
+}
+
+.banner-carousel .slides img.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* تأثيرات عند التمرير */
+.banner-carousel .slides {
+  position: relative;
+  height: 100%;
+}
+
+/* ظل تدرجي لتحسين قراءة النص إذا أضفت نصوصًا لاحقًا */
+.banner-carousel::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* تأثيرات اللمس على الجوال */
+@media (hover: none) {
+  .banner-carousel .dot {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* تحسينات للشاشات الصغيرة جدًا */
+@media (max-width: 480px) {
+  .banner-carousel {
+    height: 180px !important;
+    border-radius: 12px;
+  }
+  
+  .banner-carousel .dot {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ====== بداية التعديلات لتقليل طول البانر على الجوال ====== */
+@media (max-width: 768px) {
+  .banner-carousel {
+    height: 120px !important; /* تقليل الارتفاع بشكل كبير */
+    max-height: 120px !important;
+    aspect-ratio: 16/4 !important; /* نسبة أفقية عالية جداً */
+  }
+  
+  .banner-carousel .slides img {
+    height: 120px !important;
+    max-height: 120px !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+  
+  .banner-carousel .slides {
+    height: 120px !important;
+  }
+  
+  .banner-carousel .dots {
+    bottom: 5px !important;
+  }
+  
+  .banner-carousel .dot {
+    width: 8px !important;
+    height: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-carousel {
+    height: 100px !important; /* أكثر انخفاضاً */
+    aspect-ratio: 16/3.5 !important;
+  }
+  
+  .banner-carousel .slides img {
+    height: 100px !important;
+  }
+  
+  .banner-carousel .slides {
+    height: 100px !important;
+  }
+}
+/* ====== نهاية التعديلات ====== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======== أنماط قسم المنتجات العشوائية ======== */
+#randomProducts {
+  background: transparent;
+  padding: 40px 0;
+}
+
+.random-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  justify-content: center;
+}
+
+.random-category-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
   padding: 20px;
-  margin: 20px 0;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 139, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .category-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #eee;
+  margin-bottom: 20px;
   padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.category-header i {
-  font-size: 24px;
-  color: #3498db;
-}
-
-.category-badge {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  font-weight: bold;
-  border: 2px solid #3498db;
-  color: #3498db;
-}
-
-.info-btn {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: #27ae60;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.info-btn:hover {
-  background: #219a52;
-}
-
-
-
-
-
-
-
-
-
-
-/* تنسيقات فاخرة للقادة */
-body.leader-theme {
-  --secondary-color: #8e44ad;
-  background: linear-gradient(45deg, #f8e5fa 0%, #e8d3ff 100%);
-  position: relative;
-  overflow-x: hidden;
-}
-
-body.leader-theme::before {
-  content: "";
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: 
-    radial-gradient(circle at 70% 30%, rgba(142, 68, 173, 0.1) 20%, transparent 40%),
-    linear-gradient(45deg, transparent 60%, rgba(255, 223, 186, 0.2) 100%);
-  animation: leader-glow 20s linear infinite;
-  z-index: -1;
-}
-
-@keyframes leader-glow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-body.leader-theme .container {
-  border: 3px solid #8e44ad;
-  box-shadow: 
-    0 0 40px rgba(142, 68, 173, 0.3),
-    inset 0 0 20px rgba(142, 68, 173, 0.2);
-  background: linear-gradient(145deg, #ffffff 0%, #fdfcff 100%);
-  backdrop-filter: blur(10px);
-}
-
-.leader-badge {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background: linear-gradient(45deg, #8e44ad, #9b59b6);
+.category-header h3 {
   color: #fff;
-  padding: 10px 25px;
+  font-size: 1.4rem;
+  margin: 0;
+  flex-grow: 1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.see-all-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
   border-radius: 30px;
-  font-weight: bold;
-  box-shadow: 
-    0 4px 20px rgba(142, 68, 173, 0.4),
-    0 0 15px rgba(255, 255, 255, 0.3) inset;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: 2px solid #fff;
-  animation: badge-float 3s ease-in-out infinite;
-}
-
-@keyframes badge-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-.leader-badge i {
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
-}
-
-body.leader-theme .header {
-  border-bottom: 2px solid #8e44ad;
-  background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(5px);
-}
-
-/* ⬇️ أضف هذا الكود الجديد ⬇️ */
-.header {
-  background: transparent !important;
-  backdrop-filter: none !important;
-}
-
-body.leader-theme .logout-btn {
-  background: linear-gradient(45deg, #9b59b6, #8e44ad);
-  position: relative;
-  overflow: hidden;
-}
-
-body.leader-theme .logout-btn::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, 
-    transparent 20%, 
-    rgba(255,255,255,0.3) 50%, 
-    transparent 80%);
-  animation: btn-glow 3s linear infinite;
-}
-
-@keyframes btn-glow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-body.leader-theme .tab.active {
-  color: #8e44ad;
-  text-shadow: 0 0 10px rgba(142, 68, 173, 0.3);
-  border-bottom: 3px solid #8e44ad;
-}
-
-body.leader-theme .sales-card th {
-  background: linear-gradient(45deg, #8e44ad, #9b59b6);
-  letter-spacing: 1px;
-}
-
-body.leader-theme .filter-section button {
-  background: #9b59b6;
-  position: relative;
-  overflow: hidden;
+  cursor: pointer;
+  font-size: 0.9rem;
   transition: all 0.3s;
 }
 
-body.leader-theme .filter-section button:hover {
-  background: #8e44ad;
-  transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+.see-all-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
 
-/* توهج خاص على العناصر المهمة */
-.leader-glow {
-  box-shadow: 0 0 20px rgba(142, 68, 173, 0.4);
-  animation: glow-pulse 2s ease-in-out infinite;
+.random-products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
 }
 
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(142, 68, 173, 0.4); }
-  50% { box-shadow: 0 0 30px rgba(142, 68, 173, 0.6); }
-}
-
-
-
-
-
-
-
-body.leader-theme .header-left {
-  background: transparent;
-}
-
-body.leader-theme .header-logo {
-  box-shadow: 0 0 15px rgba(142, 68, 173, 0.3);
-}
-
-
-
-
-
-
-
-
-
-/* ابدأ الإضافة من هنا */
-#leaderBonus {
-  background: rgba(255,255,255,0.9);
-  padding: 20px;
+.random-product-card {
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 15px;
-  margin: 25px 0;
-  border: 2px solid #8e44ad;
-  box-shadow: 0 4px 20px rgba(142, 68, 173, 0.2);
-  backdrop-filter: blur(5px);
-}
-
-#leaderBonus h3 {
-  color: #8e44ad;
-  margin-top: 0;
-  border-bottom: 2px solid #f0f0f0;
-  padding-bottom: 10px;
-}
-
-#leaderBonus p {
-  font-size: 18px;
-  margin: 15px 0;
-  font-weight: 500;
-}
-/* انتهاء الإضافة */
-
-
-
-
-/* ابدأ الإضافة هنا */
-#totalEarnings {
-  font-size: 20px;
-  color: #27ae60;
-  font-weight: bold;
-  border-top: 2px solid #eee;
-  padding-top: 15px;
-  margin-top: 15px;
-}
-
-#personalProfit {
-  color: #2980b9;
-}
-/* انتهاء الإضافة */
-
-
-
-
-
-
-
-#leaderFilterDisplay {
-  background: #f8f9fa;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #8e44ad;
-  margin: 10px 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/* بطاقات مكافآت الموظف */
-.reward-section {
-  width: 100%;
-}
-.reward-card {
-  position: relative;
-  width: 260px;
-  padding: 16px;
-  border: 2px solid #4caf50;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(76, 175, 80, 0.5);
-  background: #fff;
   overflow: hidden;
-  font-family: 'Roboto', sans-serif;
+  transition: all 0.4s;
+  transform-style: preserve-3d;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
-.reward-card__icon {
-  position: absolute;
-  top: -10px; right: -10px;
-  font-size: 2.2rem;
-  color: #4caf50;
-  font-weight: bold;
+
+.random-product-card:hover {
+  transform: translateY(-8px) rotateY(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.12);
 }
-.reward-card__content {
-  text-align: center;
-  padding-top: 10px;
+
+.product-image-container {
+  height: 160px;
+  overflow: hidden;
+  position: relative;
 }
-.reward-card__type {
-  font-size: 1rem;
-  margin-bottom: 6px;
-  color: #333;
+
+.product-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
 }
-.reward-card__amount {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 4px;
-  color: #4caf50;
+
+.random-product-card:hover .product-image-container img {
+  transform: scale(1.05);
 }
-.reward-card__date {
-  font-size: 0.8rem;
-  color: #777;
+
+.product-info {
+  padding: 15px;
 }
-.reward-card__nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+
+.product-name {
+  color: #fff;
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+.product-price {
+  color: #ffdd00;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.product-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  height: 40px;
+  overflow: hidden;
+}
+
+/* التجاوبية */
+@media (max-width: 1200px) {
+  .random-products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .random-products-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .random-category-section {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .random-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .product-image-container {
+    height: 120px;
+  }
+  
+  .product-name {
+    font-size: 1rem;
+  }
+  
+  .product-price {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .random-products {
+    grid-template-columns: 1fr;
+  }
+  
+  .random-product-card {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .product-image-container {
+    height: 140px;
+  }
+}
+
+/* أنميشن الدخول */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.random-category-section {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.random-category-section:nth-child(1) { animation-delay: 0.1s; }
+.random-category-section:nth-child(2) { animation-delay: 0.2s; }
+.random-category-section:nth-child(3) { animation-delay: 0.3s; }
+.random-category-section:nth-child(4) { animation-delay: 0.4s; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======== تنسيقات جديدة للبطاقات العشوائية ======== */
+.random-products-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.random-category-section {
   background: transparent;
+  padding: 0;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.category-header h3 {
+  color: #fff;
+  font-size: 1.3rem;
+  margin: 0;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.see-all-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
   border: none;
-  font-size: 1.4rem;
-  color: #4caf50;
+  padding: 6px 12px;
+  border-radius: 20px;
   cursor: pointer;
-  padding: 4px 8px;
+  font-size: 0.85rem;
+  transition: all 0.3s;
 }
-.reward-card__nav.prev { left: 6px; }
-.reward-card__nav.next { right: 6px; }
-.reward-card__nav:hover {
-  transform: translateY(-50%) scale(1.2);
-  transition: transform 0.2s;
+
+.see-all-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
-/* أنيميشن للانتقال */
-@keyframes slideLeft { from { transform: translateX(100%); opacity:0; } to { transform: translateX(0); opacity:1; } }
-@keyframes slideRight{ from { transform: translateX(-100%); opacity:0; } to { transform: translateX(0); opacity:1; } }
-.slide-left  { animation: slideLeft 0.2s ease; }
-.slide-right { animation: slideRight 0.2s ease; }
+
+.random-products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.random-product-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.random-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.product-image-container {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.random-product-card:hover .product-image-container img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.product-name {
+  color: #fff;
+  font-size: 0.95rem;
+  margin: 0 0 6px;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-price {
+  color: #ffdd00;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+/* تصميم متجاوب للهواتف */
+@media (max-width: 768px) {
+  .random-products {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  
+  .random-product-card {
+    aspect-ratio: 1/1; /* يجعل البطاقة مربعة */
+  }
+  
+  .product-image-container {
+    height: auto;
+  }
+  
+  .product-name {
+    font-size: 0.8rem;
+    padding: 0 5px;
+  }
+  
+  .product-price {
+    font-size: 0.9rem;
+  }
+  
+  .product-info {
+    padding: 8px 5px;
+  }
+  
+  .category-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .see-all-btn {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .random-products {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    gap: 8px;
+  }
+  
+  .random-product-card {
+    min-width: 110px;
+    max-width: 110px;
+    scroll-snap-align: start;
+  }
+  
+  .product-name {
+    font-size: 0.7rem;
+  }
+  
+  .product-price {
+    font-size: 0.8rem;
+  }
+  
+  .category-header {
+    padding: 0 10px 5px;
+  }
+}
+
+/* إزالة شريط التمرير في المتصفحات الحديثة */
+.random-products::-webkit-scrollbar {
+  display: none;
+}
+
+.random-products {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ====== تعديل ألوان النص في واجهة المنتجات المنبثقة ====== */
+#productsModal .product-name,
+#productsModal .product-description,
+#productsModal .full-description,
+#productsModal .product-price {
+  color: #333 !important; /* اللون الأسود القاتم */
+}
+
+#productsModal .product-item {
+  background-color: #fff !important; /* خلفية بيضاء */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; /* ظل ناعم */
+}
+
+#productsModal .product-price {
+  color: #8b0000 !important; /* اللون الأحمر الداكن */
+  font-weight: 700;
+}
+
+#productsModal .product-item:hover {
+  background-color: #f8f8f8 !important;
+}
+
+#productsModal .product-description {
+  color: #555 !important;
+}
+
+#productsModal .full-description {
+  color: #444 !important;
+  background-color: #f9f9f9 !important;
+}
+
+#productsModal .show-more-btn {
+  color: #0000cd !important; /* اللون الأزرق الأصلي للمتجر */
+}
+
+#productsModal .show-more-btn:hover {
+  color: #800080 !important; /* اللون البنفسجي الأصلي للمتجر */
+}
+
+
+
+
+
+
+
+/* أنماط مربع البحث */
+.search-bar-container {
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.search-input-container {
+  display: flex;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.search-input-container:focus-within {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+#globalSearchInput {
+  flex: 1;
+  padding: 18px 25px;
+  border: none;
+  font-size: 1.1rem;
+  outline: none;
+  background: transparent;
+  color: #fff;
+}
+
+#globalSearchInput::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+#globalSearchButton {
+  background: var(--primary-color);
+  border: none;
+  padding: 0 30px;
+  cursor: pointer;
+  transition: background 0.3s;
+  color: white;
+  font-size: 1.2rem;
+}
+
+#globalSearchButton:hover {
+  background: var(--secondary-color);
+}
+
+/* التجاوبية */
+@media (max-width: 768px) {
+  .search-input-container {
+    border-radius: 30px;
+  }
+  
+  #globalSearchInput {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+  
+  #globalSearchButton {
+    padding: 0 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar-container {
+    padding: 0 10px;
+  }
+  
+  #globalSearchInput {
+    padding: 12px 15px;
+  }
+  
+  #globalSearchButton {
+    padding: 0 20px;
+  }
+}
+
+
 
 
 
@@ -797,318 +2883,12 @@ body.leader-theme .header-logo {
 
 
   </style>
-</head>
-<body>
-  <!-- خلفية الفيديو -->
-  <video autoplay muted loop id="bgVideo">
-    <source src="https://cdn.dribbble.com/userupload/28774288/file/large-0f5d92145d706df70e061ebbf838fa27.mp4" type="video/mp4">
-    متصفحك لا يدعم تشغيل الفيديو.
-  </video>
   
-  <div class="header">
-    <div class="header-left">
-      <img class="header-logo" id="employeePhotoDisplay"
-     src="https://cdn-icons-png.flaticon.com/512/8053/8053444.png"
-     alt="صورة الموظف">
-
-      <h1 id="employeeNameDisplay">لوحة الموظف</h1>
-    </div>
-    <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
-  </div>
-  <div class="container">
-    <!-- قائمة الألسنة مع زر الترجمة -->
-    <div class="tab-nav">
-      <button id="tabAnalyticsBtn" class="active" onclick="showEmployeeTab('analytics', event)">تحليلات</button>
-   <button id="tabWorkPlanBtn" onclick="showEmployeeTab('workplan', event)">خطة العمل</button>
-<button id="tabInstagramTipsBtn" onclick="showEmployeeTab('instagramTips', event)">نصائح انستجرامية</button>
-<button id="tabOrdersBtn" onclick="showEmployeeTab('orders', event)">الطلبيات</button>
-
-
-
-      
-    </div>
-    
-    <!-- واجهة التحليلات -->
-    <div id="analytics" class="employee-tab" style="display: block;">
-      <div class="filter-section">
-        <span id="filterLabel">تصفية المبيعات حسب:</span>
-        <label id="radioDayLabel">
-          <input type="radio" name="filterType" value="day" checked onclick="toggleFilterInputs('day')"> يوم
-        </label>
-        <label id="radioMonthLabel">
-          <input type="radio" name="filterType" value="month" onclick="toggleFilterInputs('month')"> شهر
-        </label>
-        <label id="radioPeriodLabel">
-          <input type="radio" name="filterType" value="period" onclick="toggleFilterInputs('period')"> فترة مخصصة
-        </label>
-        <div id="filterDay" style="margin-top:10px;">
-          <input type="date" id="filterDayInput">
-        </div>
-        <div id="filterMonth" style="margin-top:10px; display:none;">
-          <input type="month" id="filterMonthInput">
-        </div>
-        <div id="filterPeriod" style="margin-top:10px; display:none;">
-          <label>من:</label>
-          <input type="date" id="filterStartDate">
-          <label>إلى:</label>
-          <input type="date" id="filterEndDate">
-        </div>
-        <button onclick="loadSalesData(); loadRewards();">تطبيق التصفية</button>
-
-      </div>
-      <h2 id="salesHeader">بيانات المبيعات والأرباح الخاصة بك</h2>
-
-
-
-<button id="calculatePointsBtn" onclick="calculatePoints()" style="margin-left:10px; padding:5px 10px; background:#2980b9; color:#fff; border:none; border-radius:5px;">
-  احتساب النقاط
-</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h3 id="employeeTargetDisplay" style="color:#27ae60; margin-bottom: 15px;"></h3><!-- بطاقة مكافآت الموظف -->
-<div id="rewardSection" class="reward-section" style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
-  <!-- نص توضيحي صغير -->
-  <p class="reward-desc" style="font-size: 0.85rem; color: #555; margin-top: 4px;">
-    هذه البطاقة تعرض ملخّص مكافآتك لهذا الشهر.
-  </p>
-  <!-- البطاقة نفسها -->
-  <div id="rewardCard" class="reward-card">
-    <div class="reward-card__icon">+</div>
-    <div class="reward-card__content">
-      <div class="reward-card__type">نوع المكافأة</div>
-      <div class="reward-card__amount">₪0</div>
-      <div class="reward-card__date">—</div>
-    </div>
-    <button class="reward-card__nav prev">&lt;</button>
-    <button class="reward-card__nav next">&gt;</button>
-  </div>
-</div>
-
-
-      <div id="salesData" class="sales-card">
-        <!-- يتم تحميل جدول المبيعات هنا -->
-      </div>
-      <div class="sales-summary" id="salesSummary"></div>
-
-
-<!-- ابدأ الإضافة من هنا -->
-<div id="leaderBonus" style="display: none;">
-  <h3>مكافأة القيادة (10%) 🏆</h3>
-  <p>إجمالي أرباح الفريق: <span id="teamTotal">0.00</span> ₪</p>
-  <p>نصيبك من الأرباح: <span id="leaderPercentage">0.00</span> ₪</p>
-<!-- ابدأ الإضافة هنا -->
-<p>أرباحك الشخصية: <span id="personalProfit">0.00</span> ₪</p>
-<p>المجموع الكلي: <span id="totalEarnings">0.00</span> ₪</p>
-<!-- انتهاء الإضافة -->
-</div>
-<!-- انتهاء الإضافة -->
-
-
-
-    </div>
-    
- <!-- واجهة خطة العمل -->
- <div id="workplan" class="employee-tab" style="display: none;">
-   <div class="workplan-section">
-     <h3>خطة العمل اليومية</h3>
-
-     <div id="genderPrompt" class="gender-prompt">
-  <h3>مرحبًا! بداية جديدة 💪</h3>
-  <p>اختر جنسك لنساعدك في تخصيص خطتك:</p>
-  <div class="gender-buttons">
-    <button class="gender-btn male" onclick="setGender('male')">
-      <i class="fas fa-mars"></i>
-      ذكر
-    </button>
-    <button class="gender-btn female" onclick="setGender('female')">
-      <i class="fas fa-venus"></i>
-      أنثى
-    </button>
-  </div>
-</div>
- <div id="planContent" style="display: none;">
-
-
-
-  <div id="planInstructions" class="workplan-instructions">
-    <p><strong>شرح تقسيم الوقت:</strong> اختر يومًا في الأسبوع أو ساعة في اليوم لتحضير المحتوى للنشر، ووزّع وقتك بحيث تخصص كل يوم/ساعة لفئة منتج مختلفة.</p>
-  </div>
-  <h4>الفئة الموصى بها لهذا اليوم:</h4>
-  <ul id="productList"></ul>
-
-<!-- بداية المربع التحفيزي -->
-<div class="motivational-container">
-  <p class="motivational-header">
-    <strong>من القلب للقلب</strong>
-    <span class="emoji">❤️</span>
-  </p>
-  <div class="motivational-text">
-    <p><strong>هالدرب ما بيطلب جري، بيطلب استمرار</strong></p>
-    <p><strong>“شوية شوية” تمشي خطوة بخطوة، وبالراحة تكسب الخبرة.</strong></p>
-    <p><strong>كل يوم خذ فكرة صغيرة، جرّبها وانشرها، وبكرة ضبّط أفكار جديدة.</strong></p>
-    <p><strong>حتى لو وقعت، قوم وضحك: “قطرة قطرة بتحف الصخر”.</strong></p>
-    <p><strong>المهم تظل تبعثر طاقة وإصرار، والصبر مرة ولحظته حلوة.</strong></p>
-    <p><strong>امشي يوم ورا يوم، وبابتسامة خفيفة، رح تلحق نجاح كبير!</strong></p>
-  </div>
-</div>
-<!-- نهاية المربع التحفيزي -->
-
-</div>
-
-   </div>
- </div>
-<!-- بداية قسم نصائح انستجرامية -->
-<div id="instagramTips" class="employee-tab" style="display: none;">
-  <div class="instagram-tips-section">
-    <h3>نصائح انستجرامية</h3>
-    <ul id="instagramTipsList">
-      
-  <li>
-    <strong>كيف تعمل خوارزمية إنستجرام</strong>
-    <ul>
-      <li>الأولوية للمحتوى القريب من المستخدمين</li>
-      <li>كل ما يتفاعل الجمهور مع منشوراتك (إعجاب، تعليق، حفظ، مشاركة) أسرع، خوارزمية إنستا تطلع محتواك لناس أكثر.</li>
-      <li>التوقيت مهم: أول ساعة بعد النشر تحدد مدى انتشارك.</li>
-    </ul>
-  </li>
-  <li>
-    <strong>توقّع السلوك</strong>
-    <ul>
-      <li>إنستا تحاول تعرف أي نوع محتوى يعجب متابعينك: إذا تفاعلوا أكثر مع الريلز، بتزيد أولوية الريلز.</li>
-    </ul>
-  </li>
-  <li>
-    <strong>الاستمرارية معيار رئيسي</strong>
-    <ul>
-      <li>حساب نشط بنشر بانتظام (يوميًّا أو كل يومين) بيكسب ثقة الخوارزمية.</li>
-    </ul>
-  </li>
-</ul>
-
-      <!-- مواعيد النشر المناسبة -->
-    <h4>مواعيد النشر المناسبة:</h4>
-    <table class="instagram-tips-table" style="width:100%; border-collapse: collapse; margin-bottom: 15px;">
-      <thead>
-        <tr>
-          <th style="border: 1px solid #ddd; padding: 8px; background: #f0f0f0;">نوع المحتوى</th>
-          <th style="border: 1px solid #ddd; padding: 8px; background: #f0f0f0;">أنسب الوقت بنشره</th>
-          <th style="border: 1px solid #ddd; padding: 8px; background: #f0f0f0;">ملاحظات</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="border: 1px solid #ddd; padding: 8px;">ريلز Reels</td>
-          <td style="border: 1px solid #ddd; padding: 8px;">١٠–١٢ ظهرًا &amp; ٧–٩ مساءً</td>
-          <td style="border: 1px solid #ddd; padding: 8px;">جمهور يتصفح للترفيه قبل الغداء وبعد الشغل/الدراسة</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #ddd; padding: 8px;">المنشورات Posts</td>
-          <td style="border: 1px solid #ddd; padding: 8px;">٨–١٠ صباحًا &amp; ٥–٧ مساءً</td>
-          <td style="border: 1px solid #ddd; padding: 8px;">لحظات التصفح الصباحية والمسائية</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #ddd; padding: 8px;">القصص Stories</td>
-          <td style="border: 1px solid #ddd; padding: 8px;">طوال اليوم (تركيز بين ١٢–٣ عصرًا)</td>
-          <td style="border: 1px solid #ddd; padding: 8px;">حافظ على ظهور مستمرّ بين متابعينك</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- نصيحة احترافية -->
-    <p style="font-weight: bold; font-size: 16px; line-height: 1.4; margin-top: 10px;">
-      نصيحة احترافية: جرّب تتابع تحليلات حسابك (Insights) وتضبط الأوقات حسب جمهورك بالضبط؛ لكل حساب إيقاعه الخاص.
-    </p>
-    <!-- أسلوب التقديم القلبي -->
-    <h4 style="font-weight: bold; margin-top: 20px;">أسلوب التقديم القلبي:</h4>
-    <ul style="margin-top: 10px; line-height: 1.6;">
-      <li><strong>استخدم صورك الشخصية</strong></li>
-      <li>لقعدة بالقهوة، أو في الجامعة، أو ماشي في الشارع…</li>
-      <li>ضع صورة المنتج بشكل أنيق فوق خلفيتك الطبيعية، مثلاً ملصق صغير (sticker) أو فريم بسيط.</li>
-      <li><strong>احكي قصة قصيرة وشاركها مع متابعينك من حياتك</strong></li>
-      <li>لغة بسيطة، صوتك الحقيقي، وكأنك عم تحكي لصاحبك.</li>
-      <li><strong>خلي المحتوى إنساني</strong></li>
-      <li>إضحك وابتسم، اشتغل بلقطات candid (غير مصطنعة)، تفاعل مع متابعينك بالـ stickers والـ polls.</li>
-    </ul>
-
-    <!-- اختصار الفكرة وجاذبيتها -->
-    <h4 style="font-weight: bold; margin-top: 20px;">اختصار الفكرة وجاذبيتها:</h4>
-    <ul style="margin-top: 10px; line-height: 1.6;">
-      <li><strong>شرح شورت وفوري</strong></li>
-      <li>لا تزيد عن ٣ جمل في التعليق: “المرطب هذا خفيف جدًا على البشرة، بياخد لون طبيعي وبيحافظ على الترطيب.”</li>
-      <li>استخدم emojis لتقسيم النص (🌿✨💧).</li>
-      <li>ستيكرات تفاعل وأسئلة وستيكر الخيارات</li>
-      <li>مثلاً: “مين جرب عطر نيكسا بديل برادا؟ خبروني!”</li>
-      <li>“احفظوا الصورة عشان ترجعوا لها وقت الحاجة.”</li>
-    </ul>
-
-    <!-- كيف تزيد التفاعل والوصول -->
-    <h4 style="font-weight: bold; margin-top: 20px;">كيف تزيد التفاعل والوصول:</h4>
-    <ul style="margin-top: 10px; line-height: 1.6;">
-      <li><strong>استغلّ الـ Hashtags بذكاء</strong></li>
-      <li>٥–٧ هاشتاغات متخصصة (مثلاً #جمال_طبيعي #mulberry #aaup #SkinCare)</li>
-      <li>فهم الـ niche يلي بتنشر فيه واستخدم هاشتاغات متداولة عند جمهورك.</li>
-      <li><strong>انشر على الستوري بكثرة</strong></li>
-      <li>قصص تفاعلية (استبيان، سؤال، شريط تمرير).</li>
-      <li>رابط مباشر للمنتج (Swipe Up أو Sticker الرابط).</li>
-      <li><strong>تعاون مع حسابات صغيرة (Micro-influencers)</strong></li>
-      <li>تبادل “تاج” أو “Shoutout” لزيادة الظهور.</li>
-      <li><strong>تابع وتفاعل مع جمهورك</strong></li>
-      <li>إرفع إشعارات تعليقاتك ورد عليها خلال ساعة.</li>
-      <li>خليك متابع لبوستاتهم وحط لايك وتعليق حتى يردوا لك الجميل.</li>
-      <li><strong>عيد نشر المحتوى بحالة جديدة</strong></li>
-      <li>خذ نفس الفيديو ريلز وقطّع منه مقطع ستوري، أو انسخ أهم جمل الإعلان في بوست ثابت.</li>
-    </ul>
-
-    <!-- أهم شيء تفتكرّه -->
-    <p style="font-weight: bold; font-size: 18px; margin-top: 20px; line-height: 1.5;">
-      🥇 أهم شيء تفتكرّه:<br>
-      “المحتوى القريب من قلب المشاهد + الشرح القصير والواضح = تفاعل أعلى وانتشار أسرع.”<br>
-      امشي على هالنصايح، وجرب كل عنصر بخفة وروح مرحة، ومع الاستمرارية رح تلاقي حسابك عم يكبر وانت عم تستمتع بالتجربة!
-    </p>
-
-  </div>
-</div>
-<!-- نهاية قسم نصائح انستجرامية -->
-
-
-    
-
-
-
-
-<!-- Orders Tab -->
-<div id="orders" class="employee-tab" style="display: none;">
-  <h2 style="margin-bottom:15px;">الطلبيات الخاصة بك</h2>
-  <div id="ordersContainer" class="order-cards"></div>
-</div>
-
-
-
-
-
-
-
-  </div>
-  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
   <script>
-    // إعدادات Firebase
+    // تكوين Firebase (نفس الإعدادات القديمة)
     const firebaseConfig = {
       apiKey: "AIzaSyAi3_y7ugKB0cgzMV1-IVvbE2BwG_9RKSs",
       authDomain: "team-analysis-3c196.firebaseapp.com",
@@ -1119,104 +2899,70 @@ body.leader-theme .header-logo {
       appId: "1:38968485922:web:667832a4aa77599ba8a6fb",
       measurementId: "G-853WkH2JK7"
     };
-    firebase.initializeApp(firebaseConfig);
+
+    // تهيئة Firebase
+    const app = firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
 
-    // تهيئة Firestore
-    const firestore = firebase.firestore();
-
-    // إعداد الترجمة
-    let currentLanguage = 'ar';
-    const translations = {
-      ar: {
-        employeeDashboard: "لوحة الموظف",
-        welcome: "أهلاً, ",
-        logout: "تسجيل الخروج",
-        tabAnalytics: "تحليلات",
-        tabSettings: "الإعدادات",
-        filterLabel: "تصفية المبيعات حسب:",
-        radioDay: "يوم",
-        radioMonth: "شهر",
-        radioPeriod: "فترة مخصصة",
-        salesHeader: "بيانات المبيعات والأرباح الخاصة بك",
-        tableHeaders: {
-          product: "المنتج",
-          sale: "سعر البيع (₪)",
-          date: "التاريخ"
-        },
-        salesSummary: (totalSales, totalProfit) => `إجمالي المبيعات: ${totalSales} | إجمالي الأرباح: ₪${totalProfit}`,
-        settingsHeader: "إعدادات الحساب",
-        changeUsername: "تغيير اسم المستخدم:",
-        changePassword: "تغيير كلمة المرور:",
-        changePhoto: "تغيير الصورة الشخصية:",
-        updateSettings: "تحديث الإعدادات",
-        langToggle: "",
-        chatInputPlaceholder: "اكتب رسالتك..."
-      },
-      en: {
-        employeeDashboard: "Employee Dashboard",
-        welcome: "Welcome, ",
-        logout: "Logout",
-        tabAnalytics: "Analytics",
-        tabSettings: "Settings",
-        filterLabel: "Filter Sales By:",
-        radioDay: "Day",
-        radioMonth: "Month",
-        radioPeriod: "Custom Period",
-        salesHeader: "Your Sales & Profit Data",
-        tableHeaders: {
-          product: "Product",
-          sale: "Sale Price (₪)",
-          date: "Date"
-        },
-        salesSummary: (totalSales, totalProfit) => `Total Sales: ${totalSales} | Total Profit: ₪${totalProfit}`,
-        settingsHeader: "Account Settings",
-        changeUsername: "Change Username:",
-        changePassword: "Change Password:",
-        changePhoto: "Change Personal Photo:",
-        updateSettings: "Update Settings",
-        langToggle: "",
-        chatInputPlaceholder: "Type your message..."
-      }
-    };
-
-    // استرجاع اسم الموظف المخزن في localStorage
-    let employeeName = localStorage.getItem('employeeName');
 
 
 
-const empKey = localStorage.getItem('employeeKey');
 
-// فحص وجود الحساب كل 3 ثواني بشكل آمن
-if (empKey) {
+
+
+
+
+
+// جلب روابط الصور من adBanners
+firebase.database().ref('adBanners').once('value').then(snapshot => {
+  const banners = [];
+  snapshot.forEach(child => {
+    const url = child.val().imageUrl;
+    if (url) banners.push(url);
+  });
+  if (banners.length) initBannerCarousel(banners);
+});
+
+function initBannerCarousel(urls) {
+  const slidesEl = document.querySelector('#bannerCarousel .slides');
+  const dotsEl   = document.querySelector('#bannerCarousel .dots');
+  let current = 0;
+
+  // إنشاء الصور والنقاط
+  urls.forEach((url, i) => {
+    const img = document.createElement('img');
+    img.src = url;
+    if (i === 0) img.classList.add('active');
+    slidesEl.appendChild(img);
+
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(i));
+    dotsEl.appendChild(dot);
+  });
+
+  // التنقل التلقائي كل 5 ثواني
   setInterval(() => {
-    database.ref('employeeAccounts/' + empKey).once('value')
-      .then(snapshot => {
-        if (!snapshot.exists()) {
-          logout(); // تم حذف الحساب => تسجيل خروج
-        }
-      })
-      .catch(error => {
-        console.error("خطأ في الفحص التلقائي:", error);
-      });
-  }, 3000);
+    goToSlide((current + 1) % urls.length);
+  }, 5000);
+
+  function goToSlide(idx) {
+    const images = slidesEl.querySelectorAll('img');
+    const dots   = dotsEl.querySelectorAll('.dot');
+    images[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    images[idx].classList.add('active');
+    dots[idx].classList.add('active');
+    current = idx;
+  }
 }
 
 
 
 
 
-    if (!employeeName) {
-      alert("لم يتم العثور على جلسة الموظف. الرجاء تسجيل الدخول مرة أخرى.");
-      window.location.href = "index.html";
-    }
-
-
-
-
-
-    document.getElementById('employeeNameDisplay').textContent = translations[currentLanguage].welcome + employeeName;
 
 
 
@@ -1225,698 +2971,28 @@ if (empKey) {
 
 
 
-// ✅ ابدأ من هنا بإضافة كود التحقق من القيادة
-let isLeader = false;
-
-database.ref('employees').orderByChild('name').equalTo(employeeName).once('value')
-  .then(snapshot => {
-    snapshot.forEach(child => {
-      const data = child.val();
-      if (data.leader) {
-  isLeader = true;
-  document.body.classList.add('leader-theme');
-  
-  const badge = document.createElement('div');
-  badge.className = 'leader-badge leader-glow';
-  badge.innerHTML = `
-    <i class="fas fa-crown"></i>
-    <span>قائد الفريق المميز</span>
-    <div class="badge-sparkles"></div>
-  `;
-  
-  // إضافة تأثير الشرارات
-  const sparkles = document.createElement('div');
-  sparkles.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-  `;
-  document.body.prepend(sparkles, badge);
-  
-  // توليد شرارات متحركة
-  setInterval(() => {
-    const spark = document.createElement('div');
-    spark.style.cssText = `
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255,255,255,0.8);
-      border-radius: 50%;
-      top: ${Math.random() * 100}%;
-      left: ${Math.random() * 100}%;
-      animation: spark-fall ${2 + Math.random() * 3}s linear infinite;
-    `;
-    spark.innerHTML = `<style>
-      @keyframes spark-fall {
-        0% { transform: translateY(-100vh); opacity: 1; }
-        100% { transform: translateY(100vh); opacity: 0; }
-      }
-    </style>`;
-    sparkles.appendChild(spark);
-    setTimeout(() => spark.remove(), 3000);
-  }, 100);
-}
-    });
-  })
-  .then(() => {
-    // الكود الأصلي لعدد النقاط
-    database.ref('employees').orderByChild('name').equalTo(employeeName).once('value')
-    .then(snapshot => {
-      snapshot.forEach(child => {
-        const data = child.val();
-        const points = data.target || 0;
-// ابدأ الإضافة من هنا
-if (data.leader) {
-  isLeader = true;
-  document.body.classList.add('leader-theme');
-  // ... (الكود السابق لإضافة الشارة)
-  showLeaderBonus(child.key); // ⬅️ هذه الإضافة الجديدة
-}
-// انتهاء الإضافة
-        document.getElementById('employeeTargetDisplay').textContent = `عدد النقاط الحالية: ${points} نقطة`;
-      });
-    });
-  });
 
 
 
 
 
 
-database.ref('employees').orderByChild('name').equalTo(employeeName).once('value')
-  .then(snapshot => {
-    snapshot.forEach(child => {
-      const data = child.val();
-      const points = data.target || 0;
-      document.getElementById('employeeTargetDisplay').textContent = `عدد النقاط الحالية: ${points} نقطة`;
-    });
-  });
 
-
-    
-
-    // استرجاع تعيينات البائع المميز
-    let topSellerDesignations = {};
-    database.ref('topSellerDesignations').on('value', snapshot => {
-      topSellerDesignations = snapshot.val() || {};
-    });
-
-    // دالة المساعدة للحصول على نسبة البائع المميز
-    function getTopSellerRate(empName, saleDate) {
-      let rate = 0.5; // القيمة الافتراضية للموظف العادي
-      for (const key in topSellerDesignations) {
-        const des = topSellerDesignations[key];
-        if (des.employee === empName) {
-          const start = new Date(des.startDate);
-          const end = new Date(des.endDate);
-          const saleDt = new Date(saleDate);
-          if (saleDt >= start && saleDt <= end) {
-            rate = 0.6;
-            break;
-          }
-        }
-      }
-      return rate;
-    }
-
-    // تحميل بيانات المبيعات مع حساب الأرباح (تم حذف عمود السعر الأصلي)
-    function loadSalesData() {
-      // الحصول أولاً على نوع الموظف من Realtime Database
-      database.ref('employees').orderByChild('name').equalTo(employeeName).once('value')
-      .then(empSnapshot => {
-        let employeeType = "regular";
-        empSnapshot.forEach(child => { employeeType = child.val().type; });
-        // جلب بيانات المبيعات الخاصة بالموظف
-        database.ref('sales').orderByChild('seller').equalTo(employeeName).once('value')
-        .then(snapshot => {
-          const salesData = snapshot.val() || {};
-          let totalSales = 0;
-          let totalProfit = 0;
-          // إنشاء الجدول بدون عمود السعر الأصلي
-          let tableHTML = `<table><tr>
-            <th>${translations[currentLanguage].tableHeaders.product}</th>
-            <th>${translations[currentLanguage].tableHeaders.sale}</th>
-            <th>${translations[currentLanguage].tableHeaders.date}</th>
-            </tr>`;
-          const filterType = document.querySelector('input[name="filterType"]:checked').value;
-let filterFn = sale => true;
-
-// ✅ فلترة افتراضية: عرض الشهر الحالي إذا ما تم اختيار أي تواريخ
-if (!document.getElementById('filterDayInput').value &&
-    !document.getElementById('filterMonthInput').value &&
-    !document.getElementById('filterStartDate').value &&
-    !document.getElementById('filterEndDate').value) {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = (today.getMonth() + 1).toString().padStart(2, '0');
-  const currentMonth = `${year}-${month}`;
-  filterFn = sale => sale.date.startsWith(currentMonth);
-}
-
-
-          if (filterType === "day") {
-            const day = document.getElementById('filterDayInput').value;
-            if (day) { filterFn = sale => sale.date.slice(0,10) === day; }
-          } else if (filterType === "month") {
-            const month = document.getElementById('filterMonthInput').value;
-            if (month) { filterFn = sale => sale.date.startsWith(month); }
-          } else if (filterType === "period") {
-            const start = new Date(document.getElementById('filterStartDate').value);
-            const end = new Date(document.getElementById('filterEndDate').value);
-            if(document.getElementById('filterStartDate').value && document.getElementById('filterEndDate').value) {
-              filterFn = sale => {
-                const saleDate = new Date(sale.date);
-                return saleDate >= start && saleDate <= end;
-              };
-            }
-          }
-          for (const key in salesData) {
-            const sale = salesData[key];
-            if (!filterFn(sale)) continue;
-            totalSales++;
-            const rawProfit = parseFloat(sale.salePrice) - parseFloat(sale.originalPrice);
-            let percentage = 0.5; // القيمة الافتراضية
-            if (employeeType === "distinguished") {
-              percentage = 0.7;
-            } else if (employeeType === "regular") {
-              percentage = getTopSellerRate(employeeName, sale.date);
-            }
-            totalProfit += rawProfit * percentage;
-            tableHTML += `<tr>
-              <td>${sale.productName}</td>
-              <td>₪${sale.salePrice}</td>
-              <td>${new Date(sale.date).toLocaleDateString()}</td>
-              </tr>`;
-          }
-          tableHTML += "</table>";
-          document.getElementById('salesData').innerHTML = tableHTML;
-          document.getElementById('salesSummary').innerHTML = `<p>${translations[currentLanguage].salesSummary(totalSales, totalProfit.toFixed(2))}</p>`;
-        });
+    // أمثلة على وظائف الكتابة والقراءة من قاعدة البيانات
+    function writeUserData(userId, name, email) {
+      firebase.database().ref('users/' + userId).set({
+        username: name,
+        email: email
       });
     }
-    loadSalesData();
 
-    // تبديل عرض مدخلات الفلترة
-    function toggleFilterInputs(type) {
-      document.getElementById('filterDay').style.display = (type === 'day') ? 'block' : 'none';
-      document.getElementById('filterMonth').style.display = (type === 'month') ? 'block' : 'none';
-      document.getElementById('filterPeriod').style.display = (type === 'period') ? 'block' : 'none';
-    }
-
- 
-// ابدأ الإضافة من هنا
-async function calculateTeamProfit(leaderKey) {
-  try {
-    const filterFn = createDateFilter(); // استخدام الدالة المشتركة
-    const leaderSnapshot = await database.ref(`employees/${leaderKey}`).once('value');
-    const leaderData = leaderSnapshot.val();
-
-    if (!leaderData.team) return 0;
-
-    const allEmployees = (await database.ref('employees').once('value')).val();
-    let totalProfit = 0;
-
-    for (const memberKey of leaderData.team) {
-      const member = allEmployees[memberKey];
-      if (!member) continue;
-
-      const sales = (await database.ref('sales')
-        .orderByChild('seller')
-        .equalTo(member.name)
-        .once('value')).val();
-
-      for (const key in sales) {
-        const sale = sales[key];
-        if (filterFn(sale)) { // تطبيق الفلترة هنا
-          totalProfit += (sale.salePrice - sale.originalPrice) * 0.5;
-        }
-      }
-    }
-
-    return totalProfit;
-
-  } catch (error) {
-    console.error("فشل حساب أرباح الفريق:", error);
-    return 0;
-  }
-}
-
-async function showLeaderBonus(leaderKey) {
-  if (!isLeader) return;
-
-  try {
-    const filterFn = createDateFilter(); // نفس الدالة المشتركة
-    
-    // حساب أرباح الفريق
-    const teamProfit = await calculateTeamProfit(leaderKey);
-    
-    // حساب الأرباح الشخصية مع نفس الفلترة
-    const personalSales = (await database.ref('sales')
-      .orderByChild('seller')
-      .equalTo(employeeName)
-      .once('value')).val();
-
-    let personalProfit = 0;
-    for (const key in personalSales) {
-      const sale = personalSales[key];
-      if (filterFn(sale)) { // تطبيق نفس الفلترة
-        personalProfit += (sale.salePrice - sale.originalPrice) * 0.5;
-      }
-    }
-
-    // تحديث الواجهة
-    document.getElementById('leaderBonus').style.display = 'block';
-    document.getElementById('teamTotal').textContent = teamProfit.toFixed(2);
-    document.getElementById('leaderPercentage').textContent = (teamProfit * 0.1).toFixed(2);
-    document.getElementById('personalProfit').textContent = personalProfit.toFixed(2);
-    document.getElementById('totalEarnings').textContent = (personalProfit + (teamProfit * 0.1)).toFixed(2);
-
-  } catch (error) {
-    console.error("فشل عرض مكافأة القائد:", error);
-  }
-}
-// انتهاء الإضافة
-   
-
-
-
-    /* ------------------ تغيير الألسنة ------------------ */
-    function showEmployeeTab(tabName, event) {
-      document.querySelectorAll('.employee-tab').forEach(tab => tab.style.display = 'none');
-      document.querySelectorAll('.tab-nav button').forEach(btn => btn.classList.remove('active'));
-      event.currentTarget.classList.add('active');
-      document.getElementById(tabName).style.display = 'block';
-if (tabName === 'orders') {
-    loadOrders();
-  }
-    }
-
-   
-
-
-function loadOrders() {
-  const container = document.getElementById('ordersContainer');
-
-  database.ref('orders').on('value', snap => {
-    const allOrders = snap.val() || {};const data = Object.entries(allOrders)
-  .filter(([id, o]) =>
-    o.employee &&
-    o.employee.toLowerCase().trim() === employeeName.toLowerCase().trim()
-  )
-  .sort((a, b) => {
-    const dateA = new Date(a[1].date);
-    const dateB = new Date(b[1].date);
-    return dateB - dateA; // الأحدث أولاً
-  });
-
-
-    container.innerHTML = '';
-    const shownOrders = {};
-
-    if (data.length === 0) {
-      container.innerHTML = '<p>لا توجد طلبيات حالياً.</p>';
-      return;
-    }
-
-    data.forEach(([id, order]) => {
-      if (shownOrders[id]) return;
-      shownOrders[id] = true;
-
-      let emoji = '⏳';
-      if (order.status === 'قيد التوصيل') emoji = '🚚';
-      else if (order.status === 'تم الاستلام') emoji = '✔️';
-
-      let productsHTML = '<ul style="padding-left:16px;margin:10px 0;">';
-      if (Array.isArray(order.products)) {
-        order.products.forEach(p => {
-          productsHTML += `<li>${p.name} — ₪${parseFloat(p.price).toFixed(2)}</li>`;
-        });
-      } else {
-        productsHTML += '<li>لا توجد منتجات مسجلة</li>';
-      }
-      productsHTML += '</ul>';
-
-      const card = document.createElement('div');
-      card.className = 'order-card';
-      card.innerHTML = `
-        <h3>تفاصيل الطلبية</h3>
-        <p>عدد المنتجات: ${order.count}</p>
-        ${productsHTML}
-        <p>نوع التوصيل: ${order.type}${order.type === 'delivery' ? ` (₪${order.deliveryPrice})` : ''}</p>
-        <p>المجموع: ₪${parseFloat(order.total).toFixed(2)}</p>
-        <p class="status">الحالة: ${order.status}<span class="emoji">${emoji}</span></p>
-      `;
-      container.appendChild(card);
-    });
-  }, err => {
-    console.error("خطأ بجلب الطلبيات:", err);
-    container.innerHTML = '<p>حدث خطأ أثناء جلب الطلبيات.</p>';
-  });
-}
-
-
-
-// استدعاء loadOrders عند الضغط على تبويب "الطلبيات"
-document.getElementById('tabOrdersBtn').addEventListener('click', () => {
-  loadOrders();
-});
-
-
-
-
-
-
-
-    /* ------------------ تسجيل الخروج ------------------ */
-    function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
-
-// ====== بيانات فئات خطة العمل ======
-const workPlanCategories = {
-  male: [
-    "معالجات وسيروم للوجه","مرطبات وكريمات للوجه","البشرة والوجه",
-    "منتجات الحلاقة للرجال","منتجات العناية للرجال","مزيلات عرق للرجال",
-    "عطور","عطور للرجال","تصفيف الشعر","غسولات","سيروم وزيوت للشعر",
-    "شامبو","العناية بالشعر","الوقاية من الشمس والتسمير","العناية بالأسنان",
-    "العناية بالفم"
-  ],
-  female: [
-    "العناية بالجسم","مرطب للجسم","البشرة والوجه","مرطبات وكريمات للوجه",
-    "معطر للجسم","مقشرات وملمعات الجسم","مستلزمات العناية الشخصية",
-    "معالجات وسيروم للوجه","منتجات تقشير الجسم","تفتيح","عطور للنساء","عطور",
-    "العناية بالقدم","النظافة الشخصية للنساء","صابون استحمام","العناية باليدين",
-    "أقنعة الوجه","الوجه","الوقاية من الشمس والتسمير",
-    "العناية بالأسنان","العناية بالفم","إزالة الشعر",
-    "العناية بالحوامل والمرضعة","مزيلات عرق للنساء"
-  ]
-};
-
-
-// ====== ١) إنشاء shuffle ثابت لكل موظف حسب اسمه وجنسه ======
-function getEmployeeOrder(gender) {
-  // ١. إحضار مصفوفة الفئات
-  const cats = [...workPlanCategories[gender]];
-  // ٢. بناء seed من اسم الموظف والجنس
-  let seed = 0;
-  for (let i = 0; i < employeeName.length; i++) {
-    seed = (seed * 31 + employeeName.charCodeAt(i)) % 2147483647;
-  }
-  seed = (seed + (gender === 'male' ? 1 : 2)) % 2147483647;
-  // ٣. LCG لتوليد أرقام عشوائية
-  let rnd = seed;
-  function next() {
-    rnd = (rnd * 16807) % 2147483647;
-    return (rnd - 1) / 2147483646;
-  }
-  // ٤. Fisher–Yates shuffle
-  for (let i = cats.length - 1; i > 0; i--) {
-    const j = Math.floor(next() * (i + 1));
-    [cats[i], cats[j]] = [cats[j], cats[i]];
-  }
-  return cats;
-}
-
-// ====== ٢) اختيار الفئة لليوم الحالي من القائمة الكاملة ======
-function getCategoryForToday(gender) {
-  const order = getEmployeeOrder(gender);
-  // حساب عدد الأيام منذ 1 يناير 1970
-  const daysSinceEpoch = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
-  // الموضع في القائمة
-  const idx = daysSinceEpoch % order.length;
-  return order[idx];
-}
-
-// ====== ٣) عرض فئة اليوم فقط ======
-function showPlan(gender) {
-  const listEl = document.getElementById('productList');
-  listEl.innerHTML = '';
-  
-  const todayCat = getCategoryForToday(gender);
-  
-  const card = document.createElement('div');
-  card.className = 'category-card';
-  card.innerHTML = `
-    <div class="category-header">
-      <i class="fas fa-calendar-day"></i>
-      <h4>الفئة الموصى بها ليوم ${new Date().toLocaleDateString('ar-EG')}</h4>
-    </div>
-    <div class="category-content">
-      <span class="category-badge">${todayCat}</span>
-      <button class="info-btn" onclick="showCategoryTips('${todayCat}')">
-        <i class="fas fa-lightbulb"></i>
-        نصائح خاصة
-      </button>
-    </div>
-  `;
-  
-  listEl.appendChild(card);
-  document.getElementById('planContent').style.display = 'block';
-}
-
-
-
-// حفظ الجنس في Firestore وعرض الخطة
-// ====== دالة setGender الجديدة باستخدام Realtime Database ======
-function setGender(gender) {
-  console.log("setGender called with:", gender);
-  // إخفاء واجهة السؤال
-  document.getElementById('genderPrompt').style.display = 'none';
-  // عرض الخطة فوراً
-  showPlan(gender);
-
-  // تحديث فئة gender في الـRealtime Database
-  database.ref('employees')
-    .orderByChild('name')
-    .equalTo(employeeName)
-    .once('value')
-    .then(snapshot => {
-      snapshot.forEach(child => {
-        // child.key هو الـ ID لكل موظف
-        database.ref('employees/' + child.key)
-          .update({ gender: gender })
-          .then(() => console.log("Gender saved to Realtime DB"))
-          .catch(err => console.error("Error saving gender:", err));
+    function readUserData(userId) {
+      const userRef = firebase.database().ref('users/' + userId);
+      userRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
       });
-    })
-    .catch(err => console.error("Error querying employees:", err));
-}
-
-
-
-
-
-// عند الضغط على تبويب “خطة العمل” (Realtime DB)
-document.getElementById('tabWorkPlanBtn').addEventListener('click', () => {
-  database.ref('employees')
-    .orderByChild('name')
-    .equalTo(employeeName)
-    .once('value')
-    .then(snapshot => {
-      let gender = null;
-      snapshot.forEach(child => { gender = child.val().gender; });
-      if (gender) {
-        document.getElementById('genderPrompt').style.display = 'none';
-        showPlan(gender);
-      } else {
-        document.getElementById('genderPrompt').style.display = 'block';
-        document.getElementById('planContent').style.display = 'none';
-      }
-    })
-    .catch(err => console.error("Error fetching gender:", err));
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ابدأ الإضافة من هنا
-if (isLeader) {
-  setInterval(async () => {
-    const snapshot = await database.ref('employees').orderByChild('name').equalTo(employeeName).once('value');
-    snapshot.forEach(child => {
-      showLeaderBonus(child.key);
-    });
-  }, 60000); // كل دقيقة
-}
-// انتهاء الإضافة
-
-
-
-
-
-
-
-
-
-
-
-
-
-// أضف هذه الدالة في الأعلى مع بقية الدوال الرئيسية
-function createDateFilter() {
-  const filterType = document.querySelector('input[name="filterType"]:checked').value;
-  let filterFn = (sale) => true;
-  let startDate, endDate;
-
-  // الفلترة الافتراضية (شهر حالي)
-  if (!document.getElementById('filterDayInput').value &&
-      !document.getElementById('filterMonthInput').value &&
-      !document.getElementById('filterStartDate').value &&
-      !document.getElementById('filterEndDate').value) {
-    const today = new Date();
-    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-    endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-  } else {
-    switch(filterType) {
-      case 'day':
-        const day = document.getElementById('filterDayInput').value;
-        if (day) {
-          startDate = new Date(day);
-          endDate = new Date(day);
-          endDate.setHours(23, 59, 59);
-        }
-        break;
-      
-      case 'month':
-        const month = document.getElementById('filterMonthInput').value;
-        if (month) {
-          const [year, m] = month.split('-');
-          startDate = new Date(year, m - 1, 1);
-          endDate = new Date(year, m, 0);
-        }
-        break;
-      
-      case 'period':
-        startDate = new Date(document.getElementById('filterStartDate').value);
-        endDate = new Date(document.getElementById('filterEndDate').value);
-        break;
     }
-  }
-
-  if (startDate && endDate) {
-    endDate.setHours(23, 59, 59); // لتشمل اليوم كامل
-    filterFn = (sale) => {
-      const saleDate = new Date(sale.date);
-      return saleDate >= startDate && saleDate <= endDate;
-    };
-  }
-
-  return filterFn;
-}
-
-
-
-
-
-
-
-
-
-document.querySelector('.filter-section button').onclick = () => {
-  // تطبيق الفلترة على كلا القسمين
-  loadSalesData();
-  loadRewards();           // ← هنا نعيد تحميل المكافآت حسب الفلتر الجديد
-
-  
-  if (isLeader) {
-    database.ref('employees')
-      .orderByChild('name')
-      .equalTo(employeeName)
-      .once('value')
-      .then(snapshot => {
-        snapshot.forEach(child => showLeaderBonus(child.key));
-      });
-  }
-  
-  // إظهار الفترة المحددة في قسم القيادة
-  const filterFn = createDateFilter();
-  const [start, end] = getFilterDates();
-  updateLeaderFilterDisplay(start, end);
-}
-
-// دالة مساعدة للحصول على التواريخ
-function getFilterDates() {
-  const filterType = document.querySelector('input[name="filterType"]:checked').value;
-  let start, end;
-  
-  switch(filterType) {
-    case 'day':
-      start = document.getElementById('filterDayInput').value;
-      end = start;
-      break;
-    case 'month':
-      start = document.getElementById('filterMonthInput').value;
-      end = start;
-      break;
-    case 'period':
-      start = document.getElementById('filterStartDate').value;
-      end = document.getElementById('filterEndDate').value;
-      break;
-    default:
-      const today = new Date();
-      start = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}`;
-      end = start;
-  }
-  
-  return [start, end];
-}
-
-// دالة تحديث عرض الفلترة في قسم القيادة
-function updateLeaderFilterDisplay(start, end) {
-  const displayElement = document.getElementById('leaderFilterDisplay');
-  
-  if (!displayElement) {
-    const newDisplay = document.createElement('div');
-    newDisplay.id = 'leaderFilterDisplay';
-    newDisplay.style.margin = '10px 0';
-    newDisplay.style.fontWeight = 'bold';
-    newDisplay.style.color = '#8e44ad';
-    document.getElementById('leaderBonus').prepend(newDisplay);
-  }
-  
-  const displayText = start === end 
-    ? `الفترة المحددة: ${start}`
-    : `الفترة المحددة: من ${start} إلى ${end}`;
-  
-  document.getElementById('leaderFilterDisplay').textContent = displayText;
-}
-
-
-
-
-
-
-
-
-
-// دالة احتساب النقاط وتحويلها إلى شيكل
-function calculatePoints() {
-  // جلب عدد النقاط الحالي من العنصر
-  const displayText = document.getElementById('employeeTargetDisplay').textContent;
-  // استخراج الرقم من النص (عدد النقاط)
-  const points = parseInt(displayText.replace(/\D/g, ''), 10) || 0;
-  // حساب المبلغ بالشيكل
-  const shekels = (points / 90).toFixed(2);
-  // عرض الناتج في نافذة منبثقة
-  alert(`قيمة النقاط بالشيكل: ₪${shekels}`);
-}
-
-// ربط الزر مع الدالة بعد تحميل الصفحة
-document.getElementById('calculatePointsBtn').addEventListener('click', calculatePoints);
 
 
 
@@ -1928,78 +3004,6 @@ document.getElementById('calculatePointsBtn').addEventListener('click', calculat
 
 
 
-
-
-
-// --- بداية كود مكافآت الموظف ---
-const rewardCard   = document.getElementById("rewardCard");
-const typeEl       = rewardCard.querySelector(".reward-card__type");
-const amountEl     = rewardCard.querySelector(".reward-card__amount");
-const dateEl       = rewardCard.querySelector(".reward-card__date");
-const prevBtn      = rewardCard.querySelector(".reward-card__nav.prev");
-const nextBtn      = rewardCard.querySelector(".reward-card__nav.next");
-
-let rewards = [], currentIndex = 0;
-const empUid = localStorage.getItem('employeeName');
-
-
-function loadRewards() {
-  const filterFn = createDateFilter();
-  database.ref("rewards")
-    .orderByChild("employee").equalTo(empUid)
-    .once("value")
-    .then(snap => {
-      rewards = [];
-      snap.forEach(s => {
-        const r = s.val();
-        // ننشئ كائن يشبه sale حتى يعمل filterFn
-        if (filterFn({ date: r.date })) {
-          rewards.push(r);
-        }
-      });
-      currentIndex = 0;
-      renderReward();
-      // تحديث ملخص المبيعات بإظهار مجموع المكافآت
-      const sum = rewards.reduce((a,b) => a + Number(b.amount), 0);
-      const summaryEl = document.getElementById("salesSummary");
-      // نحتفظ بالنص الأصلي الموجود داخل <p> ثم نلحق المكافآت
-      summaryEl.innerHTML = summaryEl.innerHTML.replace(/<\/?p>/g, '')
-                              + `<p> | مكافآت: ₪${sum.toFixed(2)}</p>`;
-    })
-    .catch(err => console.error("خطأ في تحميل المكافآت:", err));
-}
-
-
-function renderReward() {
-  if (!rewards.length) {
-    typeEl.textContent = "لا توجد مكافآت";
-    amountEl.textContent = "₪0";
-    dateEl.textContent   = "";
-    prevBtn.style.display = nextBtn.style.display = "none";
-    return;
-  }
-  const r = rewards[currentIndex];
-  typeEl.textContent   = `نوع: ${r.type}`;
-  amountEl.textContent = `₪${r.amount}`;
-  dateEl.textContent   = new Date(r.date).toLocaleDateString("ar-IL");
-  prevBtn.style.display = currentIndex > 0                   ? "block" : "none";
-  nextBtn.style.display = currentIndex < rewards.length - 1  ? "block" : "none";
-}
-
-prevBtn.addEventListener("click", () => {
-  if (currentIndex > 0) { currentIndex--; renderReward(); }
-});
-nextBtn.addEventListener("click", () => {
-  if (currentIndex < rewards.length - 1) { currentIndex++; renderReward(); }
-});
-
-// ربط فلتر الشهر
-document.getElementById("filterMonthInput")
-        .addEventListener("change", e => loadRewards(e.target.value));
-// التحميل الأولي بناءً على الفلتر الافتراضي (شهر/يوم/فترة)
-loadRewards();
-
-// --- نهاية كود مكافآت الموظف ---
 
 
 
@@ -2011,5 +3015,1340 @@ loadRewards();
 
 
   </script>
+</head>
+<body>
+
+
+
+
+
+<!-- أضف هذا بعد وسم <body> -->
+<!-- Video Background with Loading Placeholder -->
+<div id="videoContainer">
+  <img id="videoPlaceholder" src="https://images.pexels.com/photos/6214461/pexels-photo-6214461.jpeg" alt="Loading background">
+  <video id="backgroundVideo" autoplay muted loop playsinline>
+    <source src="https://videos.pexels.com/video-files/7772674/7772674-hd_1080_1920_25fps.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+<div id="overlay"></div>
+
+
+
+
+
+
+
+<script>
+  // تحقق من وضع الصيانة قبل تحميل أي محتوى
+  database.ref('siteMaintenance/maintenance').once('value').then(snapshot => {
+    if (snapshot.val()) {
+      // امسح كل محتوى الصفحة
+      document.body.innerHTML = '';
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.margin = '0';
+      document.body.style.backgroundColor = '#ffffff';
+      // أضف الصورة في وسط الشاشة
+      const img = document.createElement('img');
+      img.src = 'https://i.ibb.co/ZRxK9958/image.png';
+      Object.assign(img.style, {
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        maxWidth: '80%',
+        maxHeight: '80%'
+      });
+      document.body.appendChild(img);
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="animatedBackground"></div>
+
+  
+  <!-- Loader Overlay for initial page load -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+  
+  <!-- Header (Fixed elements directly on background) -->
+  <section id="headerSection">
+    <div class="gpd-container">
+      <div id="headerContent" class="gdp-row">
+        <!-- Header Left: Social Media Buttons -->
+        <div class="cell header-left">
+          <div class="social-icons">
+            <a href="https://www.instagram.com/mulberry.ps/" target="_blank" class="social-btn instagram">
+              <img src="https://static.vecteezy.com/system/resources/thumbnails/042/148/632/small_2x/instagram-logo-instagram-social-media-icon-free-png.png" alt="Instagram"/>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61571473259682&locale=ar_AR" target="_blank" class="social-btn facebook">
+              <img src="https://static.vecteezy.com/system/resources/previews/050/616/503/non_2x/facebook-logo-in-white-circle-free-png.png" alt="Facebook"/>
+            </a>
+            <a href="https://www.tiktok.com/@mulberry.ps" target="_blank" class="social-btn tiktok">
+              <img src="https://static.vecteezy.com/system/resources/previews/042/148/613/non_2x/tiktok-logo-tiktok-social-media-icon-free-png.png" alt="TikTok"/>
+            </a>
+          </div>
+        </div>
+        <!-- Header Center: Order Products Button (now "اطلب استشارة") and Lucky Wheel Button -->
+        <div class="cell header-center" style="display: flex; justify-content: center; align-items: center;">
+          <button id="orderProductsBtn" onclick="window.open('https://ig.me/m/mulberry.ps','_blank')">اطلب استشارة</button>
+          <button id="luckyWheelBtn" onclick="openLuckyWheelModal()" style="background: transparent; border: none; width: 40px; height: 40px; margin-left: 10px; overflow: visible;">
+            <img src="https://png.pngtree.com/png-vector/20221210/ourmid/pngtree-lucky-wheel-png-image_6518840.png" alt="Lucky Wheel Icon" style="width: 100%; height: 100%; object-fit: contain; transform-origin: center;"/>
+          </button>
+        </div>
+        <!-- Header Right: Translation and Join Team Buttons -->
+        <div class="cell header-right" style="display: flex; justify-content: flex-end;">
+          
+          <button id="joinTeamBtn" onclick="window.open('https://forms.gle/5tXHFwsgF6kycYG7A','_blank')">انضم إلى Mulberry Team</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <!-- Circular Dark Mode Button -->
+  <button id="darkModeBtn">
+    <img id="darkModeImg" src="https://cdn-icons-png.freepik.com/512/6714/6714978.png" alt="Dark Mode Toggle"/>
+  </button>
+  
+  <!-- Main Content -->
+  <main>
+    <!-- Landing Section -->
+    <section id="landingSection" class="gpd-section" data-anim-type="fadeIn">
+      <div id="landing" style="position: relative; z-index: 2; padding: 60px; text-align: center;">
+        
+
+
+
+
+
+
+
+<!-- Search Bar -->
+<div class="search-bar-container">
+  <div class="search-input-container">
+    <input type="text" id="globalSearchInput" placeholder="ابحث عن منتج..." />
+    <button id="globalSearchButton">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- بداية Banner Carousel -->
+<div id="bannerCarousel" class="banner-carousel">
+<div class="slides-container" style="width:100%;height:100%;position:relative;">
+<div class="slides"></div>
+</div>
+<div class="dots"></div>
+</div>
+<!-- نهاية Banner Carousel -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="carousel-container">
+  <div class="carousel-wrapper">
+    <div class="carousel-arrow left-arrow" onclick="moveCarousel(-1)">❮</div>
+    
+    <div class="carousel" id="categoriesCarousel">
+      <!-- سيتم ملؤه ديناميكياً -->
+    </div>
+    
+    <div class="carousel-arrow right-arrow" onclick="moveCarousel(1)">❯</div>
+  </div>
+</div>
+
+
+
+
+
+
+        
+  <div class="product-buttons-container">
+
+
+
+
+  
+
+  
+  
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<!-- قسم المنتجات العشوائية -->
+<!-- استبدال القسم الحالي بهذا الكود -->
+<section id="randomProducts" class="gpd-section" style="background: transparent; box-shadow: none; padding: 20px 0;">
+  <div class="gpd-container">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.7); font-size: 1.8rem;">
+      اكتشف منتجاتنا المميزة
+    </h2>
+    
+    <div id="randomProductsContainer" class="random-products-container">
+      <!-- سيتم ملؤها ديناميكياً بالمنتجات العشوائية -->
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+ 
+
+        <div class="description" id="storeDescription">
+          <p>
+            مرحبًا بكم في Mulberry Store – المتجر الرائد الذي يقدم أفضل منتجات العناية بالبشرة، العناية الشخصية، باقات الهدايا والعطور الفاخرة.
+            مهمتنا هي تقديم تجربة تسوق لا مثيل لها تجمع بين الجودة والراحة والابتكار في كل تفصيل.
+          </p>
+          <p>
+            يعمل نظامنا الإلكتروني على تسهيل عملية الشراء: تصفح الأقسام المتنوعة، أضف منتجاتك المفضلة إلى سلة التسوق، وأكمل عملية الدفع عبر بوابات آمنة وسريعة.
+            نحن ملتزمون بتقديم خدمة توصيل سريعة ودعم عملاء احترافي لضمان رضاكم التام.
+          </p>
+          <p>
+            يهدف Mulberry Store إلى بناء علاقات دائمة مع عملائه من خلال توفير بيئة تسوق متميزة تجمع بين الأناقة والتكنولوجيا.
+            تعرف على قصتنا وفريق العمل المبدع الذي يقف خلف كل منتج ونصيحة نقدمها لك.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <!-- Extended Sections (Products Display) -->
+    <section id="sectionsSection" class="gpd-section" data-anim-type="fadeIn">
+      <div class="gpd-container">
+        <div id="sections">
+<!-- حاوية عطور -->
+<!-- حاوية مخصّصة لأشهر العطور -->
+<div id="popularPerfumesSection" style="display: none;">
+  <!-- 1) شريط التبويبات -->
+  <div id="popularTabsWrapper" class="tabs-wrapper">
+    <div id="popularTabs" class="tab-list"></div>
+  </div>
+  <!-- 2) حاوية المحتوى لكل تبويب -->
+  <div id="popularTabContent"></div>
+</div>
+
+
+          <div class="back-container">
+            
+              <svg viewBox="0 0 24 24">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+              </svg>
+            </button>
+          </div>
+          <div id="searchContainer">
+            <input type="text" id="smartSearch" placeholder="ابحث عن القسم المناسب..."/>
+            <div id="searchResults"></div>
+          </div>
+          <!-- شريط التبويبات للأقسام الثابتة والديناميكية مع شريط تمرير أعلى -->
+          <div id="tabs-wrapper">
+            <div id="tabs">
+              <button class="tab active" data-target="general">عامة</button>
+              <button class="tab" data-target="men">للرجال</button>
+              <button class="tab" data-target="women">للنساء</button>
+              <button class="tab" data-target="other">اخرى</button>
+            </div>
+          </div>
+          <div id="sectionContent">
+            <!-- الأقسام الثابتة -->
+            <div id="general" class="section-group active">
+              <div id="generalSections" class="section-buttons"></div>
+            </div>
+            <div id="men" class="section-group">
+              <div id="menSections" class="section-buttons"></div>
+            </div>
+            <div id="women" class="section-group">
+              <div id="womenSections" class="section-buttons"></div>
+            </div>
+            <div id="other" class="section-group">
+              <div id="otherSections" class="section-buttons"></div>
+            </div>
+            <!-- الأقسام الجديدة (الديناميكية) سيتم إضافتها هنا من خلال Firebase -->
+          </div>
+          <div id="extendedInfo">
+            <p>حول Mulberry Store وفريق العمل</p>
+            <p>
+              يتميز Mulberry Store بشغفه الدائم نحو تقديم أفضل المنتجات والخدمات لعملائه.
+              يجمع المتجر بين خبرة فريق متخصص ورؤية واضحة نحو التميز والابتكار في عالم الجمال والعناية.
+            </p>
+            <p>
+              نعمل على تحديث مجموعتنا باستمرار، وتقديم محتوى تثقيفي ونصائح قيمة تساعدك على اختيار المنتجات المثالية.
+              كما نحرص على خلق تجربة تسوق تفاعلية تجمع بين الأناقة وسهولة الاستخدام.
+            </p>
+          </div>
+     
+
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </main>
+
+
+
+
+
+
+
+
+<!-- أضف هذا بعد </main> -->
+<!-- Products Grid Modal -->
+<div id="productsModal" class="modal">
+  <div class="modal-content" style="max-width: 95%; width: 1200px;">
+    <div class="modal-header">
+      <button class="back-btn" onclick="closeProductsModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        العودة
+      </button>
+      <h2 id="modalTitle">منتجات الفئة</h2>
+    </div>
+    <div id="productsGrid" class="products-grid"></div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+  
+  <!-- Modal for Product Sections -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div id="modalLoader">
+        <div class="spinner"></div>
+      </div>
+      <span class="close" onclick="closeModal()">&times;</span>
+      <iframe id="sectionFrame" src=""></iframe>
+      <br/>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+  
+  <!-- Modal for Product Details -->
+  <div id="productModal" class="modal">
+    <div class="modal-content" style="background: #fff; padding: 20px; border-radius: 15px; max-width: 600px; margin: 100px auto; position: relative;">
+      <span class="close" id="productModalClose" onclick="closeProductModal()">&times;</span>
+      <img id="productModalImage" src="" alt="Product Image" style="width: 100%; max-height:300px; object-fit: contain; margin-bottom: 20px;" />
+      <h3 id="productModalName"></h3>
+      <p id="productModalPrice"></p>
+      <p id="productModalDescription"></p>
+      <button id="productModalCloseBtn" class="close-btn" onclick="closeProductModal()">Close</button>
+    </div>
+  </div>
+  
+  <!-- Modal for Lucky Wheel -->
+  <!-- سيتم إضافته ديناميكيًا عبر دالة openLuckyWheelModal() -->
+  
+  <!-- JavaScript Logic -->
+  <script>
+
+
+
+
+    
+   
+const urlParams = new URLSearchParams(window.location.search);
+const highlightedProductId = urlParams.get('product');
+
+
+ 
+
+
+
+
+
+
+     // Improved Loader
+window.addEventListener('load', function() {
+  const loader = document.getElementById('loader');
+  loader.style.opacity = '0';
+  setTimeout(() => {
+    loader.style.display = 'none';
+    // Start video after page fully loaded
+    const video = document.getElementById('backgroundVideo');
+    video.play().catch(e => console.log('بدء تشغيل الفيديو بعد التحميل'));
+  }, 500);
+});
+      
+      
+      
+      const darkModeBtn = document.getElementById("darkModeBtn");
+      const backgroundVideo = document.getElementById("backgroundVideo");
+     
+      
+
+
+
+
+     
+      
+   
+      
+ 
+
+      
+ 
+      
+      
+      
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+     
+
+
+     
+
+
+
+
+   
+      
+
+      // دوال لعجلة الحظ (Lucky Wheel Modal)
+      window.openLuckyWheelModal = function() {
+        var modalHtml = `
+          <div id="luckyWheelModal" class="modal">
+            <div class="modal-content">
+              <span class="close" onclick="closeLuckyWheelModal()">&times;</span>
+              <iframe src="https://mulberryteam.github.io/mulberrywheel/" frameborder="0" style="border:none; border-radius:8px;"></iframe>
+              <button class="close-lucky-btn" onclick="closeLuckyWheelModal()">
+                <i class="fa fa-sign-out-alt"></i> خروج
+              </button>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        document.getElementById("luckyWheelModal").style.display = "flex";
+      };
+
+      window.closeLuckyWheelModal = function() {
+        var modal = document.getElementById("luckyWheelModal");
+        if(modal) {
+          modal.parentNode.removeChild(modal);
+        }
+      };
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Reference to Firebase categories
+const categoriesRef = database.ref('categories');
+
+// متغيرات لتتبع الحالة
+let currentIndex = 0;
+let categoriesData = [];
+
+// تحميل الفئات وعرضها
+function loadCategoriesCarousel() {
+  categoriesRef.once('value').then(snapshot => {
+    const data = snapshot.val();
+    if (!data) return;
+    
+    // تحويل البيانات إلى مصفوفة
+    categoriesData = Object.keys(data).map(key => ({
+      id: key,
+      ...data[key]
+    }));
+    
+    const carousel = document.getElementById('categoriesCarousel');
+    carousel.innerHTML = '';
+    
+    // إضافة الأزرار إلى القائمة
+    categoriesData.forEach((category, index) => {
+      const btn = document.createElement('div');
+      btn.className = 'category-btn';
+      btn.setAttribute('data-index', index);
+      
+      btn.innerHTML = `
+        <div class="bg-image" style="background-image: url('${category.imageUrl}')"></div>
+        <div class="btn-label">${category.name}</div>
+      `;
+      
+     btn.addEventListener('click', () => {
+  openProductsModal(category.name);
+});
+      
+      carousel.appendChild(btn);
+    });
+    
+    // تعيين العنصر النشط الأول
+    setTimeout(() => {
+      setActiveCategory(0);
+    }, 100);
+  });
+}
+
+// تعيين الفئة النشطة
+function setActiveCategory(index) {
+  const carousel = document.getElementById('categoriesCarousel');
+  const items = carousel.querySelectorAll('.category-btn');
+  
+  // تحديث الفهرس الحالي
+  currentIndex = index;
+  
+  // تحديث الأنماط لجميع الأزرار
+  items.forEach((item, i) => {
+    const itemIndex = parseInt(item.getAttribute('data-index'));
+    
+    item.classList.remove('active', 'prev', 'next');
+    
+    if (itemIndex === index) {
+      item.classList.add('active');
+    } else if (itemIndex === (index - 1 + categoriesData.length) % categoriesData.length) {
+      item.classList.add('prev');
+    } else if (itemIndex === (index + 1) % categoriesData.length) {
+      item.classList.add('next');
+    }
+  });
+  
+  // التمرير إلى المركز
+  if (items[index]) {
+    const activeItem = [...items].find(item => 
+      parseInt(item.getAttribute('data-index')) === index
+    );
+    
+    if (activeItem) {
+      activeItem.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    }
+  }
+}
+
+// تحريك السلايدر
+function moveCarousel(direction) {
+  let newIndex = currentIndex + direction;
+  
+  // التحقق من الحدود للتمرير الدائري
+  if (newIndex < 0) {
+    newIndex = categoriesData.length - 1;
+  } else if (newIndex >= categoriesData.length) {
+    newIndex = 0;
+  }
+  
+  setActiveCategory(newIndex);
+}
+
+// التهيئة
+document.addEventListener('DOMContentLoaded', () => {
+  loadCategoriesCarousel();
+  
+  // التمرير باللمس للجوال
+  const carousel = document.getElementById('categoriesCarousel');
+  let touchStartX = 0;
+  
+  carousel.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+  });
+  
+  carousel.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > 50) {
+      moveCarousel(diff > 0 ? 1 : -1);
+    }
+  });
+  
+  // التمرير بالماوس
+  carousel.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    moveCarousel(e.deltaY > 0 ? 1 : -1);
+  });
+  
+  // تحديث تلقائي عند تغيير حجم الشاشة
+  window.addEventListener('resize', () => {
+    setActiveCategory(currentIndex);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+// أضف هذا في نهاية وسم <script>
+function createSnowflakes() {
+  const snowfall = document.querySelector('.snowfall');
+  const snowCount = 50; // عدد النقاط الثلجية
+  
+  for(let i = 0; i < snowCount; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.classList.add('snowflake');
+    
+    // إعدادات عشوائية
+    const size = Math.random() * 5 + 3;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 5;
+    const duration = Math.random() * 10 + 5;
+    
+    snowflake.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${left}%;
+      animation-duration: ${duration}s;
+      animation-delay: ${delay}s;
+      opacity: ${Math.random() * 0.7 + 0.3};
+    `;
+    
+    snowfall.appendChild(snowflake);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', createSnowflakes);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// أضف هذا في نهاية قسم الـ <script>
+// إغلاق الواجهة عند النقر خارج المحتوى
+window.addEventListener('click', function(event) {
+  const modal = document.getElementById('productsModal');
+  if (event.target === modal) {
+    closeProductsModal();
+  }
+});
+
+
+
+
+
+
+
+
+
+// ===== إضافة حدث DOMContentLoaded =====
+document.addEventListener('DOMContentLoaded', function() {
+  // الكود الذي سيعمل بعد تحميل الصفحة
+  
+  // ===== [الكود الجديد: معالجة رابط المنتج] =====
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get('product');
+
+  if (productId) {
+    openProductDirectly(productId);
+  }
+  
+  // ===== [تهيئة الأحداث للأزرار] =====
+ document.querySelectorAll('.category-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const categoryName = this.querySelector('.btn-label').textContent;
+    openProductsModal(categoryName);
+  });
+});
+  
+  // ===== [الكود الحالي للتهيئة] =====
+  initVideoBackground();
+  loadCategoriesCarousel();
+  
+  // ... (أي كود تهيئة آخر موجود لديك)
+});
+
+// ===== [الدوال الجديدة] =====
+function openProductDirectly(productId) {
+  const productsRef = database.ref('products');
+  
+  productsRef.child(productId).once('value')
+    .then(snapshot => {
+      if (snapshot.exists()) {
+        const product = snapshot.val();
+if (product) {
+  // إنشاء بطاقة مؤقتة للمنتج
+  const tempGrid = document.createElement('div');
+  document.body.appendChild(tempGrid);
+  createProductCard(product, productId);
+  document.body.removeChild(tempGrid);
+}
+        
+        // 1. فتح واجهة المنتجات
+        openProductsModal(product.category);
+        
+        // 2. بعد تحميل المنتجات، قم بتمييز المنتج المطلوب
+        setTimeout(() => {
+          const productElement = document.querySelector(`[data-product-id="${productId}"]`);
+          if (productElement) {
+            // التمرير إلى المنتج
+            productElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center' 
+            });
+            
+            // تمييز المنتج
+            productElement.classList.add('highlighted');
+            
+            // إزالة التمييز بعد 3 ثواني
+            setTimeout(() => {
+              productElement.classList.remove('highlighted');
+            }, 3000);
+          }
+        }, 1000);
+      } else {
+        console.error('المنتج غير موجود');
+        showNotification('المنتج المطلوب غير موجود', 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error loading product:', error);
+      showNotification('حدث خطأ أثناء تحميل المنتج', 'error');
+    });
+}
+
+
+
+
+
+
+
+
+
+// ===== [الدوال المطلوبة لنسخ الرابط وعرض الإشعار] =====
+
+/**
+ * ينسخ رابط المنتج إلى الحافظة مع إظهار إشعار.
+ * @param {string} productId - المعرف الخاص بالمنتج.
+ * @param {string} productName - اسم المنتج للعرض في الإشعار.
+ */
+function copyProductLink(productId, productName) {
+  // بناء الرابط الحالي مع باراميتر المنتج
+  const link = `${window.location.origin}${window.location.pathname}?product=${encodeURIComponent(productId)}`;
+  navigator.clipboard.writeText(link)
+    .then(() => {
+      showNotification(`تم نسخ رابط "${productName}" إلى الحافظة`);
+    })
+    .catch(() => {
+      showNotification('فشل في نسخ الرابط', 'error');
+    });
+}
+
+/**
+ * يعرض رسالة إشعار في أعلى الشاشة، تُختفي بعد 3 ثواني.
+ * @param {string} message - نص الرسالة.
+ * @param {'success'|'error'} [type='success'] - نوع الإشعار (يؤثر على اللون).
+ */
+function showNotification(message, type = 'success') {
+  const notification = document.createElement('div');
+  notification.className = `notification${type === 'error' ? ' error' : ''}`;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  // بعد 3 ثواني يبدأ التلاشي
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    // ثم يُزال من الـ DOM
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ... (بقية الدوال الجديدة التي سبق ذكرها)
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ----------------------------
+
+
+
+
+
+
+
+ 
+  // متغير لتخزين الفئة الحالية
+let currentCategory = '';
+
+// فتح واجهة المنتجات
+function openProductsModal(categoryName) {
+  const modal = document.getElementById('productsModal');
+  const modalTitle = document.getElementById('modalTitle');
+  
+  currentCategory = categoryName;
+  modalTitle.textContent = `منتجات ${categoryName}`;
+  modal.style.display = 'block';
+  
+  // جلب وعرض المنتجات
+  loadProductsByCategory(categoryName);
+}
+
+// إغلاق واجهة المنتجات
+function closeProductsModal() {
+  document.getElementById('productsModal').style.display = 'none';
+  document.getElementById('productsGrid').innerHTML = '';
+}
+
+// جلب المنتجات حسب الفئة
+function loadProductsByCategory(categoryName) {
+if (!categoryName) {
+  productsGrid.innerHTML = '<div class="error">لم يتم تحديد فئة</div>';
+  return;
+}
+  const productsGrid = document.getElementById('productsGrid');
+  productsGrid.innerHTML = '<div class="loading">جارٍ تحميل المنتجات...</div>';
+  
+  const productsRef = database.ref('products');
+  productsRef.orderByChild('category').equalTo(categoryName).once('value')
+    .then(snapshot => {
+      productsGrid.innerHTML = '';
+      
+      if (!snapshot.exists()) {
+        productsGrid.innerHTML = '<div class="no-products">لا توجد منتجات في هذه الفئة</div>';
+        return;
+      }
+      
+     const products = [];
+snapshot.forEach(childSnapshot => {
+  const data = childSnapshot.val();
+  data.id = childSnapshot.key;        // حفظ المفتاح
+  products.push(data);
+});
+
+products
+  .sort(() => Math.random() - 0.5)
+  .forEach(product => {
+    createProductCard(product, product.id);  // هنا تستدعي البطاقة بالمعرّف الصحيح
+  });
+
+    })
+    .catch(error => {
+      console.error('Error loading products:', error);
+      productsGrid.innerHTML = '<div class="error">حدث خطأ أثناء تحميل المنتجات</div>';
+    });
+}
+
+// إنشاء بطاقة منتج
+function createProductCard(product, productId) {
+  const productsGrid = document.getElementById('productsGrid');
+  
+  const productCard = document.createElement('div');
+  productCard.className = 'product-item';
+  
+  // تقصير الوصف إذا كان طويلاً
+  const maxDescLength = 100;
+  let shortDescription = product.description || '';
+  let showMoreBtn = '';
+  
+  if (shortDescription.length > maxDescLength) {
+    shortDescription = shortDescription.substring(0, maxDescLength) + '...';
+    showMoreBtn = '<button class="show-more-btn">قراءة المزيد</button>';
+  }
+  
+  productCard.innerHTML = `
+    <img src="${product.image}" alt="${product.name}" class="product-image">
+    <div class="product-details">
+      <h3 class="product-name">${product.name}</h3>
+      <div class="product-price">${product.price} ₪</div>
+      <p class="product-description">${shortDescription}</p>
+      ${showMoreBtn}
+      <p class="full-description" style="display:none;">${product.description}</p>
+    </div>
+  `;
+  
+  // إضافة معرف المنتج كبيانات في العنصر
+  if (productId) {
+    productCard.dataset.productId = productId;
+  }
+  
+  // إضافة زر نسخ الرابط
+  const copyLinkBtn = document.createElement('button');
+  copyLinkBtn.className = 'copy-link-btn';
+  copyLinkBtn.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+      <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+    </svg>
+    نسخ رابط المنتج
+  `;
+  
+  // إضافة حدث النقر على زر النسخ
+  copyLinkBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    copyProductLink(productId || product.id, product.name);
+  });
+  
+  productCard.querySelector('.product-details').appendChild(copyLinkBtn);
+  
+  // إضافة حدث قراءة المزيد (إذا كان موجوداً)
+  if (showMoreBtn) {
+    const showMoreBtnElement = productCard.querySelector('.show-more-btn');
+    showMoreBtnElement.addEventListener('click', function() {
+      const description = this.previousElementSibling;
+      const fullDescription = this.nextElementSibling;
+      
+      description.style.display = 'none';
+      fullDescription.style.display = 'block';
+      this.textContent = 'إغلاق الوصف';
+      this.classList.add('show-less');
+      
+      this.onclick = function() {
+        description.style.display = 'block';
+        fullDescription.style.display = 'none';
+        this.textContent = 'قراءة المزيد';
+        this.classList.remove('show-less');
+        this.onclick = arguments.callee; 
+      };
+    });
+  }
+
+
+
+//هووون1
+if (product.id === highlightedProductId) {
+  productCard.classList.add('highlighted');
+}
+productsGrid.appendChild(productCard);
+//لهووون1
+
+
+
+
+  
+  productsGrid.appendChild(productCard);
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====== دالة لجلب وعرض المنتجات العشوائية ======
+function loadRandomProducts() {
+  const container = document.getElementById('randomProductsContainer');
+  container.innerHTML = '<div class="loading">جارٍ تحميل المنتجات المميزة...</div>';
+  
+  // جلب التصنيفات والمنتجات
+  const categoriesRef = database.ref('categories');
+  const productsRef = database.ref('products');
+  
+  Promise.all([categoriesRef.once('value'), productsRef.once('value')])
+    .then(([categoriesSnapshot, productsSnapshot]) => {
+      const categories = categoriesSnapshot.val();
+      const allProducts = productsSnapshot.val();
+      
+      if (!categories || !allProducts) {
+        container.innerHTML = '<div class="error">لا توجد منتجات متاحة حالياً</div>';
+        return;
+      }
+      
+      container.innerHTML = '';
+      
+      // إنشاء قسم لكل تصنيف
+      Object.keys(categories).forEach(categoryId => {
+        const category = categories[categoryId];
+        
+        // تصفية المنتجات لهذا التصنيف
+        const categoryProducts = [];
+        Object.keys(allProducts).forEach(productId => {
+          const product = allProducts[productId];
+          if (product.category === category.name) {
+            categoryProducts.push({ ...product, id: productId });
+          }
+        });
+        
+        // إذا كان هناك منتجات في هذا التصنيف
+        if (categoryProducts.length > 0) {
+          // اختيار 3 منتجات عشوائية
+          const randomProducts = [];
+          const shuffled = [...categoryProducts].sort(() => 0.5 - Math.random());
+          randomProducts.push(...shuffled.slice(0, 3));
+          
+          // إنشاء عناصر HTML
+          const categorySection = document.createElement('div');
+          categorySection.className = 'random-category-section';
+          
+          categorySection.innerHTML = `
+            <div class="category-header">
+              <h3>${category.name}</h3>
+              <button class="see-all-btn" onclick="openProductsModal('${category.name}')">عرض الكل</button>
+            </div>
+            <div class="random-products">
+              ${randomProducts.map(product => `
+                <div class="random-product-card">
+                  <div class="product-image-container">
+                    <img src="${product.image}" alt="${product.name}">
+                  </div>
+                  <div class="product-info">
+                    <h4 class="product-name">${product.name}</h4>
+                    <div class="product-price">${product.price} ₪</div>
+                    
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+          
+          container.appendChild(categorySection);
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error loading random products:', error);
+      container.innerHTML = '<div class="error">حدث خطأ أثناء تحميل المنتجات</div>';
+    });
+}
+
+// استدعاء الدالة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+  // ... الكود الحالي ...
+  
+  // تحميل المنتجات العشوائية
+  loadRandomProducts();
+});
+
+// تحديث المنتجات عند النقر على زر تحديث الصفحة (اختياري)
+document.getElementById('refreshPage').addEventListener('click', function() {
+  location.reload();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+// أضف هذا الكود في نهاية وسم <script>
+// البحث العالمي عن المنتجات
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('globalSearchInput');
+  const searchButton = document.getElementById('globalSearchButton');
+  
+  // عند النقر على زر البحث أو الضغط على Enter
+  function performSearch() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    if (!searchTerm) return;
+    
+    // فتح واجهة المنتجات مع نتائج البحث
+    openSearchResultsModal(searchTerm);
+  }
+  
+  searchButton.addEventListener('click', performSearch);
+  searchInput.addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') performSearch();
+  });
+});
+
+// فتح واجهة نتائج البحث
+function openSearchResultsModal(searchTerm) {
+  const modal = document.getElementById('productsModal');
+  const modalTitle = document.getElementById('modalTitle');
+  
+  modalTitle.textContent = `نتائج البحث عن: "${searchTerm}"`;
+  modal.style.display = 'block';
+  
+  // جلب وعرض نتائج البحث
+  loadSearchResults(searchTerm);
+}
+
+// جلب نتائج البحث من قاعدة البيانات
+function loadSearchResults(searchTerm) {
+  const productsGrid = document.getElementById('productsGrid');
+  productsGrid.innerHTML = '<div class="loading">جارٍ البحث...</div>';
+  
+  const productsRef = database.ref('products');
+  productsRef.once('value').then(snapshot => {
+    productsGrid.innerHTML = '';
+    
+    if (!snapshot.exists()) {
+      productsGrid.innerHTML = '<div class="no-products">لا توجد نتائج</div>';
+      return;
+    }
+    
+    let found = false;
+    snapshot.forEach(childSnapshot => {
+      const product = childSnapshot.val();
+      const productId = childSnapshot.key;
+      
+      // البحث في اسم المنتج ووصفه
+      if (
+        (product.name && product.name.toLowerCase().includes(searchTerm)) ||
+        (product.description && product.description.toLowerCase().includes(searchTerm))
+      ) {
+        found = true;
+        createProductCard(product, productId);
+      }
+    });
+    
+    if (!found) {
+      productsGrid.innerHTML = '<div class="no-products">لا توجد نتائج</div>';
+    }
+  }).catch(error => {
+    console.error('Error searching products:', error);
+    productsGrid.innerHTML = '<div class="error">حدث خطأ أثناء البحث</div>';
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
 </body>
 </html>
