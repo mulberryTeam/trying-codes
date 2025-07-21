@@ -2792,49 +2792,55 @@ margin-top: -40px;
 
 
 
-
-/* ← ألصق هذا الأسفل مباشرة في قسم <style> */
-
-.header-search,
-.section-search {
+/* أضف هذا داخل قسم <style> لتعريف شكل البحث الزجاجي */
+.glass-search {
   width: 80%;
   max-width: 500px;
-  margin: 0 auto 20px;
-  position: relative;
-}
-
-.header-search input,
-.section-search input {
-  width: 100%;
-  height: 40px;
-  padding: 0 45px 0 15px;
-  border: 2px solid var(--primary-color);
+  margin: 20px auto;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
   border-radius: 25px;
-  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  text-align: center;
   outline: none;
+  transition: background 0.3s;
 }
-
-.search-spinner {
-  position: absolute;
-  top: 50%;
-  right: 15px;
-  width: 20px;
-  height: 20px;
-  transform: translateY(-50%);
-  background-image: url('/assets/spinner.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
+.glass-search::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
-
-.search-spinner.active {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: translateY(-50%) rotate(360deg); }
+.glass-search:focus {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 
+
+
+
+/* أضف هذا داخل قسم <style> لتعريف شكل البحث الخاص بالبطاقات */
+.category-search {
+  width: 90%;
+  max-width: 400px;
+  margin: 15px auto;
+  padding: 10px 16px;
+  font-size: 14px;
+  border: 1px solid var(--primary-color);
+  border-radius: 20px;
+  background: #fff;
+  color: #333;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.category-search::placeholder {
+  color: #aaa;
+}
+.category-search:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
 
 
 
@@ -3068,18 +3074,13 @@ function initBannerCarousel(urls) {
             <img src="https://png.pngtree.com/png-vector/20221210/ourmid/pngtree-lucky-wheel-png-image_6518840.png" alt="Lucky Wheel Icon" style="width: 100%; height: 100%; object-fit: contain; transform-origin: center;"/>
           </button>
         </div>
-
-
-
-
         <!-- Header Right: Translation and Join Team Buttons -->
         <div class="cell header-right" style="display: flex; justify-content: flex-end;">
+          
           <button id="joinTeamBtn" onclick="window.open('https://forms.gle/5tXHFwsgF6kycYG7A','_blank')">انضم إلى Mulberry Team</button>
         </div>
       </div>
     </div>
-
-
   </section>
 
 
@@ -3117,16 +3118,8 @@ function initBannerCarousel(urls) {
         
 
 
-<!-- ← ألصق هذا الأسفل مباشرة -->
-<div id="searchContainer" class="header-search">
-  <input
-    type="text"
-    id="globalSearchInput"
-    placeholder="ابحث باسم المنتج أو وصفه..."
-    aria-label="Search products"
-  />
-  <span id="globalSearchSpinner" class="search-spinner" hidden></span>
-</div>
+<!-- وهذا هو الكود الجديد الذي تضعه فوراً بعد السطر السابق -->
+<input type="text" id="mainSearch" class="glass-search" placeholder="ابحث عن منتج..." />
 
 
 
@@ -3279,20 +3272,6 @@ function initBannerCarousel(urls) {
               <button class="tab" data-target="other">اخرى</button>
             </div>
           </div>
-
-<!-- ← ألصق هذا الأسفل مباشرة -->
-<div class="section-search">
-  <input
-    type="text"
-    class="sectionSearchInput"
-    data-category-id="{{categoryId}}"
-    placeholder="ابحث داخل {{categoryName}}..."
-    aria-label="Search in section"
-  />
-  <span class="sectionSearchSpinner search-spinner" hidden></span>
-</div>
-
-
           <div id="sectionContent">
             <!-- الأقسام الثابتة -->
             <div id="general" class="section-group active">
@@ -3391,6 +3370,11 @@ function initBannerCarousel(urls) {
       </button>
       <h2 id="modalTitle">منتجات الفئة</h2>
     </div>
+
+<!-- وهذا هو الكود الجديد الذي تضعه فوراً بعد السطر السابق -->
+<input type="text" id="categorySearch" class="category-search" placeholder="ابحث في هذه الفئة..." />
+
+
     <div id="productsGrid" class="products-grid"></div>
   </div>
 </div>
@@ -4230,62 +4214,6 @@ document.getElementById('refreshPage').addEventListener('click', function() {
 
 
 
-
-
-  // دالة تأخير الإرسال (debounce)
-  function debounce(fn, delay) {
-    let timer;
-    return function(...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn.apply(this, args), delay);
-    };
-  }
-
-  // استخراج المنتجات من السيرفر
-  async function fetchProducts(query, categoryId = '') {
-    const url = new URL('/api/products', window.location.origin);
-    url.searchParams.set('query', query);
-    if (categoryId) url.searchParams.set('category', categoryId);
-    const res = await fetch(url);
-    return res.json();
-  }
-
-  // عرض النتائج في شبكة المنتجات
-  function renderProducts(products, container) {
-    container.innerHTML = products.length
-      ? products.map(p => `
-        <div class="product-item">
-          <img src="${p.imageUrl}" alt="${p.name}" />
-          <h3>${p.name}</h3>
-          <p>${p.description}</p>
-        </div>`).join('')
-      : '<p class="no-results">لا توجد منتجات مطابقة.</p>';
-  }
-
-  // ربط صندوق البحث العام
-  const globalInput = document.getElementById('globalSearchInput');
-  const globalSpinner = document.getElementById('globalSearchSpinner');
-  const globalGrid = document.getElementById('globalProductsGrid');
-  globalInput.addEventListener('input', debounce(async function() {
-    const q = this.value.trim();
-    globalSpinner.hidden = false;
-    const data = await fetchProducts(q);
-    renderProducts(data, globalGrid);
-    globalSpinner.hidden = true;
-  }, 300));
-
-  // ربط صناديق البحث في الأقسام
-  document.querySelectorAll('.sectionSearchInput').forEach(input => {
-    const spinner = input.nextElementSibling;
-    const grid = document.querySelector('.products-grid[data-category-id="' + input.dataset.categoryId + '"]');
-    input.addEventListener('input', debounce(async function() {
-      const q = this.value.trim();
-      spinner.hidden = false;
-      const data = await fetchProducts(q, this.dataset.categoryId);
-      renderProducts(data, grid);
-      spinner.hidden = true;
-    }, 300));
-  });
 
 
 
