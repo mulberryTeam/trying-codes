@@ -2997,6 +2997,167 @@ margin-top: -40px;
 
  
 
+
+
+
+
+@media (max-width: 600px) {
+  /* 1. مربع البحث */
+  .glass-input {
+    width: 90% !important;
+    padding: 12px !important;
+    font-size: 16px !important;
+    margin: 12px auto !important;
+    display: block !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* 2. غطاء النافذة */
+  #glassSearchPopup_overlay {
+    align-items: flex-start !important;
+    padding-top: 20px !important;
+    overflow-y: auto !important;
+  }
+
+  /* 3. صندوق النافذة */
+  .glassSearchPopup_modal {
+    width: 95% !important;
+    max-width: 400px !important;
+    max-height: 85vh !important;
+    padding: 16px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+    transform: none !important; /* يلغي أي تحريك سابق */
+    opacity: 1 !important;
+    margin: 0 auto !important;
+  }
+
+  /* 4. حاوية البطاقات */
+  .search-results-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    max-height: 65vh !important;
+    overflow-y: auto !important;
+    padding-right: 6px !important;
+  }
+
+  /* 5. بطاقة المنتج */
+  .product-card {
+    width: 100% !important;
+    padding: 14px !important;
+    border-radius: 12px !important;
+    background-color: #fdfdfd !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .product-card img {
+    max-height: 120px !important;
+    margin-bottom: 10px !important;
+  }
+  .product-card h3 {
+    font-size: 18px !important;
+    color: #1a1a1a !important;
+    margin-bottom: 6px !important;
+  }
+  .product-card p {
+    font-size: 14px !important;
+    color: #333 !important;
+    margin: 4px 0 !important;
+  }
+  .product-card .price {
+    font-size: 16px !important;
+    color: #c0392b !important;
+    font-weight: bold !important;
+    margin-top: 8px !important;
+  }
+  .product-card .category {
+    font-size: 13px !important;
+    color: #555 !important;
+    font-style: italic !important;
+  }
+
+  /* 6. زر الإغلاق */
+  .glassSearchPopup_close {
+    position: fixed !important;
+    top: 12px !important;
+    right: 12px !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 24px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease !important;
+    z-index: 1001 !important;
+  }
+  .glassSearchPopup_close:hover {
+    transform: scale(1.2) !important;
+  }
+}
+@media (max-width: 600px) {
+  /* 1. حاوية النتائج: عمود واحد، ارتفاع تلقائي */
+  .search-results-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    max-height: none !important;      /* إزالة الحد الثابت */
+    overflow-y: visible !important;   /* جعل المحتوى مرئي */
+    padding: 0 !important;
+  }
+
+  /* 2. بطاقة المنتج: عرض كامل، صندوق قابل للتمدد */
+  .product-card {
+    display: block !important;
+    width: 100% !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 3. صورة المنتج: تأخذ عرض البطاقة كاملاً */
+  .product-card img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* 4. نصوص البطاقة: مسافات وأسطر كافية */
+  .product-card h3 {
+    font-size: 18px !important;
+    margin: 8px 0 !important;
+    color: #1a1a1a !important;
+  }
+  .product-card p,
+  .product-card .price,
+  .product-card .category {
+    font-size: 15px !important;
+    margin: 6px 0 !important;
+    color: inherit !important;
+  }
+
+  /* 5. تعديل حجم صندوق النافذة */
+  .glassSearchPopup_modal {
+    width: 95% !important;
+    max-width: 360px !important;
+    padding: 16px !important;
+    border-radius: 16px !important;
+  }
+}
+
+
+
   </style>
   
   <!-- Firebase SDK -->
