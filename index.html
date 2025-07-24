@@ -497,12 +497,7 @@ body {
       background-color: #fff;
       width: 200px;
     }
-    .product-card img {
-      width: 100%;
-      height: auto;
-      max-height: 150px;
-      object-fit: contain;
-    }
+   
     .product-card h3 {
       font-size: 16px;
       margin: 10px 0 5px;
@@ -2920,15 +2915,7 @@ margin-top: -40px;
   border-color: #007bff;
 }
 
-/* صورة المنتج */
-.product-card img {
-  max-width: 100%;
-  height: 140px;
-  object-fit: contain;
-  border-radius: 10px;
-  margin-bottom: 14px;
-  user-select: none;
-}
+
 
 /* اسم المنتج */
 .product-card h3 {
@@ -3039,10 +3026,7 @@ margin-top: -40px;
     flex-direction: column !important;
     align-items: flex-start !important;
   }
-  .product-card img {
-    max-height: 120px !important;
-    margin-bottom: 10px !important;
-  }
+  
   .product-card h3 {
     font-size: 18px !important;
     color: #1a1a1a !important;
@@ -3110,13 +3094,7 @@ margin-top: -40px;
     box-sizing: border-box !important;
   }
 
-  /* 3. صورة المنتج: تأخذ عرض البطاقة كاملاً */
-  .product-card img {
-    width: 100% !important;
-    height: auto !important;
-    max-height: none !important;
-    margin-bottom: 12px !important;
-  }
+ 
 
   /* 4. نصوص البطاقة: مسافات وأسطر كافية */
   .product-card h3 {
@@ -3251,6 +3229,62 @@ body.sidebar-open #sidebarToggleBtn {
 }
 
 
+
+
+
+.product-card img {
+  display: block;         /* لإزالة المسافات الفارغة */
+  width: auto;            /* العرض الطبيعي للصورة */
+  height: auto;           /* الارتفاع الطبيعي للصورة */
+  max-width: 100%;        /* لا تتجاوز عرض البطاقة */
+  max-height: none;       /* لا تقيّد الارتفاع */
+  object-fit: none;       /* تظهر الصورة كاملة دون قصّ */
+  border-radius: 10px;    /* إن كنت تريد الاحتفاظ بالزويا الدائرية */
+  margin-bottom: 14px;    /* قم بضبط الهوامش كما يناسب التصميم */
+  overflow: visible;      /* تأكد من عدم قص أي جزء */
+  user-select: none;      /* يمنع تحديد الصورة بنقرة */
+}
+/* === Override كامل لصور المنتجات === */
+#sectionsSection .product-card img {
+  display: block !important;
+  width: auto !important;         /* عرض الصورة الطبيعي */
+  height: auto !important;        /* ارتفاع الصورة الطبيعي */
+  max-width: 100% !important;     /* لا تتجاوز عرض البطاقة */
+  max-height: none !important;    /* لا تقيّد الارتفاع */
+  object-fit: none !important;    /* تظهر الصورة كاملة دون قصّ */
+  overflow: visible !important;   /* لا تقصّ أي جزء */
+  margin-bottom: 14px !important; /* أو غيرها حسب التصميم */
+  border-radius: 10px !important; /* إن احتجت تحتفظ بالزويا الدائرية */
+  user-select: none !important;
+}
+
+
+
+
+.product-card img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    margin-bottom: 12px !important;
+  }
+.product-card img {
+    max-height: 120px !important;
+    margin-bottom: 10px !important;
+  }
+.product-card img {
+  max-width: 100%;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  user-select: none;
+}
+.product-card img {
+      width: 100%;
+      height: auto;
+      max-height: 150px;
+      object-fit: contain;
+    }
 
   </style>
   
@@ -4140,10 +4174,16 @@ productsGrid.appendChild(productCard);
 //لهووون1
 
 
+const productImg = productCard.querySelector('img');
+if (productImg) {
+  productImg.style.objectFit = 'contain';
+  productImg.style.width = '100%';
+  productImg.style.height = '150px'; // أو عدّلها حسب حجم بطاقتك المناسب
+}
 
 
   
-  productsGrid.appendChild(productCard);
+  //productsGrid.appendChild(productCard);
 
 
 }
