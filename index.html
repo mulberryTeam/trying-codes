@@ -3143,6 +3143,101 @@ margin-top: -40px;
 
 
 
+
+
+
+
+/* زر الهامبرغر */
+.sidebar-toggle {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  z-index: 11001;
+  background: rgba(255,255,255,0.7);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* القائمة الجانبية */
+#sidebarMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  z-index: 11000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+}
+
+/* عند الفتح */
+body.sidebar-open #sidebarMenu {
+  width: 280px;
+}
+
+/* عنصر */
+.sidebar-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sidebar-item:hover {
+  background: rgba(255,255,255,0.15);
+}
+.category-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-left: 10px;
+}
+.category-name {
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+body.sidebar-open .category-name {
+  opacity: 1;
+}
+
+/* الوضع الليلي */
+html.dark-mode #sidebarMenu {
+  background: rgba(0,0,0,0.4);
+}
+html.dark-mode .category-name {
+  color: #fff;
+}
+
+/* الهاتف: تغطي الشاشة عند الفتح */
+@media (max-width: 768px) {
+  #sidebarMenu {
+    width: 0;
+  }
+  body.sidebar-open #sidebarMenu {
+    width: 100%;
+  }
+}
+
+
+
+
   </style>
   
   <!-- Firebase SDK -->
@@ -3223,16 +3318,18 @@ function initBannerCarousel(urls) {
 <!-- Video Background with Loading Placeholder -->
 <div id="videoContainer">
   <img id="videoPlaceholder" src="https://i.ibb.co/CKd6Q0rL/4.png" alt="Loading background">
-  <video id="backgroundVideo" autoplay muted loop playsinline>
-    <source src="https://videos.pexels.com/video-files/7772674/7772674-hd_1080_1920_25fps.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
 </div>
 <div id="overlay"></div>
 
 
 
+<!-- زر الهامبرغر العائم -->
+<button id="sidebarToggleBtn" class="sidebar-toggle">
+  <i class="fas fa-bars"></i>
+</button>
 
+<!-- القائمة الجانبية -->
+<div id="sidebarMenu"></div>
 
 
 
@@ -4238,6 +4335,62 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 </script>
+
+
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    // 🔴 استبدل هذه القيم بقيم مشروعك الحقيقي:
+    apiKey: "AIzaSyAi3_y7ugKB0cgzMV1-IVvbE2BwG_9RKSs",
+    authDomain: "team-analysis-3c196.firebaseapp.com",
+    projectId: "team-analysis-3c196",
+    databaseURL: "https://team-analysis-3c196-default-rtdb.firebaseio.com",
+    storageBucket: "team-analysis-3c196.firebasestorage.app",
+    messagingSenderId: "38968485922",
+    appId: "1:38968485922:web:667832a4aa77599ba8a6fb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const sidebar = document.getElementById("sidebarMenu");
+  const categoriesRef = ref(db, 'categories');
+
+  onValue(categoriesRef, snapshot => {
+  sidebar.innerHTML = ''; // تنظيف القائمة أولًا
+  snapshot.forEach(child => {
+    const data = child.val();
+    const item = document.createElement("div");
+    item.className = "sidebar-item";
+    item.innerHTML = `
+      <img src="${data.imageUrl}" alt="${data.name}" class="category-icon">
+      <span class="category-name">${data.name}</span>
+    `;
+    // نستخدم هنا نفس الفنكشن اللي يفتح واجهة القسم
+    item.onclick = () => {
+      openProductsModal(data.name);
+    };
+    sidebar.appendChild(item);
+  });
+});
+
+
+  // التحكم بفتح/إغلاق القائمة
+  document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.getElementById("sidebarToggleBtn");
+    if (btn) {
+      btn.addEventListener("click", function () {
+        document.body.classList.toggle("sidebar-open");
+      });
+    }
+  });
+</script>
+
+
 
 
 
