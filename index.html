@@ -3286,6 +3286,57 @@ body.sidebar-open #sidebarToggleBtn {
       object-fit: contain;
     }
 
+
+
+/* ضبط نافذة المنتجات المنبثقة لتناسب جميع الشاشات دون تجاوز */
+.product-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 100%;
+  height: 85vh;
+  margin: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 10000;
+  box-sizing: border-box;
+  padding: 0 12px; /* مسافة بسيطة من الجانبين */
+}
+
+/* المحتوى الداخلي مع تمرير فقط عمودي */
+.product-modal .products-container {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden; /* منع تمرير أفقي داخل المحتوى */
+  padding: 1rem 0;
+}
+
+
+
+.sidebar-item {
+  border: 1px solid rgba(255, 255, 255, 0.3);   /* إطار شفاف أبيض */
+  border-radius: 12px;                          /* حواف دائرية */
+  padding: 10px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.1);         /* خلفية شفافة */
+  backdrop-filter: blur(6px);                  /* تمويه خلف العنصر */
+  -webkit-backdrop-filter: blur(6px);          /* دعم سفاري */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* توهج خفيف حول العنصر */
+  transition: background 0.3s, transform 0.2s;
+}
+
+/* تأثير عند المرور بالماوس (اختياري) */
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.02);
+  cursor: pointer;
+}
+
+
   </style>
   
   <!-- Firebase SDK -->
