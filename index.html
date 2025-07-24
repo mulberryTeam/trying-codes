@@ -3337,6 +3337,26 @@ body.sidebar-open #sidebarToggleBtn {
 }
 
 
+
+/* تأكد أن القائمة الجانبية لا تسمح بالتمرير الأفقي */
+#sidebarMenu {
+  overflow-y: auto;       /* يسمح بالتمرير عموديًا */
+  overflow-x: hidden;     /* يمنع التمرير الأفقي نهائيًا */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;   /* يجعل العناصر تملأ العرض بالكامل */
+  box-sizing: border-box;
+}
+
+/* تأكد أن كل عنصر قسم يمتد عرض القائمة بالكامل بدون انزلاق */
+.sidebar-item {
+  flex: 0 0 auto;
+  width: 100%;            /* يملأ عرض القائمة الجانبية دائمًا */
+  box-sizing: border-box;
+  overflow: hidden;       /* يمنع أي محتوى داخلي من الخروج */
+}
+
+
   </style>
   
   <!-- Firebase SDK -->
