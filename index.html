@@ -3235,6 +3235,20 @@ html.dark-mode .category-name {
   }
 }
 
+/* 1. إعدادات الزر في الحالة الافتراضية (القائمة مغلقة) */
+#sidebarToggleBtn {
+  position: fixed;
+  top: 4.5rem;
+  right: 3rem;
+  transition: right 0.3s ease, left 0.3s ease;
+}
+
+/* 2. عندما تكون القائمة مفتوحة (body يحمل الكلاس sidebar-open) */
+body.sidebar-open #sidebarToggleBtn {
+  /* نقل الزر من اليمين إلى اليسار بمقدار عرض الـsidebar */
+  left: 20px;   /* استبدل 250px بعرض قائمتك الجانبية */
+  right: auto;   /* يلغي ضبط الـright */
+}
 
 
 
@@ -4372,8 +4386,10 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
     // نستخدم هنا نفس الفنكشن اللي يفتح واجهة القسم
     item.onclick = () => {
-      openProductsModal(data.name);
-    };
+  openProductsModal(data.name);            // فتح القسم
+  document.body.classList.remove('sidebar-open'); // إغلاق الشريط الجانبي
+};
+
     sidebar.appendChild(item);
   });
 });
