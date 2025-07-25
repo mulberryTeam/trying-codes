@@ -2651,18 +2651,6 @@ margin-top: -40px;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /* ====== تعديل ألوان النص في واجهة المنتجات المنبثقة ====== */
 #productsModal .product-name,
 #productsModal .product-description,
@@ -3357,6 +3345,30 @@ body.sidebar-open #sidebarToggleBtn {
 }
 
 
+
+
+
+/* تعطيل الثلج على الحاسوب */
+
+  .snowfall {
+    display: none !important;
+  }
+
+
+
+
+/* تبسيط الفلاتر والظل */
+@media (min-width: 1024px) {
+  .gpd-section,
+  .category-btn,
+  .carousel-arrow {
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+}
+
+
+
   </style>
   
   <!-- Firebase SDK -->
@@ -3429,11 +3441,6 @@ function initBannerCarousel(urls) {
 </head>
 <body>
 
-
-
-
-
-<!-- أضف هذا بعد وسم <body> -->
 <!-- Video Background with Loading Placeholder -->
 <div id="videoContainer">
   <img id="videoPlaceholder" src="https://i.ibb.co/CKd6Q0rL/4.png" alt="Loading background">
@@ -3477,20 +3484,6 @@ function initBannerCarousel(urls) {
   });
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-  <div id="animatedBackground"></div>
-
-  
   <!-- Loader Overlay for initial page load -->
   <div id="loader">
     <div class="spinner"></div>
@@ -3529,38 +3522,25 @@ function initBannerCarousel(urls) {
       </div>
     </div>
   </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
- 
   
   <!-- Main Content -->
   <main>
+
+<!-- بداية Banner Carousel -->
+<div id="bannerCarousel" class="banner-carousel">
+<div class="slides-container" style="width:100%;height:100%;position:relative;">
+<div class="slides"></div>
+</div>
+<div class="dots"></div>
+</div>
+<!-- نهاية Banner Carousel -->
+
+
+
+
     <!-- Landing Section -->
     <section id="landingSection" class="gpd-section" data-anim-type="fadeIn">
       <div id="landing" style="position: relative; z-index: 2; padding: 60px; text-align: center;">
-
-
 
 <div class="search-container">
   <input type="text" placeholder="ابحث عن منتج..." class="glass-input" />
@@ -3578,22 +3558,6 @@ function initBannerCarousel(urls) {
 
 
   
-<!-- بداية Banner Carousel -->
-<div id="bannerCarousel" class="banner-carousel">
-<div class="slides-container" style="width:100%;height:100%;position:relative;">
-<div class="slides"></div>
-</div>
-<div class="dots"></div>
-</div>
-<!-- نهاية Banner Carousel -->
-
-
-
-
-
-
-
-
 
 <div class="carousel-container">
   <div class="carousel-wrapper">
@@ -3607,35 +3571,10 @@ function initBannerCarousel(urls) {
   </div>
 </div>
 
-
-
-
-
-
         
-  <div class="product-buttons-container">
-
-
-
-
-  
-
-  
-  
-
-
-
-
-
-</div>
-
-
-
-
-
+  <div class="product-buttons-container"></div>
 
 <!-- قسم المنتجات العشوائية -->
-<!-- استبدال القسم الحالي بهذا الكود -->
 <section id="randomProducts" class="gpd-section" style="background: transparent; box-shadow: none; padding: 20px 0;">
   <div class="gpd-container">
     <h2 style="text-align: center; margin-bottom: 30px; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.7); font-size: 1.8rem;">
@@ -3648,12 +3587,6 @@ function initBannerCarousel(urls) {
   </div>
 </section>
 
-
-
-
-
-
- 
 
         <div class="description" id="storeDescription">
           <p>
@@ -3673,10 +3606,6 @@ function initBannerCarousel(urls) {
     </section>
 
   </main>
-
-
-
-<!-- أضف هذا بعد </main> -->
 <!-- Products Grid Modal -->
 <div id="productsModal" class="modal">
   <div class="modal-content" style="max-width: 95%; width: 1200px;">
@@ -3718,10 +3647,7 @@ function initBannerCarousel(urls) {
     </div>
   </div>
   
-  <!-- Modal for Lucky Wheel -->
-  <!-- سيتم إضافته ديناميكيًا عبر دالة openLuckyWheelModal() -->
   
-  <!-- JavaScript Logic -->
   <script>
  let allProductsData = [];
 const urlParams = new URLSearchParams(window.location.search);
@@ -3939,33 +3865,7 @@ searchInput.addEventListener('keydown', e => {
   });
 });
 
-// أضف هذا في نهاية وسم <script>
-function createSnowflakes() {
-  const snowfall = document.querySelector('.snowfall');
-  const snowCount = 50; // عدد النقاط الثلجية
-  
-  for(let i = 0; i < snowCount; i++) {
-    const snowflake = document.createElement('div');
-    snowflake.classList.add('snowflake');
-    
-    // إعدادات عشوائية
-    const size = Math.random() * 5 + 3;
-    const left = Math.random() * 100;
-    const delay = Math.random() * 5;
-    const duration = Math.random() * 10 + 5;
-    
-    snowflake.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      left: ${left}%;
-      animation-duration: ${duration}s;
-      animation-delay: ${delay}s;
-      opacity: ${Math.random() * 0.7 + 0.3};
-    `;
-    
-    snowfall.appendChild(snowflake);
-  }
-}
+
 
 document.addEventListener('DOMContentLoaded', createSnowflakes);
 
